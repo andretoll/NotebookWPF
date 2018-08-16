@@ -25,8 +25,35 @@
             </Grid>
         </DataTemplate>
     </Controls:MetroWindow.IconTemplate>
-    
-        <Grid>
+
+    <!--- Title bar controls -->
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+
+            <!-- Open Settings -->
+            <Button x:Name="SettingsButton"
+                    ToolTip="Settings">
+                <StackPanel Orientation="Horizontal">
+                    <!--- Draw Icon -->
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" 
+                                         Visual="{StaticResource appbar_settings}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <!--- Button text -->
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Settings"/>
+                </StackPanel>
+            </Button>
+
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
+    <Grid>
         
-        </Grid>
+    </Grid>
 </Controls:MetroWindow>
