@@ -4,6 +4,14 @@
              xmlns:local="clr-namespace:NotebookWPF"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--- Mahapps Resources -->
+                <ResourceDictionary Source="Resources/Dictionaries/MetroResourceDictionary.xaml"/>
+                <!--- App Resources -->
+                <ResourceDictionary Source="Resources/Dictionaries/ComponentsResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
     </Application.Resources>
 </Application>
