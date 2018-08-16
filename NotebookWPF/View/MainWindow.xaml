@@ -6,10 +6,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:NotebookWPF"
+    xmlns:uc="clr-namespace:NotebookWPF.View.UserControls"
     mc:Ignorable="d"
     ShowIconOnTitleBar="True"
     Icon="/Resources/notebook.ico"
     TitleCaps="False"
+    MinHeight="450"
+    MinWidth="800"
+    BorderThickness="0"
+    GlowBrush="Black"
     Title="Notebook" Height="450" Width="800">
 
     <!--- Icon Template -->
@@ -32,6 +37,7 @@
 
             <!-- Open Settings -->
             <Button x:Name="SettingsButton"
+                    Click="SettingsButton_Click"
                     ToolTip="Settings">
                 <StackPanel Orientation="Horizontal">
                     <!--- Draw Icon -->
@@ -52,6 +58,21 @@
 
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
+
+    <!--- Settings Flyout -->
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout Header="Settings"
+                             x:Name="SettingsFlyout"
+                             Position="Left" 
+                             Width="400">
+                
+                <!-- Flyout Content -->
+                <uc:SettingsUserControl/>                
+                
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
 
     <Grid>
         

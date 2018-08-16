@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using NotebookWPF.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,24 @@ namespace NotebookWPF
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        #region Constructor
+
         public MainWindow()
         {
             InitializeComponent();
+            // Load app settings
+            SettingsHelper.LoadSettings();
         }
+
+        #endregion
+
+        #region Events
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
+        }
+
+        #endregion
     }
 }
