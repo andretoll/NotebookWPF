@@ -2,8 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:NotebookWPF.Resources.Dictionaries">
 
-    <ResourceDictionary.MergedDictionaries>
+    <!--- Large TextBlock -->
+    <Style TargetType="TextBlock" x:Key="LargeText">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
 
-    </ResourceDictionary.MergedDictionaries>
-    
+    <!--- Small TextBlock -->
+    <Style TargetType="TextBlock" x:Key="SmallText">
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
 </ResourceDictionary>

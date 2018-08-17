@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using NotebookWPF.Helpers;
+using NotebookWPF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +28,12 @@ namespace NotebookWPF
         public MainWindow()
         {
             InitializeComponent();
+
             // Load app settings
             SettingsHelper.LoadSettings();
+
+            // Set data context
+            this.DataContext = new NotebookViewModel();
         }
 
         #endregion
