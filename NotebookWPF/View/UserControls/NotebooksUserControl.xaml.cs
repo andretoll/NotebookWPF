@@ -24,5 +24,18 @@ namespace NotebookWPF.View.UserControls
         {
             InitializeComponent();
         }
+
+        private void DeleteNotebookButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ConfirmDeletePanel.Visibility == Visibility.Collapsed)
+                ConfirmDeletePanel.Visibility = Visibility.Visible;
+            else
+                ConfirmDeletePanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void CancelDeleteNotebookButton_Click(object sender, RoutedEventArgs e)
+        {
+            ConfirmDeletePanel.Visibility = Visibility.Collapsed;
+        }
     }
 }

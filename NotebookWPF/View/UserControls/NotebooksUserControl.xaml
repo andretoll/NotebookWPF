@@ -6,30 +6,30 @@
              xmlns:local="clr-namespace:NotebookWPF.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel>
+    <StackPanel ToolTip="{Binding Name}">
         <DockPanel>
             <StackPanel Margin="0 10 30 0"
-                    Orientation="Vertical">
+                        MaxWidth="120"
+                        Orientation="Vertical">
                 <TextBlock Text="{Binding Name}"
+                           TextTrimming="CharacterEllipsis"
                    Style="{StaticResource LargeText}"/>
                 <TextBlock Text="{Binding NoteCount, StringFormat='({0} notes)'}"
                    Style="{StaticResource SmallText}"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom" 
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Right"
                         Margin="5">
-                <Button ToolTip="Delete"
+                <!--- Delete Button -->
+                <Button x:Name="DeleteNotebookButton"
+                        ToolTip="Delete"
                         Width="30"
                         Height="30"
-                        Command="{Binding 
-                                    RelativeSource={RelativeSource 
-                                    Mode=FindAncestor, 
-                                    AncestorType={x:Type ListBox}}, 
-                                    Path=DataContext.DeleteNotebookCommand}"
-                        CommandParameter="{Binding Id}"
-                        Grid.Column="2">
+                        BorderThickness="1"                        
+                        Click="DeleteNotebookButton_Click">
                     <Button.Style>
-                        <Style TargetType="{x:Type Button}">
+                        <Style BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type Button}">
                             <Setter Property="Visibility" Value="Hidden"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
@@ -51,12 +51,47 @@
                 </Button>
             </StackPanel>
         </DockPanel>
-              
+
+        <!--- Confirm Delete -->
+        <StackPanel x:Name="ConfirmDeletePanel"
+                    Style="{StaticResource VisibleAnimation}"
+                    Visibility="Collapsed"
+                    HorizontalAlignment="Center">
+            <TextBlock Text="Are you sure?"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource SmallText}"/>
+            <!--- Confirm Delete Button -->
+            <StackPanel Orientation="Horizontal"
+                        Margin="0 0 0 10">
+                <Button ToolTip="Delete"
+                    Style="{StaticResource WarningButton}"
+                    Background="Red"
+                    Width="75"
+                    Margin="0 0 5 0"
+                    Command="{Binding 
+                                    RelativeSource={RelativeSource 
+                                    Mode=FindAncestor, 
+                                    AncestorType={x:Type ListBox}}, 
+                                    Path=DataContext.DeleteNotebookCommand}"
+                    CommandParameter="{Binding Id}"
+                    Grid.Column="2">
+                    <TextBlock Text="Delete"/>
+                </Button>
+                <Button ToolTip="Cancel"
+                    Style="{StaticResource SquareButtonStyle}"                        
+                    x:Name="CancelDeleteNotebookButton"
+                    Click="CancelDeleteNotebookButton_Click"
+                    Width="75">
+                    <TextBlock Text="Cancel"/>
+                </Button>
+            </StackPanel>            
+        </StackPanel>
 
         <!--- Separator -->
-        <StackPanel Margin="0 10 0 0" Orientation="Vertical">
+        <!--<StackPanel Margin="0 0 0 0" Orientation="Vertical">
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
-                       Opacity="0.5"/>
-        </StackPanel>
+                       Opacity="0.7"/>
+        </StackPanel>-->     
+        
     </StackPanel>
 </UserControl>
