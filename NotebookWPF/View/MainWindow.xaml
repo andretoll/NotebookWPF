@@ -74,15 +74,22 @@
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
 
-    <DockPanel Margin="15">
+    <DockPanel>
+        
         <!--- Notebooks -->
-        <DockPanel DockPanel.Dock="Left">
-            <Button ToolTip="New notebook"
+        <DockPanel DockPanel.Dock="Left"
+                   Width="250">
+            
+            <!--- Button to trigger new notebook -->
+            <Button x:Name="newNotebookButton"
+                    HorizontalAlignment="Left"
+                    Click="newNotebookButton_Click"
+                    ToolTip="New notebook"
                     DockPanel.Dock="Top"
-                    FontSize="14"
-                    Width="150"
-                    Foreground="{DynamicResource AccentColorBrush}"
-                    Margin="0 0 0 10"
+                    FontSize="12"
+                    Width="140"
+                    Style="{StaticResource AccentedSquareButtonStyle}"
+                    Margin="10"
                     Padding="10">
                 <StackPanel Orientation="Horizontal">
                     <!--- Draw Icon -->
@@ -91,27 +98,79 @@
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill" 
-                                         Visual="{StaticResource appbar_add}"/>
+                                         Visual="{StaticResource appbar_book}"/>
                         </Rectangle.OpacityMask>
                     </Rectangle>
                     <!--- Button text -->
                     <TextBlock Margin="4 0 0 0"
                                VerticalAlignment="Center"
-                               Text="New notebook"/>
+                               Text="NEW NOTEBOOK"/>
                 </StackPanel>
             </Button>
-            <ListView ItemsSource="{Binding Notebooks}"
+            
+            <!--- Input for new notebook -->
+            <Grid DockPanel.Dock="Top"
+                  Style="{StaticResource VisibleAnimation}"
+                  x:Name="NewNotebookPanel"
+                  Visibility="{Binding NewNotebook, Converter={StaticResource nullToVisibilityConverter}}"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <!--- Input -->
+                <TextBox Grid.Column="0"
+                         Text="{Binding NewNotebook.Name, Mode=TwoWay}"
+                         x:Name="NewNotebookTextBox"
+                         FontSize="14"
+                         Margin="0 0 5 0"/>
+                <!--- Save -->
+                <Button ToolTip="Save"
+                        IsEnabled="{Binding ElementName=NewNotebookTextBox, Path=Text.Length}"
+                        Style="{StaticResource AccentedSquareButtonStyle}"
+                        Command="{Binding AddNotebookCommand}"
+                        IsDefault="True"
+                        Grid.Column="1"
+                        Margin="0 0 5 0">
+                    <TextBlock Text="Save"/>
+                </Button>
+                <!--- Cancel -->
+                <Button ToolTip="Cancel"
+                        Width="30"
+                        Height="30"
+                        Style="{StaticResource AccentedSquareButtonStyle}"
+                        Command="{Binding CancelNotebookCommand}"
+                        Grid.Column="2">
+                    <StackPanel Orientation="Horizontal">
+                        <!--- Draw Icon -->
+                        <Rectangle Width="15"
+                                   Height="15"
+                                   Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_cancel}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            
+            <!--- List of notebooks -->
+            <ListBox ItemsSource="{Binding Notebooks}"
+                     x:Name="NotebookListBox"
                       Cursor="Hand"
                       BorderThickness="0"
+                      Padding="10 0 15 15"
                       VerticalContentAlignment="Top"
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ScrollViewer.CanContentScroll="False">
-                <ListView.ItemTemplate>
+                <ListBox.ItemTemplate>
                     <DataTemplate>
                         <uc:NotebooksUserControl/>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
         </DockPanel>        
 
         <!--- Notes -->
@@ -119,13 +178,17 @@
                     Margin="15">
         </StackPanel>
 
-        <StackPanel Margin="5 0" Orientation="Horizontal">
+        <!--- Separator -->
+        <StackPanel Margin="0" Orientation="Horizontal">
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
                        Opacity="0.5"/>
         </StackPanel>
 
+        <!--- Text Editor -->
         <StackPanel>
             
         </StackPanel>
+        
     </DockPanel>
+    
 </Controls:MetroWindow>

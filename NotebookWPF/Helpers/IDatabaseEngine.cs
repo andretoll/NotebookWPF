@@ -13,12 +13,12 @@ namespace NotebookWPF.Helpers
     /// </summary>
     interface IDatabaseEngine
     {
-        bool Insert<T>(T item);
+        int Insert<T>(T item);
 
         bool Update<T>(T item);
 
         bool Delete<T>(T item);
 
-        List<Notebook> GetNotebooks<T>();
+        List<Notebook> GetNotebooks();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using NotebookWPF.Helpers;
+using NotebookWPF.Model;
 using NotebookWPF.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,12 @@ namespace NotebookWPF
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        #region Private Members
+
+        private NotebookViewModel notebookViewModel;
+
+        #endregion
+
         #region Constructor
 
         public MainWindow()
@@ -33,7 +40,8 @@ namespace NotebookWPF
             SettingsHelper.LoadSettings();
 
             // Set data context
-            this.DataContext = new NotebookViewModel();
+            notebookViewModel = new NotebookViewModel();
+            this.DataContext = notebookViewModel;
         }
 
         #endregion
@@ -43,6 +51,17 @@ namespace NotebookWPF
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
+        }
+
+        private void newNotebookButton_Click(object sender, RoutedEventArgs e)
+        {
+            notebookViewModel.NewNotebook = new Notebook()
+            {
+                Name = "New Notebook"
+            };
+
+            NewNotebookTextBox.Focus();
+            NewNotebookTextBox.SelectAll();
         }
 
         #endregion

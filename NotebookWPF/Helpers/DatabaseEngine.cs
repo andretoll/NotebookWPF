@@ -52,20 +52,30 @@ namespace NotebookWPF.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
         /// <returns></returns>
-        public bool Insert<T>(T item)
+        public int Insert<T>(T item)
         {
             // Insert an item
             using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
             {
+                // Create table if not already existing
                 conn.CreateTable<T>();
-                int numberOfRows = conn.Insert(item);
-                // If any rows were affected, return true
-                if (numberOfRows > 0)
-                    return true;
-            }
 
-            // Else, return false
-            return false;
+                // Insert item into database
+                conn.Insert(item);
+
+                // Get property info of item
+                System.Reflection.PropertyInfo pi = item.GetType().GetProperty("Id");
+
+                // If item has a property of 'Id'
+                if (pi != null)
+                {
+                    // Return the Id
+                    return int.Parse(pi.GetValue(item).ToString());
+                }
+
+                // Else, return 0
+                else return 0;
+            }
         }
 
         /// <summary>
@@ -95,21 +105,23 @@ namespace NotebookWPF.Helpers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public List<Notebook> GetNotebooks<T>()
+        public List<Notebook> GetNotebooks()
         {
             // Insert an item
             using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
             {
-                conn.CreateTable<T>();
-                conn.CreateTable<Note>();
+                conn.CreateTable<Notebook>();
 
                 // Get notebooks
-                var notebooks = conn.Table<Notebook>().ToList();
+                var notebooks = conn.Table<Notebook>().OrderByDescending(n => n.Id).ToList();
 
                 foreach (var item in notebooks)
                 {
                     item.NoteCount = conn.Table<Note>().Where(n => n.NotebookId == item.Id).Count();
                 }
+
+                // Sort notebooks by number of notes
+                notebooks = notebooks.OrderByDescending(n => n.NoteCount).ToList();
 
                 return notebooks;
             }
