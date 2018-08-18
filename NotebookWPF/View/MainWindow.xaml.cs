@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using NotebookWPF.Helpers;
 using NotebookWPF.Model;
 using NotebookWPF.ViewModel;

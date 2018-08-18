@@ -77,8 +77,7 @@
     <DockPanel>
         
         <!--- Notebooks -->
-        <DockPanel DockPanel.Dock="Left"
-                   Width="250">
+        <DockPanel DockPanel.Dock="Left">
             
             <!--- Button to trigger new notebook -->
             <Button x:Name="NewNotebookButton"
@@ -164,11 +163,30 @@
                       ScrollViewer.CanContentScroll="False">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <uc:NotebooksUserControl/>
+                        <uc:NotebooksUserControl DataContext="{Binding}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
             
+            <!--- If no notebooks exists -->
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                <TextBlock Text="No Notebooks."
+                           Margin="0 20 0 0">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource LargeText}" TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Notebooks.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+            
+
         </DockPanel>        
 
         <!--- Notes -->

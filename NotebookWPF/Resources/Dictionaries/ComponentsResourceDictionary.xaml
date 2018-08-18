@@ -14,9 +14,10 @@
         <Setter Property="FontSize" Value="12"/>
     </Style>
 
-    <!--- Bool to visibility converter-->
+    <!--- Value Converters -->
     <valueconverters:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
-    
+    <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+
     <!--- Visibility/Opacity Animation -->
     <Style TargetType="FrameworkElement" x:Key="VisibleAnimation">
         <Setter Property="Visibility" Value="Collapsed"/>

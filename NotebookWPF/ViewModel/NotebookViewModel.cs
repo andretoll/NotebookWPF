@@ -22,6 +22,8 @@ namespace NotebookWPF.ViewModel
 
         private Notebook newNotebook;
 
+        private bool notebooksExists;
+
         #endregion
 
         #region Properties
@@ -42,6 +44,16 @@ namespace NotebookWPF.ViewModel
             set
             {
                 newNotebook = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool NotebooksExists
+        {
+            get { return !Notebooks.Any(); }
+            set
+            {
+                notebooksExists = value;
                 NotifyPropertyChanged();
             }
         }
@@ -79,6 +91,22 @@ namespace NotebookWPF.ViewModel
             set
             {
                 cancelNotebookCommand = value;
+            }
+        }
+
+        private ICommand deleteNotebookCommand;
+        public ICommand DeleteNotebookCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (deleteNotebookCommand == null)
+                    deleteNotebookCommand = new RelayCommand(p => { DeleteNotebook(p); }, p => true);
+                return deleteNotebookCommand;
+            }
+            set
+            {
+                deleteNotebookCommand = value;
             }
         }
 
@@ -140,6 +168,21 @@ namespace NotebookWPF.ViewModel
 
             // Trigger event
             NewNotebookAdded(NewNotebook, null);
+        }
+
+        /// <summary>
+        /// Delete existing notebook
+        /// </summary>
+        /// <param name="notebookId"></param>
+        public void DeleteNotebook(object notebookId)
+        {
+            // Delete notebook from list
+            Notebook notebookToRemove = Notebooks.Where(n => n.Id == (int)notebookId).FirstOrDefault();
+            if (notebookToRemove != null)
+                Notebooks.Remove(notebookToRemove);
+
+            // Delete notebook from database
+            dbEngine.Delete(notebookToRemove);
         }
 
         #endregion
