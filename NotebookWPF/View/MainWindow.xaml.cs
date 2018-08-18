@@ -42,7 +42,11 @@ namespace NotebookWPF
             // Set data context
             notebookViewModel = new NotebookViewModel();
             this.DataContext = notebookViewModel;
+
+            // Subscribe to the NewNotebookAdded event
+            notebookViewModel.NewNotebookAdded += NotebookViewModel_NewNotebookAdded;
         }
+        
 
         #endregion
 
@@ -53,7 +57,7 @@ namespace NotebookWPF
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
         }
 
-        private void newNotebookButton_Click(object sender, RoutedEventArgs e)
+        private void NewNotebookButton_Click(object sender, RoutedEventArgs e)
         {
             notebookViewModel.NewNotebook = new Notebook()
             {
@@ -62,6 +66,11 @@ namespace NotebookWPF
 
             NewNotebookTextBox.Focus();
             NewNotebookTextBox.SelectAll();
+        }
+
+        private void NotebookViewModel_NewNotebookAdded(object sender, EventArgs e)
+        {
+            NotebookListBox.SelectedIndex = 0;
         }
 
         #endregion

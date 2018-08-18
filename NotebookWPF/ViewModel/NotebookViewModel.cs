@@ -126,21 +126,27 @@ namespace NotebookWPF.ViewModel
         {
             // Add new notebook to collection
             var newNotebookId = dbEngine.Insert(NewNotebook);
-
-            // Get all notebooks again
-            GetNotebooks();
+            NewNotebook.Id = newNotebookId;
 
             // If the new notebook returned an Id
             if (newNotebookId > 0)
             {
                 // Place new notebook at top of list
-                var notebookInList = Notebooks.Where(n => n.Id == newNotebookId).FirstOrDefault();
-                Notebooks.Move(Notebooks.IndexOf(notebookInList), 0);
+                Notebooks.Insert(0, NewNotebook);
             }
 
             // Reset new notebook
             NewNotebook = null;
+
+            // Trigger event
+            NewNotebookAdded(NewNotebook, null);
         }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler NewNotebookAdded;
 
         #endregion
     }

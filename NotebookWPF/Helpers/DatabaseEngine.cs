@@ -107,7 +107,6 @@ namespace NotebookWPF.Helpers
         /// <returns></returns>
         public List<Notebook> GetNotebooks()
         {
-            // Insert an item
             using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
             {
                 conn.CreateTable<Notebook>();
