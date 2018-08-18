@@ -77,7 +77,7 @@
     <DockPanel>
 
         <!--- Notebooks -->
-        <DockPanel DockPanel.Dock="Left">
+        <DockPanel DockPanel.Dock="Left" Width="250">
 
             <!--- Button to trigger new notebook -->
             <Button x:Name="NewNotebookButton"
@@ -193,7 +193,7 @@
                 <TextBlock Text="No Notebooks."
                            Margin="0 20 0 0">
                     <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource LargeText}">
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Notebooks.Count}" Value="0">

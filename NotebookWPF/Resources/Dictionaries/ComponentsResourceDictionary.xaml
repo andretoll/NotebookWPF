@@ -8,6 +8,12 @@
         <Setter Property="Margin" Value="0 0 0 10"/>
     </Style>
 
+    <!--- Huge TextBlock -->
+    <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="HugeText">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
     <!--- Large TextBlock -->
     <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="LargeText">
         <Setter Property="FontSize" Value="16"/>
