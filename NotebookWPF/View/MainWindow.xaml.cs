@@ -40,8 +40,10 @@ namespace NotebookWPF
             // Load app settings
             SettingsHelper.LoadSettings();
 
-            // Set data context
+            // Initiate NotebookViewModel and pass in an instance of DialogCoordinator (for metro dialogs)
             notebookViewModel = new NotebookViewModel(DialogCoordinator.Instance);
+
+            // Set DataContext to ViewModel
             this.DataContext = notebookViewModel;
         }
         
@@ -53,28 +55,6 @@ namespace NotebookWPF
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
-        }
-
-        private void NewNotebookButton_Click(object sender, RoutedEventArgs e)
-        {
-            notebookViewModel.NewNotebook = new Notebook()
-            {
-                Name = "New Notebook"
-            };
-
-            NewNotebookTextBox.Focus();
-            NewNotebookTextBox.SelectAll();
-        }
-
-        private void NewNoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            notebookViewModel.NewNote = new Note()
-            {
-                Title = "New Note"
-            };
-
-            NewNoteTextBox.Focus();
-            NewNoteTextBox.SelectAll();
         }
 
         #endregion

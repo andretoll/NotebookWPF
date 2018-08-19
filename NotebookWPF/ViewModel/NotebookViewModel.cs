@@ -25,8 +25,6 @@ namespace NotebookWPF.ViewModel
 
         private ObservableCollection<Note> notes;
 
-        private Notebook newNotebook;
-
         private Note newNote;
 
         private bool notebooksExists;
@@ -57,16 +55,6 @@ namespace NotebookWPF.ViewModel
             set
             {
                 notes = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public Notebook NewNotebook
-        {
-            get { return newNotebook; }
-            set
-            {
-                newNotebook = value;
                 NotifyPropertyChanged();
             }
         }
@@ -128,19 +116,19 @@ namespace NotebookWPF.ViewModel
 
         #region Commands
 
-        private ICommand addNotebookCommand;
-        public ICommand AddNotebookCommand
+        private ICommand newNotebookCommand;
+        public ICommand NewNotebookCommand
         {
             get
             {
                 // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
-                if (addNotebookCommand == null)
-                    addNotebookCommand = new RelayCommand(p => { AddNotebookAsync(); }, p => true);
-                return addNotebookCommand;
+                if (newNotebookCommand == null)
+                    newNotebookCommand = new RelayCommand(async p => { await AddNotebookAsync(); }, p => true);
+                return newNotebookCommand;
             }
             set
             {
-                addNotebookCommand = value;
+                newNotebookCommand = value;
             }
         }
 
@@ -157,22 +145,6 @@ namespace NotebookWPF.ViewModel
             set
             {
                 addNoteCommand = value;
-            }
-        }
-
-        private ICommand cancelNotebookCommand;
-        public ICommand CancelNotebookCommand
-        {
-            get
-            {
-                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
-                if (cancelNotebookCommand == null)
-                    cancelNotebookCommand = new RelayCommand(p => { NewNotebook = null; }, p => true);
-                return cancelNotebookCommand;
-            }
-            set
-            {
-                cancelNotebookCommand = value;
             }
         }
 
@@ -298,27 +270,33 @@ namespace NotebookWPF.ViewModel
         /// <summary>
         /// Add new notebook
         /// </summary>
-        public void AddNotebookAsync()
+        public async Task AddNotebookAsync()
         {
-            // Add new notebook to collection
-            var newNotebookId = dbEngine.Insert(NewNotebook);
-            NewNotebook.Id = newNotebookId;
-
-            // If the new notebook returned an Id
-            if (newNotebookId > 0)
-            {
-                // Place new notebook at top of list
-                Notebooks.Insert(0, NewNotebook);
-            }
-
-            // Reset new notebook
-            NewNotebook = null;
-
-            dialogCoordinator.ShowInputAsync(this, "New Notebook", "Enter a name", new MetroDialogSettings()
+            // Open dialog
+            var result = await dialogCoordinator.ShowInputAsync(this, "New Notebook", "Enter a name for your new Notebook.", new MetroDialogSettings()
             {
                 ColorScheme = MetroDialogColorScheme.Accented,
                 AffirmativeButtonText = "Save"
             });
+
+            // If input was cancelled, return
+            if (result == null)
+                return;
+
+            // If something was entered
+            if (result.Count() > 0)
+            {
+                // Create new Notebook
+                Notebook newNotebook = new Notebook()
+                {
+                    Name = result
+                };
+
+                // Insert Notebook to database
+                dbEngine.Insert(newNotebook);
+
+                Notebooks.Insert(0, newNotebook);
+            }
         }
 
         /// <summary>

@@ -11,10 +11,16 @@ namespace NotebookWPF.Model
 {
     public class Notebook : INotifyPropertyChanged
     {
-        [PrimaryKey, AutoIncrement]
-        public int Id { get; set; }
+        #region Private Members
 
         private string name;
+
+        #endregion
+
+        #region Properties
+
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
 
         public string Name
         {
@@ -28,6 +34,8 @@ namespace NotebookWPF.Model
 
         [Ignore]
         public int NoteCount { get; set; }
+
+        #endregion     
 
         public event PropertyChangedEventHandler PropertyChanged;
 

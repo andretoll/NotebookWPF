@@ -9,6 +9,8 @@ namespace NotebookWPF.Model
 {
     public class Note
     {
+        #region Properties
+
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
 
@@ -22,5 +24,7 @@ namespace NotebookWPF.Model
         public DateTime Updated { get; set; }
 
         public string FileLocation { get; set; }
+
+        #endregion
     }
 }

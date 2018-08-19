@@ -8,9 +8,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <DockPanel Width="200" 
+    <!--- ListBoxItem Wrapper-->
+    <DockPanel Width="200"
                Background="Transparent">
 
+        <!--- ListBoxItem menu -->
         <DockPanel.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Delete"
@@ -19,56 +21,73 @@
         </DockPanel.ContextMenu>
 
         <!--- Notebook Information and Actions -->
-        <DockPanel ToolTip="{Binding Name}" 
-                       DockPanel.Dock="Top">
+        <DockPanel ToolTip="{Binding Name}"
+                   DockPanel.Dock="Top">
 
             <!--- Information -->
             <StackPanel Orientation="Vertical"
-                            Margin="5"
-                            MaxWidth="120"
-                            DockPanel.Dock="Left">                
-                <TextBlock x:Name="NotebookNameTextBlock" 
-                           Text="{Binding Name, Mode=TwoWay}"
-                           TextTrimming="CharacterEllipsis"
-                           Style="{StaticResource LargeText}"
-                           Visibility="{Binding 
+                        Margin="5"
+                        MaxWidth="130"
+                        DockPanel.Dock="Left">
+                
+                <!--- Name -->
+                <StackPanel Height="30">
+                    <TextBlock x:Name="NotebookNameTextBlock"
+                               Text="{Binding Name, Mode=TwoWay}"
+                               TextTrimming="CharacterEllipsis"
+                               Style="{StaticResource LargeText}"
+                               Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
                                 AncestorType={x:Type ListBox}}, 
-                                Path=DataContext.NotebookIsEditing, Converter={StaticResource reversedBooleanToVisibilityConverter}, Mode=TwoWay}"/>
-                <TextBox x:Name="NotebookNameTextBox"
-                         Text="{Binding Name, Mode=TwoWay}"
-                         FontSize="16"
-                         Visibility="{Binding 
+                                Path=DataContext.NotebookIsEditing, 
+                                Converter={StaticResource reversedBooleanToVisibilityConverter}, 
+                                Mode=TwoWay}"/>
+                    <TextBox x:Name="NotebookNameTextBox"
+                             Text="{Binding Name, Mode=TwoWay}"
+                             Height="30"
+                             FontSize="16"
+                             Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
                                 AncestorType={x:Type ListBox}}, 
-                                Path=DataContext.NotebookIsEditing, Converter={StaticResource booleanToVisibilityConverter}, Mode=TwoWay}">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="LostFocus">
-                            <b:InvokeCommandAction Command="{Binding 
+                                Path=DataContext.NotebookIsEditing, 
+                                Converter={StaticResource booleanToVisibilityConverter}, 
+                                Mode=TwoWay}">
+                        <!--- If TextBox loses focus, save Notebook edit -->
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="LostFocus">
+                                <b:InvokeCommandAction Command="{Binding 
                                                         RelativeSource={RelativeSource 
                                                         Mode=FindAncestor, 
                                                         AncestorType={x:Type ListBox}}, 
                                                         Path=DataContext.StopNotebookEditingCommand}"
-                                                   CommandParameter="{Binding}"/>
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
-                </TextBox>
-                <TextBlock Text="{Binding NoteCount, StringFormat='({0} notes)'}"
+                                                       CommandParameter="{Binding}"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </TextBox>
+                </StackPanel>
+                
+                <!--- Note count -->
+                <StackPanel>
+                    <TextBlock Text="{Binding NoteCount, StringFormat='({0} notes)'}"
                            Style="{StaticResource SmallText}"/>
+                </StackPanel>
+                
             </StackPanel>
 
             <!--- Buttons -->
             <StackPanel HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Margin="15">
+                        VerticalAlignment="Center"
+                        Margin="15">
+                
+                <!--- Toggle delete button -->
                 <Button x:Name="DeleteNotebookButton"
-                            ToolTip="Delete"
-                            Width="30"
-                            Height="30"
-                            BorderThickness="1"
-                            Click="DeleteNotebookButton_Click">
+                        ToolTip="Delete"
+                        Width="30"                        
+                        Height="30"
+                        BorderThickness="1"
+                        Click="DeleteNotebookButton_Click">
                     <Button.Style>
                         <Style BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type Button}">
                             <Setter Property="Visibility" Value="Hidden"/>
@@ -82,53 +101,64 @@
                     <StackPanel Orientation="Horizontal">
                         <!--- Draw Icon -->
                         <Rectangle Width="15"
-                                       Height="15"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                   Height="15"
+                                   Fill="{Binding 
+                                            Path=Foreground, 
+                                            RelativeSource={RelativeSource 
+                                            FindAncestor, 
+                                            AncestorType={x:Type Button}}}">
                             <Rectangle.OpacityMask>
                                 <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
                             </Rectangle.OpacityMask>
                         </Rectangle>
                     </StackPanel>
                 </Button>
+                
             </StackPanel>
-
-
 
         </DockPanel>
 
         <!--- Delete Panel -->
         <StackPanel x:Name="ConfirmDeletePanel"
-                        DockPanel.Dock="Bottom"
-                        Style="{StaticResource VisibleAnimation}"
-                        Visibility="Collapsed"
-                        HorizontalAlignment="Center">
+                    DockPanel.Dock="Bottom"
+                    Style="{StaticResource VisibleAnimation}"
+                    Visibility="Collapsed"
+                    HorizontalAlignment="Center">
+            
+            <!--- Confirmation Message -->
             <TextBlock Text="Are you sure?"
-                           HorizontalAlignment="Center"
-                           Style="{StaticResource SmallText}"/>
-            <!--- Confirm Delete Button -->
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource SmallText}"/>
+            
+            <!--- Button Container -->
             <StackPanel Orientation="Horizontal"
-                            Margin="0 0 0 10">
+                        Margin="0 0 0 5">
+                
+                <!--- Confirm Delete Button -->
                 <Button ToolTip="Delete"
-                            Style="{StaticResource WarningButton}"
-                            Background="Red"
-                            Width="75"
-                            Margin="0 0 5 0"
-                            Command="{Binding 
-                                RelativeSource={RelativeSource 
-                                Mode=FindAncestor, 
-                                AncestorType={x:Type ListBox}}, 
-                                Path=DataContext.DeleteNotebookCommand}"
-                            CommandParameter="{Binding Id}"
-                            Grid.Column="2">
+                        Style="{StaticResource WarningButton}"
+                        Background="Red"
+                        Width="75"
+                        Margin="0 0 5 0"
+                        Command="{Binding 
+                                    RelativeSource={RelativeSource 
+                                    Mode=FindAncestor, 
+                                    AncestorType={x:Type ListBox}}, 
+                                    Path=DataContext.DeleteNotebookCommand}"
+                        CommandParameter="{Binding Id}"
+                        Grid.Column="2">
                     <TextBlock Text="Delete"/>
                 </Button>
+                
+                <!--- Cancel Button-->
                 <Button ToolTip="Cancel"
-                            Style="{StaticResource SquareButtonStyle}"                        
-                            x:Name="CancelDeleteNotebookButton"
-                            Click="CancelDeleteNotebookButton_Click"
-                            Width="75">
+                        Style="{StaticResource SquareButtonStyle}"
+                        x:Name="CancelDeleteNotebookButton"
+                        Click="CancelDeleteNotebookButton_Click"
+                        Width="75">
                     <TextBlock Text="Cancel"/>
                 </Button>
+                
             </StackPanel>
         </StackPanel>
 

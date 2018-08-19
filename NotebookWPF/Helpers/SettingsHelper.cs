@@ -31,15 +31,20 @@ namespace NotebookWPF.Helpers
         /// <param name="value"></param>
         public static void SaveSettings(string element, string value)
         {
+            // Setup directory and file if necessary
             SetupDirectory();
 
+            // Load settings file
             XDocument doc = XDocument.Load(filePath);
 
+            // Get target setting
             var result = doc.Descendants(element).FirstOrDefault();
 
             if (result != null && value != null)
             {
+                // Change setting
                 result.Attribute("color").Value = value;
+                // Save changes
                 doc.Save(filePath);
             }
         }
@@ -49,16 +54,17 @@ namespace NotebookWPF.Helpers
         /// </summary>
         public static void LoadSettings()
         {
+            // Setup directory and file if necessary
             SetupDirectory();
 
-            // Read settings
-            var docRead = XDocument.Load(filePath);
+            // Load settings file
+            XDocument doc = XDocument.Load(filePath);
 
             // Get settings from file
-            var theme = docRead.Root.Elements("theme").FirstOrDefault().Attribute("color").Value;
-            var accent = docRead.Root.Elements("accent").FirstOrDefault().Attribute("color").Value;
+            var theme = doc.Root.Elements("theme").FirstOrDefault().Attribute("color").Value;
+            var accent = doc.Root.Elements("accent").FirstOrDefault().Attribute("color").Value;
 
-            // Apply settings
+            // Apply visual settings
             SettingsHelper.SetAppTheme(theme, accent);
         }
 
@@ -67,14 +73,17 @@ namespace NotebookWPF.Helpers
         /// </summary>
         private static void SetupDirectory()
         {
+            // If directory does not exist
             if (!Directory.Exists(directory))
             {
+                // Create directory
                 Directory.CreateDirectory(directory);
             }
 
-            // Check if file already exists. If not, create it
+            // If file does not exist
             if (!File.Exists(filePath))
             {
+                // Create file
                 var xdoc = new XDocument(
                 new XElement("settings",
                     new XElement("theme",
@@ -93,10 +102,13 @@ namespace NotebookWPF.Helpers
         /// <param name="accent"></param>
         public static void SetAppTheme(string theme, string accent)
         {
+            // If either theme or accent is empty
             if ((string.IsNullOrEmpty(theme)) || (string.IsNullOrEmpty(accent)))
             {
+                // Get current theme or accent from ThemeManager
                 Tuple<AppTheme, Accent> appStyle = ThemeManager.DetectAppStyle(Application.Current);
 
+                // Apply either theme or accent
                 if (string.IsNullOrEmpty(theme))
                 {
                     theme = appStyle.Item1.Name;
@@ -107,6 +119,7 @@ namespace NotebookWPF.Helpers
 
             try
             {
+                // Try applying theme and accent
                 ThemeManager.ChangeAppStyle(
                     Application.Current,
                     ThemeManager.GetAccent(accent),
@@ -115,6 +128,7 @@ namespace NotebookWPF.Helpers
             }
             catch
             {
+                // If any errors occur, set base theme and accent
                 ThemeManager.ChangeAppStyle(
                     Application.Current,
                     ThemeManager.GetAccent("Blue"),
@@ -129,7 +143,7 @@ namespace NotebookWPF.Helpers
         /// <returns></returns>
         public static string GetCurrentTheme()
         {
-            var theme = ThemeManager.DetectAppStyle(Application.Current);
+            // Get current theme
             return ThemeManager.DetectAppStyle(Application.Current).Item1.Name;
         }
 
@@ -139,6 +153,7 @@ namespace NotebookWPF.Helpers
         /// <returns></returns>
         public static string GetCurrentAccent()
         {
+            // Get current accent
             return ThemeManager.DetectAppStyle(Application.Current).Item2.Name;
         }
 

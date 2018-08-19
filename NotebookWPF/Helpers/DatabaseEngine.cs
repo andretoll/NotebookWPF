@@ -133,6 +133,7 @@ namespace NotebookWPF.Helpers
         /// <returns></returns>
         public List<Note> GetNotes(int id)
         {
+            // If the id is greater than 0
             if (id > 0)
             {
                 using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
@@ -155,6 +156,7 @@ namespace NotebookWPF.Helpers
         /// <returns></returns>
         public string GetNotebookName(int id)
         {
+            // If the Id is greater than 0
             if (id > 0)
             {
                 using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
@@ -172,9 +174,7 @@ namespace NotebookWPF.Helpers
             }
 
             return null;
-        }
-
-        
+        }        
 
         #endregion
     }

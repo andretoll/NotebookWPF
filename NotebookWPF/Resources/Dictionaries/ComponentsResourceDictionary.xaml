@@ -3,20 +3,39 @@
                     xmlns:local="clr-namespace:NotebookWPF.Resources.Dictionaries"
                     xmlns:valueconverters="clr-namespace:NotebookWPF.ValueConverters">
 
+    <!--- Color Brushes -->
+    <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#2e343d"></SolidColorBrush>
+    <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#444c59"></SolidColorBrush>
+
+    <FontFamily x:Key="DefaultFont">Lato</FontFamily>
+    <FontFamily x:Key="FancyFont">Lucida Calligraphy</FontFamily>
+    
     <!--- Base TextBlock Style -->
     <Style TargetType="TextBlock" x:Key="BaseText">
         <Setter Property="Margin" Value="0 0 0 10"/>
     </Style>
+    
+    <!--- Base Button Style -->
+    <Style BasedOn="{StaticResource AccentedSquareButtonStyle}" TargetType="Button" x:Key="BaseButton">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Padding" Value="10"/>
+    </Style>
+    
+    <!--- Large Button -->
+    <Style BasedOn="{StaticResource BaseButton}" TargetType="Button" x:Key="LargeButton">
+        <Setter Property="Height" Value="40"/>
+    </Style>
 
     <!--- Huge TextBlock -->
     <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="HugeText">
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="24"/>
         <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{DynamicResource FancyFont}"/>
     </Style>
 
     <!--- Large TextBlock -->
     <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="LargeText">
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="15"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
 
