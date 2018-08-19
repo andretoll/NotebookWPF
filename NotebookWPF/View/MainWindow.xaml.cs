@@ -41,7 +41,7 @@ namespace NotebookWPF
             SettingsHelper.LoadSettings();
 
             // Set data context
-            notebookViewModel = new NotebookViewModel();
+            notebookViewModel = new NotebookViewModel(DialogCoordinator.Instance);
             this.DataContext = notebookViewModel;
         }
         
@@ -64,6 +64,17 @@ namespace NotebookWPF
 
             NewNotebookTextBox.Focus();
             NewNotebookTextBox.SelectAll();
+        }
+
+        private void NewNoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            notebookViewModel.NewNote = new Note()
+            {
+                Title = "New Note"
+            };
+
+            NewNoteTextBox.Focus();
+            NewNoteTextBox.SelectAll();
         }
 
         #endregion

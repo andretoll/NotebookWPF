@@ -1,4 +1,5 @@
-﻿using NotebookWPF.Commands;
+﻿using MahApps.Metro.Controls.Dialogs;
+using NotebookWPF.Commands;
 using NotebookWPF.Helpers;
 using NotebookWPF.Model;
 using SQLite;
@@ -18,13 +19,21 @@ namespace NotebookWPF.ViewModel
 
         private DatabaseEngine dbEngine;
 
+        private IDialogCoordinator dialogCoordinator;
+
         private ObservableCollection<Notebook> notebooks;
 
+        private ObservableCollection<Note> notes;
+
         private Notebook newNotebook;
+
+        private Note newNote;
 
         private bool notebooksExists;
 
         private Notebook selectedNotebook;
+
+        private Note selectedNote;
 
         private bool notebookIsEditing;
 
@@ -42,12 +51,32 @@ namespace NotebookWPF.ViewModel
             }
         }
 
+        public ObservableCollection<Note> Notes
+        {
+            get { return notes; }
+            set
+            {
+                notes = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public Notebook NewNotebook
         {
             get { return newNotebook; }
             set
             {
                 newNotebook = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public Note NewNote
+        {
+            get { return newNote; }
+            set
+            {
+                newNote = value;
                 NotifyPropertyChanged();
             }
         }
@@ -68,6 +97,19 @@ namespace NotebookWPF.ViewModel
             set
             {
                 selectedNotebook = value;
+                NotifyPropertyChanged();
+
+                // Get notes
+                GetNotes(selectedNotebook.Id);
+            }
+        }
+
+        public Note SelectedNote
+        {
+            get { return selectedNote; }
+            set
+            {
+                selectedNote = value;
                 NotifyPropertyChanged();
             }
         }
@@ -93,12 +135,28 @@ namespace NotebookWPF.ViewModel
             {
                 // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
                 if (addNotebookCommand == null)
-                    addNotebookCommand = new RelayCommand(p => { AddNotebook(); }, p => true);
+                    addNotebookCommand = new RelayCommand(p => { AddNotebookAsync(); }, p => true);
                 return addNotebookCommand;
             }
             set
             {
                 addNotebookCommand = value;
+            }
+        }
+
+        private ICommand addNoteCommand;
+        public ICommand AddNoteCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (addNoteCommand == null)
+                    addNoteCommand = new RelayCommand(p => { AddNote(); }, p => true);
+                return addNoteCommand;
+            }
+            set
+            {
+                addNoteCommand = value;
             }
         }
 
@@ -115,6 +173,22 @@ namespace NotebookWPF.ViewModel
             set
             {
                 cancelNotebookCommand = value;
+            }
+        }
+
+        private ICommand cancelNoteCommand;
+        public ICommand CancelNoteCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (cancelNoteCommand == null)
+                    cancelNoteCommand = new RelayCommand(p => { NewNote = null; }, p => true);
+                return cancelNoteCommand;
+            }
+            set
+            {
+                cancelNoteCommand = value;
             }
         }
 
@@ -170,11 +244,12 @@ namespace NotebookWPF.ViewModel
 
         #region Constructor
 
-        public NotebookViewModel()
+        public NotebookViewModel(IDialogCoordinator instance)
         {
             // Initiate properties
             dbEngine = new DatabaseEngine();
             Notebooks = new ObservableCollection<Notebook>();
+            dialogCoordinator = instance;
 
             // Get notebooks
             GetNotebooks();
@@ -190,23 +265,40 @@ namespace NotebookWPF.ViewModel
         public void GetNotebooks()
         {
             // Get all notebooks
-            var dbHelper = new DatabaseEngine();
-            var notebooks = dbHelper.GetNotebooks();
+            var notebooksFromDb = dbEngine.GetNotebooks();
 
             // Clear notebooks list
             Notebooks.Clear();
 
             // Add to notebook collection
-            foreach (var item in notebooks)
+            foreach (var item in notebooksFromDb)
             {
                 Notebooks.Add(item);
             }
         }
 
         /// <summary>
+        /// Get all notes for a specific notebook
+        /// </summary>
+        public void GetNotes(int id)
+        {
+            // Get all notes
+            var notesFromDb = dbEngine.GetNotes(id);
+
+            // Clear notes list
+            Notes = new ObservableCollection<Note>();
+
+            // Add to notes collection
+            foreach (var item in notesFromDb)
+            {
+                Notes.Add(item);
+            }
+        }
+
+        /// <summary>
         /// Add new notebook
         /// </summary>
-        public void AddNotebook()
+        public void AddNotebookAsync()
         {
             // Add new notebook to collection
             var newNotebookId = dbEngine.Insert(NewNotebook);
@@ -221,6 +313,20 @@ namespace NotebookWPF.ViewModel
 
             // Reset new notebook
             NewNotebook = null;
+
+            dialogCoordinator.ShowInputAsync(this, "New Notebook", "Enter a name", new MetroDialogSettings()
+            {
+                ColorScheme = MetroDialogColorScheme.Accented,
+                AffirmativeButtonText = "Save"
+            });
+        }
+
+        /// <summary>
+        /// Add new note
+        /// </summary>
+        public void AddNote()
+        {
+
         }
 
         /// <summary>

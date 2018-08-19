@@ -127,6 +127,29 @@ namespace NotebookWPF.Helpers
         }
 
         /// <summary>
+        /// Returns all notes for a notebook
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<Note> GetNotes(int id)
+        {
+            if (id > 0)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
+                {
+                    conn.CreateTable<Note>();
+
+                    // Get notebooks
+                    var notes = conn.Table<Note>().Where(n => n.NotebookId == id).ToList();
+
+                    return notes;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Returns notebook name from the database
         /// </summary>
         /// <returns></returns>
@@ -150,6 +173,8 @@ namespace NotebookWPF.Helpers
 
             return null;
         }
+
+        
 
         #endregion
     }

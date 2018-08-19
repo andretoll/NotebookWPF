@@ -92,6 +92,9 @@
     <Compile Include="View\UserControls\NotebooksUserControl.xaml.cs">
       <DependentUpon>NotebooksUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UserControls\NotesUserControl.xaml.cs">
+      <DependentUpon>NotesUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\SettingsUserControl.xaml.cs">
       <DependentUpon>SettingsUserControl.xaml</DependentUpon>
     </Compile>
@@ -122,6 +125,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\UserControls\NotebooksUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\NotesUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

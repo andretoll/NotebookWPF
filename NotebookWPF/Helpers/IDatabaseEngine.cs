@@ -21,6 +21,8 @@ namespace NotebookWPF.Helpers
 
         List<Notebook> GetNotebooks();
 
+        List<Note> GetNotes(int id);
+
         string GetNotebookName(int id);
     }
 }

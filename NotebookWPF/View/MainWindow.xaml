@@ -4,6 +4,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    Dialog:DialogParticipation.Register="{Binding}"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:NotebookWPF"
     xmlns:uc="clr-namespace:NotebookWPF.View.UserControls"
@@ -80,17 +82,18 @@
         <DockPanel DockPanel.Dock="Left" Width="250">
 
             <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Center"
+                        Height="50"
+                        Margin="15"                        
                         DockPanel.Dock="Top">
                 <!--- Button to trigger new notebook -->
                 <Button x:Name="NewNotebookButton"
-                    Click="NewNotebookButton_Click"
-                    ToolTip="New notebook"
-                    FontSize="12"
-                    Width="140"
-                    Style="{StaticResource AccentedSquareButtonStyle}"
-                    Margin="10"
-                    Padding="10">
+                        Click="NewNotebookButton_Click"
+                        ToolTip="New notebook"
+                        FontSize="12"
+                        Height="40"
+                        Padding="10"
+                        Margin="0 0 20 0"
+                        Style="{StaticResource AccentedSquareButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <!--- Draw Icon -->
                         <Rectangle Width="20"
@@ -129,7 +132,7 @@
                         Style="{StaticResource VisibleAnimation}"
                         x:Name="NewNotebookPanel"
                         Visibility="{Binding NewNotebook, Converter={StaticResource nullToVisibilityConverter}}"
-                        Margin="10">
+                        Margin="15 0">
                 <TextBlock Text="Create new Notebook"
                            Style="{StaticResource LargeText}"/>
                 <Grid>
@@ -229,8 +232,163 @@
         <!--- Separator -->
         <StackPanel Margin="0" Orientation="Horizontal">
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
-                       Opacity="0.5"/>
+                       Opacity="0.3"/>
         </StackPanel>
+
+        <!--- Notes -->
+        <DockPanel DockPanel.Dock="Left"
+                   Width="250"
+                   Visibility="{Binding SelectedNotebook, Converter={StaticResource nullToVisibilityConverter}}">
+
+            <StackPanel Orientation="Horizontal"
+                        Height="50"
+                        Margin="15"                        
+                        DockPanel.Dock="Top">
+                <!--- Button to trigger new note -->
+                <Button x:Name="NewNoteButton"
+                        Click="NewNoteButton_Click"
+                        ToolTip="New note"
+                        FontSize="12"
+                        Height="40"
+                        Padding="10"
+                        Margin="0 0 20 0"
+                        Style="{StaticResource AccentedSquareButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <!--- Draw Icon -->
+                        <Rectangle Width="20"
+                               Height="20"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" 
+                                         Visual="{StaticResource appbar_paper}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <!--- Button text -->
+                        <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="NEW NOTE"/>
+                    </StackPanel>
+                </Button>
+                <!--- Button to toggle edit mode -->
+                <!--<ToggleButton ToolTip="Edit Notebooks"
+                              Width="50"
+                              Height="50"
+                              IsChecked="{Binding NotebookIsEditing}"
+                              Style="{DynamicResource MetroCircleToggleButtonStyle}">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource BlackBrush}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                         Visual="{DynamicResource appbar_edit}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </ToggleButton>-->
+            </StackPanel>
+
+            <!--- Input for new notebook -->
+            <StackPanel DockPanel.Dock="Top"
+                        Style="{StaticResource VisibleAnimation}"
+                        x:Name="NewNotePanel"
+                        Visibility="{Binding NewNote, Converter={StaticResource nullToVisibilityConverter}}"
+                        Margin="15 0">
+                <TextBlock Text="Create new Note"
+                           Style="{StaticResource LargeText}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <!--- Input -->
+                    <TextBox Grid.Column="0"
+                         Text="{Binding NewNote.Title, Mode=TwoWay}"
+                         x:Name="NewNoteTextBox"
+                         FontSize="14"
+                         Margin="0 0 5 0"/>
+                    <!--- Save -->
+                    <Button ToolTip="Save"
+                        IsEnabled="{Binding ElementName=NewNotebookTextBox, Path=Text.Length}"
+                        Style="{StaticResource AccentedSquareButtonStyle}"
+                        Command="{Binding AddNoteCommand}"
+                        Grid.Column="1"
+                        Margin="0 0 5 0">
+                        <TextBlock Text="Save"/>
+                    </Button>
+                    <!--- Cancel -->
+                    <Button ToolTip="Cancel"
+                        Width="30"
+                        Height="30"
+                        Style="{StaticResource AccentedSquareButtonStyle}"
+                        Command="{Binding CancelNoteCommand}"
+                        Grid.Column="2">
+                        <StackPanel Orientation="Horizontal">
+                            <!--- Draw Icon -->
+                            <Rectangle Width="15"
+                                   Height="15"
+                                   Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_cancel}" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+                <!--- Separator -->
+                <StackPanel Margin="0 10 0 0" Orientation="Vertical">
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                       Opacity="0.5"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!--- List of notes -->
+            <ListBox ItemsSource="{Binding Notes, Mode=TwoWay}"
+                     SelectedItem="{Binding SelectedNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="10"
+                     Background="{DynamicResource WindowBackgroundBrush}"
+                     x:Name="NoteListBox"
+                     BorderThickness="1"
+                     VerticalContentAlignment="Top"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.CanContentScroll="False">
+                <ListBox.Style>
+                    <Style TargetType="ListBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Notes.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Style>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <uc:NotesUserControl DataContext="{Binding}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!--- If no notes exists -->
+            <StackPanel HorizontalAlignment="Center" 
+                        VerticalAlignment="Top">
+                <TextBlock Text="No Notes."
+                           Margin="0 20 0 0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Notes.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+
+        </DockPanel>
+        
+        
 
         <!--- Text Editor -->
         <StackPanel>
