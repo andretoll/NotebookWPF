@@ -24,13 +24,17 @@ namespace NotebookWPF.ViewModel
 
         private bool notebooksExists;
 
+        private Notebook selectedNotebook;
+
+        private bool notebookIsEditing;
+
         #endregion
 
         #region Properties
 
         public ObservableCollection<Notebook> Notebooks
         {
-            get { return notebooks; }
+            get { NotebookIsEditing = false; return notebooks; }
             set
             {
                 notebooks = value;
@@ -54,6 +58,26 @@ namespace NotebookWPF.ViewModel
             set
             {
                 notebooksExists = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public Notebook SelectedNotebook
+        {
+            get { return selectedNotebook; }
+            set
+            {
+                selectedNotebook = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool NotebookIsEditing
+        {
+            get { return notebookIsEditing; }
+            set
+            {
+                notebookIsEditing = value;
                 NotifyPropertyChanged();
             }
         }
@@ -107,6 +131,38 @@ namespace NotebookWPF.ViewModel
             set
             {
                 deleteNotebookCommand = value;
+            }
+        }
+
+        private ICommand beginNotebookEditingCommand;
+        public ICommand BeginNotebookEditingCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (beginNotebookEditingCommand == null)
+                    beginNotebookEditingCommand = new RelayCommand(p => { NotebookIsEditing = true; }, p => true);
+                return beginNotebookEditingCommand;
+            }
+            set
+            {
+                beginNotebookEditingCommand = value;
+            }
+        }
+
+        private ICommand stopNotebookEditingCommand;
+        public ICommand StopNotebookEditingCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (stopNotebookEditingCommand == null)
+                    stopNotebookEditingCommand = new RelayCommand(p => { RenameNotebook(p); }, p => true);
+                return stopNotebookEditingCommand;
+            }
+            set
+            {
+                stopNotebookEditingCommand = value;
             }
         }
 
@@ -165,9 +221,6 @@ namespace NotebookWPF.ViewModel
 
             // Reset new notebook
             NewNotebook = null;
-
-            // Trigger event
-            NewNotebookAdded(NewNotebook, null);
         }
 
         /// <summary>
@@ -185,11 +238,23 @@ namespace NotebookWPF.ViewModel
             dbEngine.Delete(notebookToRemove);
         }
 
-        #endregion
-
-        #region Events
-
-        public event EventHandler NewNotebookAdded;
+        /// <summary>
+        /// Rename an existing notebook
+        /// </summary>
+        /// <param name="newName"></param>
+        public void RenameNotebook(object notebook)
+        {
+            if ((notebook as Notebook).Name.Count() > 0)
+            {
+                // Update database
+                dbEngine.Update((notebook as Notebook));
+            }
+            else
+            {
+                string oldName = dbEngine.GetNotebookName((notebook as Notebook).Id);
+                Notebooks.Where(n => n.Id == (notebook as Notebook).Id).FirstOrDefault().Name = oldName;
+            }
+        }
 
         #endregion
     }

@@ -86,6 +86,7 @@
     <Compile Include="Model\Note.cs" />
     <Compile Include="Model\Notebook.cs" />
     <Compile Include="ValueConverters\NullToVisibilityConverter.cs" />
+    <Compile Include="ValueConverters\ReversedBooleanToVisibilityConverter.cs" />
     <Compile Include="ViewModel\NotebookViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="View\UserControls\NotebooksUserControl.xaml.cs">

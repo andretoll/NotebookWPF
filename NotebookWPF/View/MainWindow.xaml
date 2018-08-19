@@ -79,33 +79,50 @@
         <!--- Notebooks -->
         <DockPanel DockPanel.Dock="Left" Width="250">
 
-            <!--- Button to trigger new notebook -->
-            <Button x:Name="NewNotebookButton"
-                    HorizontalAlignment="Left"
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        DockPanel.Dock="Top">
+                <!--- Button to trigger new notebook -->
+                <Button x:Name="NewNotebookButton"
                     Click="NewNotebookButton_Click"
                     ToolTip="New notebook"
-                    DockPanel.Dock="Top"
                     FontSize="12"
                     Width="140"
                     Style="{StaticResource AccentedSquareButtonStyle}"
                     Margin="10"
                     Padding="10">
-                <StackPanel Orientation="Horizontal">
-                    <!--- Draw Icon -->
-                    <Rectangle Width="20"
+                    <StackPanel Orientation="Horizontal">
+                        <!--- Draw Icon -->
+                        <Rectangle Width="20"
                                Height="20"
                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill" 
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" 
                                          Visual="{StaticResource appbar_book}"/>
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                    <!--- Button text -->
-                    <TextBlock Margin="4 0 0 0"
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <!--- Button text -->
+                        <TextBlock Margin="4 0 0 0"
                                VerticalAlignment="Center"
                                Text="NEW NOTEBOOK"/>
-                </StackPanel>
-            </Button>
+                    </StackPanel>
+                </Button>
+                <ToggleButton ToolTip="Edit Notebooks"
+                              Width="50"
+                              Height="50"
+                              IsChecked="{Binding NotebookIsEditing}"
+                              Style="{DynamicResource MetroCircleToggleButtonStyle}">
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{DynamicResource BlackBrush}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                         Visual="{DynamicResource appbar_edit}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </ToggleButton>
+                <!--- Button to toggle edit mode -->
+            </StackPanel>
 
             <!--- Input for new notebook -->
             <StackPanel DockPanel.Dock="Top"
@@ -163,7 +180,8 @@
             </StackPanel>
 
             <!--- List of notebooks -->
-            <ListBox ItemsSource="{Binding Notebooks}"
+            <ListBox ItemsSource="{Binding Notebooks, Mode=TwoWay}"
+                     SelectedItem="{Binding SelectedNotebook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Margin="10"
                      Background="{DynamicResource WindowBackgroundBrush}"
                      x:Name="NotebookListBox"
@@ -189,20 +207,20 @@
 
             <!--- If no notebooks exists -->
             <StackPanel HorizontalAlignment="Center" 
-                        VerticalAlignment="Top">                
+                        VerticalAlignment="Top">
                 <TextBlock Text="No Notebooks."
                            Margin="0 20 0 0">
                     <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Notebooks.Count}" Value="0">
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Notebooks.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Visible"/>
                                     <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}"/>
                                 </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
                 </TextBlock>
             </StackPanel>
 

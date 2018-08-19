@@ -20,5 +20,7 @@ namespace NotebookWPF.Helpers
         bool Delete<T>(T item);
 
         List<Notebook> GetNotebooks();
+
+        string GetNotebookName(int id);
     }
 }

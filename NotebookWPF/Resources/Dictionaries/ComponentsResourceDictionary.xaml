@@ -34,6 +34,7 @@
     <!--- Value Converters -->
     <valueconverters:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
     <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+    <valueconverters:ReversedBooleanToVisibilityConverter x:Key="reversedBooleanToVisibilityConverter"/>
 
     <!--- Visibility/Opacity Animation -->
     <Style TargetType="FrameworkElement" x:Key="VisibleAnimation">

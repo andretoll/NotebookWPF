@@ -126,6 +126,31 @@ namespace NotebookWPF.Helpers
             }
         }
 
+        /// <summary>
+        /// Returns notebook name from the database
+        /// </summary>
+        /// <returns></returns>
+        public string GetNotebookName(int id)
+        {
+            if (id > 0)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
+                {
+                    conn.CreateTable<Notebook>();
+
+                    // Get notebooks
+                    var notebook = conn.Table<Notebook>().Where(n => n.Id == id).FirstOrDefault();
+
+                    if (notebook != null)
+                    {
+                        return notebook.Name;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         #endregion
     }
 }
