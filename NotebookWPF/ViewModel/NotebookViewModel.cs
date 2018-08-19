@@ -25,15 +25,13 @@ namespace NotebookWPF.ViewModel
 
         private ObservableCollection<Note> notes;
 
-        private Note newNote;
-
-        private bool notebooksExists;
-
         private Notebook selectedNotebook;
 
         private Note selectedNote;
 
         private bool notebookIsEditing;
+
+        private bool noteIsEditing;
 
         #endregion
 
@@ -59,26 +57,6 @@ namespace NotebookWPF.ViewModel
             }
         }
 
-        public Note NewNote
-        {
-            get { return newNote; }
-            set
-            {
-                newNote = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        public bool NotebooksExists
-        {
-            get { return !Notebooks.Any(); }
-            set
-            {
-                notebooksExists = value;
-                NotifyPropertyChanged();
-            }
-        }
-
         public Notebook SelectedNotebook
         {
             get { return selectedNotebook; }
@@ -88,7 +66,8 @@ namespace NotebookWPF.ViewModel
                 NotifyPropertyChanged();
 
                 // Get notes
-                GetNotes(selectedNotebook.Id);
+                if (selectedNotebook != null)
+                    GetNotes(selectedNotebook.Id);
             }
         }
 
@@ -108,6 +87,16 @@ namespace NotebookWPF.ViewModel
             set
             {
                 notebookIsEditing = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool NoteIsEditing
+        {
+            get { return noteIsEditing; }
+            set
+            {
+                noteIsEditing = value;
                 NotifyPropertyChanged();
             }
         }
@@ -132,35 +121,19 @@ namespace NotebookWPF.ViewModel
             }
         }
 
-        private ICommand addNoteCommand;
-        public ICommand AddNoteCommand
+        private ICommand newNoteCommand;
+        public ICommand NewNoteCommand
         {
             get
             {
                 // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
-                if (addNoteCommand == null)
-                    addNoteCommand = new RelayCommand(p => { AddNote(); }, p => true);
-                return addNoteCommand;
+                if (newNoteCommand == null)
+                    newNoteCommand = new RelayCommand(async p => { await AddNoteAsync(); }, p => true);
+                return newNoteCommand;
             }
             set
             {
-                addNoteCommand = value;
-            }
-        }
-
-        private ICommand cancelNoteCommand;
-        public ICommand CancelNoteCommand
-        {
-            get
-            {
-                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
-                if (cancelNoteCommand == null)
-                    cancelNoteCommand = new RelayCommand(p => { NewNote = null; }, p => true);
-                return cancelNoteCommand;
-            }
-            set
-            {
-                cancelNoteCommand = value;
+                newNoteCommand = value;
             }
         }
 
@@ -180,19 +153,19 @@ namespace NotebookWPF.ViewModel
             }
         }
 
-        private ICommand beginNotebookEditingCommand;
-        public ICommand BeginNotebookEditingCommand
+        private ICommand deleteNoteCommand;
+        public ICommand DeleteNoteCommand
         {
             get
             {
                 // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
-                if (beginNotebookEditingCommand == null)
-                    beginNotebookEditingCommand = new RelayCommand(p => { NotebookIsEditing = true; }, p => true);
-                return beginNotebookEditingCommand;
+                if (deleteNoteCommand == null)
+                    deleteNoteCommand = new RelayCommand(p => { DeleteNote(p); }, p => true);
+                return deleteNoteCommand;
             }
             set
             {
-                beginNotebookEditingCommand = value;
+                deleteNoteCommand = value;
             }
         }
 
@@ -209,6 +182,22 @@ namespace NotebookWPF.ViewModel
             set
             {
                 stopNotebookEditingCommand = value;
+            }
+        }
+
+        private ICommand stopNoteEditingCommand;
+        public ICommand StopNoteEditingCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (stopNoteEditingCommand == null)
+                    stopNoteEditingCommand = new RelayCommand(p => { RenameNote(p); }, p => true);
+                return stopNoteEditingCommand;
+            }
+            set
+            {
+                stopNoteEditingCommand = value;
             }
         }
 
@@ -276,7 +265,8 @@ namespace NotebookWPF.ViewModel
             var result = await dialogCoordinator.ShowInputAsync(this, "New Notebook", "Enter a name for your new Notebook.", new MetroDialogSettings()
             {
                 ColorScheme = MetroDialogColorScheme.Accented,
-                AffirmativeButtonText = "Save"
+                AffirmativeButtonText = "Save",
+                AnimateHide = false
             });
 
             // If input was cancelled, return
@@ -302,9 +292,45 @@ namespace NotebookWPF.ViewModel
         /// <summary>
         /// Add new note
         /// </summary>
-        public void AddNote()
+        public async Task AddNoteAsync()
         {
+            // If no notebook is selected, return
+            if (SelectedNotebook == null)
+                return;
 
+            // Open dialog
+            var result = await dialogCoordinator.ShowInputAsync(this, "New Note", "Enter a name for your new Note.", new MetroDialogSettings()
+            {
+                ColorScheme = MetroDialogColorScheme.Accented,
+                AffirmativeButtonText = "Save",
+                AnimateHide = false
+            });
+
+            // If input was cancelled, return
+            if (result == null)
+                return;
+
+            // If something was entered
+            if (result.Count() > 0)
+            {
+                // Create new Note
+                Note newNote = new Note()
+                {
+                    Title = result,
+                    NotebookId = SelectedNotebook.Id,
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now                    
+                };
+
+                // TODO: Create file and save file location
+
+                // Insert Note to database
+                dbEngine.Insert(newNote);
+
+                // Insert note into list
+                Notes.Insert(0, newNote);
+                SelectedNotebook.NoteCount++;
+            }
         }
 
         /// <summary>
@@ -313,17 +339,48 @@ namespace NotebookWPF.ViewModel
         /// <param name="notebookId"></param>
         public void DeleteNotebook(object notebookId)
         {
+            int id;
+            if (!int.TryParse(notebookId.ToString(), out id))
+                return;
+
             // Delete notebook from list
-            Notebook notebookToRemove = Notebooks.Where(n => n.Id == (int)notebookId).FirstOrDefault();
+            Notebook notebookToRemove = Notebooks.Where(n => n.Id == id).FirstOrDefault();
             if (notebookToRemove != null)
                 Notebooks.Remove(notebookToRemove);
+
+            // Delete notes, if any
+            dbEngine.DeleteNotes(id);
 
             // Delete notebook from database
             dbEngine.Delete(notebookToRemove);
         }
 
         /// <summary>
-        /// Rename an existing notebook
+        /// Delete existing note
+        /// </summary>
+        /// <param name="noteId"></param>
+        public void DeleteNote(object noteId)
+        {
+            // If no notebook is selected, return
+            if (SelectedNotebook == null)
+                return;
+
+            // Delete note from list
+            Note noteToRemove = Notes.Where(n => n.Id == (int)noteId).FirstOrDefault();
+            if (noteToRemove != null)
+            {
+                Notes.Remove(noteToRemove);
+                SelectedNotebook.NoteCount--;
+            }
+
+            // Delete notebook from database
+            dbEngine.Delete(noteToRemove);
+
+            // TODO: Delete file from computer
+        }
+
+        /// <summary>
+        /// Rename existing notebook
         /// </summary>
         /// <param name="newName"></param>
         public void RenameNotebook(object notebook)
@@ -337,6 +394,24 @@ namespace NotebookWPF.ViewModel
             {
                 string oldName = dbEngine.GetNotebookName((notebook as Notebook).Id);
                 Notebooks.Where(n => n.Id == (notebook as Notebook).Id).FirstOrDefault().Name = oldName;
+            }
+        }
+
+        /// <summary>
+        /// Rename existing note
+        /// </summary>
+        /// <param name="note"></param>
+        public void RenameNote(object note)
+        {
+            if ((note as Note).Title.Count() > 0)
+            {
+                // Update database
+                dbEngine.Update((note as Note));
+            }
+            else
+            {
+                string oldTitle = dbEngine.GetNoteName((note as Note).Id);
+                Notes.Where(n => n.Id == (note as Note).Id).FirstOrDefault().Title = oldTitle;
             }
         }
 

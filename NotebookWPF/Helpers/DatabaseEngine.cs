@@ -32,7 +32,7 @@ namespace NotebookWPF.Helpers
         /// <returns></returns>
         public bool Delete<T>(T item)
         {
-            // Insert an item
+            // Delete an item
             using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
             {
                 conn.CreateTable<T>();
@@ -86,7 +86,7 @@ namespace NotebookWPF.Helpers
         /// <returns></returns>
         public bool Update<T>(T item)
         {
-            // Insert an item
+            // Update an item
             using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
             {
                 conn.CreateTable<T>();
@@ -141,7 +141,7 @@ namespace NotebookWPF.Helpers
                     conn.CreateTable<Note>();
 
                     // Get notebooks
-                    var notes = conn.Table<Note>().Where(n => n.NotebookId == id).ToList();
+                    var notes = conn.Table<Note>().Where(n => n.NotebookId == id).OrderByDescending(n => n.Updated).ToList();
 
                     return notes;
                 }
@@ -174,7 +174,67 @@ namespace NotebookWPF.Helpers
             }
 
             return null;
-        }        
+        }
+
+        /// <summary>
+        /// Delete notes of notebook
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteNotes(int id)
+        {
+            // Insert an item
+            using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
+            {
+                conn.CreateTable<Note>();
+
+                // Get notes to delete
+                var notesToDelete = conn.Table<Note>().Where(n => n.NotebookId == id).ToList();
+
+                int totalNumberOfRows = 0;
+
+                // Delete the notes
+                foreach (var note in notesToDelete)
+                {
+                    int numberOfRows = conn.Delete(note);
+                    totalNumberOfRows += numberOfRows;
+                }                
+
+                // If any rows were affected, return true
+                if (totalNumberOfRows > 0)
+                    return true;
+            }
+
+            // Else, return false
+            return false;
+        }
+
+        /// <summary>
+        /// Returns note name from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetNoteName(int id)
+        {
+            // If the Id is greater than 0
+            if (id > 0)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
+                {
+                    conn.CreateTable<Note>();
+
+                    // Get notebooks
+                    var note = conn.Table<Note>().Where(n => n.Id == id).FirstOrDefault();
+
+                    if (note != null)
+                    {
+                        return note.Title;
+                    }
+                }
+            }
+
+            return null;
+        }
 
         #endregion
     }

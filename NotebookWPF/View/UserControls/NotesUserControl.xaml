@@ -3,10 +3,170 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:b="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:NotebookWPF.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+
+    <!--- ListBoxItem Wrapper-->
+    <DockPanel Width="200"
+               Background="Transparent">
+
+        <!--- ListBoxItem menu -->
+        <DockPanel.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Delete"
+                          Click="DeleteNoteButton_Click"/>
+            </ContextMenu>
+        </DockPanel.ContextMenu>
+
+        <!--- Notebook Information and Actions -->
+        <DockPanel ToolTip="{Binding Title}"
+                   Margin="5"
+                   DockPanel.Dock="Top">
+
+            <!--- Information -->
+            <StackPanel Orientation="Vertical"
+                        Margin="5 0 0 0"
+                        MaxWidth="120"
+                        DockPanel.Dock="Left">
+
+                <!--- Title -->
+                <StackPanel Height="30">
+                    <TextBlock Text="{Binding Title, Mode=TwoWay}"
+                               TextTrimming="CharacterEllipsis"
+                               Style="{StaticResource LargeText}"
+                               Margin="5 5 0 0"
+                               Visibility="{Binding 
+                                RelativeSource={RelativeSource 
+                                Mode=FindAncestor, 
+                                AncestorType={x:Type ListBox}}, 
+                                Path=DataContext.NoteIsEditing, 
+                                Converter={StaticResource reversedBooleanToVisibilityConverter}, 
+                                Mode=TwoWay}"/>
+                    <TextBox Text="{Binding Title, Mode=TwoWay}"
+                             Height="30"
+                             FontSize="15"
+                             Visibility="{Binding 
+                                RelativeSource={RelativeSource 
+                                Mode=FindAncestor, 
+                                AncestorType={x:Type ListBox}}, 
+                                Path=DataContext.NoteIsEditing, 
+                                Converter={StaticResource booleanToVisibilityConverter}, 
+                                Mode=TwoWay}">
+                        <!--- If TextBox loses focus, save Notebook edit -->
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="LostFocus">
+                                <b:InvokeCommandAction Command="{Binding 
+                                                        RelativeSource={RelativeSource 
+                                                        Mode=FindAncestor, 
+                                                        AncestorType={x:Type ListBox}}, 
+                                                        Path=DataContext.StopNoteEditingCommand}"
+                                                        CommandParameter="{Binding}"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </TextBox>                   
+                </StackPanel>
+
+                <!--- Other information -->
+                <StackPanel>
+
+                    <TextBlock Text="{Binding Created, StringFormat={}Created: {0:yyyy/MM/dd}}"
+                               Style="{StaticResource TinyText}"
+                               Margin="5 5 0 0"/>
+                    <TextBlock Text="{Binding Updated, StringFormat={}Updated: {0:yyyy/MM/dd}}"
+                               Style="{StaticResource TinyText}"
+                               Margin="5 0 0 5"/>
+                </StackPanel>
+
+            </StackPanel>
+
+            <!--- Buttons -->
+            <StackPanel HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="15">
+
+                <!--- Toggle delete button -->
+                <Button x:Name="DeleteNoteButton"
+                        ToolTip="Delete"
+                        Width="30"                        
+                        Height="30"
+                        BorderThickness="1"
+                        Click="DeleteNoteButton_Click">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type Button}">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsMouseOver}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <StackPanel Orientation="Horizontal">
+                        <!--- Draw Icon -->
+                        <Rectangle Width="15"
+                                   Height="15"
+                                   Fill="{Binding 
+                                            Path=Foreground, 
+                                            RelativeSource={RelativeSource 
+                                            FindAncestor, 
+                                            AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+
+        </DockPanel>
+
+        <!--- Delete Panel -->
+        <StackPanel x:Name="ConfirmDeletePanel"
+                    DockPanel.Dock="Bottom"
+                    Style="{StaticResource VisibleAnimation}"
+                    Visibility="Collapsed"
+                    HorizontalAlignment="Center">
+
+            <!--- Confirmation Message -->
+            <TextBlock Text="Are you sure?"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource SmallText}"/>
+
+            <!--- Button Container -->
+            <StackPanel Orientation="Horizontal"
+                        Margin="0 0 0 5">
+
+                <!--- Confirm Delete Button -->
+                <Button ToolTip="Delete"
+                        Style="{StaticResource WarningButton}"
+                        Background="Red"
+                        Width="75"
+                        Margin="0 0 5 0"
+                        Command="{Binding 
+                                    RelativeSource={RelativeSource 
+                                    Mode=FindAncestor, 
+                                    AncestorType={x:Type ListBox}}, 
+                                    Path=DataContext.DeleteNoteCommand}"
+                        CommandParameter="{Binding Id}"
+                        Grid.Column="2">
+                    <TextBlock Text="Delete"/>
+                </Button>
+
+                <!--- Cancel Button-->
+                <Button ToolTip="Cancel"
+                        Style="{StaticResource SquareButtonStyle}"
+                        x:Name="CancelDeleteNoteButton"
+                        Click="CancelDeleteNoteButton_Click"
+                        Width="75">
+                    <TextBlock Text="Cancel"/>
+                </Button>
+
+            </StackPanel>
+        </StackPanel>
+
+    </DockPanel>
+
 </UserControl>

@@ -30,7 +30,7 @@
     <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="HugeText">
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontFamily" Value="{DynamicResource FancyFont}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}"/>
     </Style>
 
     <!--- Large TextBlock -->
@@ -42,6 +42,12 @@
     <!--- Small TextBlock -->
     <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="SmallText">
         <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <!--- Tiny TextBlock -->
+    <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="TinyText">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Opacity" Value="0.6"/>
     </Style>
 
     <!--- Warning Button -->

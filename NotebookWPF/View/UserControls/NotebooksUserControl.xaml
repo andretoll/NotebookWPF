@@ -22,12 +22,13 @@
 
         <!--- Notebook Information and Actions -->
         <DockPanel ToolTip="{Binding Name}"
+                   Margin="5"
                    DockPanel.Dock="Top">
 
             <!--- Information -->
             <StackPanel Orientation="Vertical"
-                        Margin="5"
-                        MaxWidth="130"
+                        Margin="5 0 0 0"
+                        MaxWidth="120"
                         DockPanel.Dock="Left">
                 
                 <!--- Name -->
@@ -36,6 +37,7 @@
                                Text="{Binding Name, Mode=TwoWay}"
                                TextTrimming="CharacterEllipsis"
                                Style="{StaticResource LargeText}"
+                               Margin="5 5 0 0"
                                Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
@@ -46,7 +48,7 @@
                     <TextBox x:Name="NotebookNameTextBox"
                              Text="{Binding Name, Mode=TwoWay}"
                              Height="30"
-                             FontSize="16"
+                             FontSize="15"
                              Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
@@ -71,7 +73,8 @@
                 <!--- Note count -->
                 <StackPanel>
                     <TextBlock Text="{Binding NoteCount, StringFormat='({0} notes)'}"
-                           Style="{StaticResource SmallText}"/>
+                               Style="{StaticResource SmallText}"
+                               Margin="5"/>
                 </StackPanel>
                 
             </StackPanel>

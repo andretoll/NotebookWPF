@@ -14,6 +14,7 @@ namespace NotebookWPF.Model
         #region Private Members
 
         private string name;
+        private int noteCount;
 
         #endregion
 
@@ -33,7 +34,15 @@ namespace NotebookWPF.Model
         }
 
         [Ignore]
-        public int NoteCount { get; set; }
+        public int NoteCount
+        {
+            get { return noteCount; }
+            set
+            {
+                noteCount = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         #endregion     
 
