@@ -74,7 +74,7 @@
                     <TextBlock Text="{Binding Created, StringFormat={}Created: {0:yyyy/MM/dd}}"
                                Style="{StaticResource TinyText}"
                                Margin="5 5 0 0"/>
-                    <TextBlock Text="{Binding Updated, StringFormat={}Updated: {0:yyyy/MM/dd}}"
+                    <TextBlock Text="{Binding Updated, StringFormat={}Updated: {0:MM/dd HH:mm}}"
                                Style="{StaticResource TinyText}"
                                Margin="5 0 0 5"/>
                 </StackPanel>
