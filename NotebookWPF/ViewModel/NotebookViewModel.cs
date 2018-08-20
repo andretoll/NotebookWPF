@@ -41,7 +41,11 @@ namespace NotebookWPF.ViewModel
 
         public ObservableCollection<Notebook> Notebooks
         {
-            get { NotebookIsEditing = false; return notebooks; }
+            get
+            {
+                NotebookIsEditing = false;
+                return notebooks;
+            }
             set
             {
                 notebooks = value;
@@ -100,6 +104,20 @@ namespace NotebookWPF.ViewModel
             {
                 noteIsEditing = value;
                 NotifyPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Notebook> AvailableNotebooks
+        {
+            get
+            {
+                ObservableCollection<Notebook> notebooksAvailable = new ObservableCollection<Notebook>(Notebooks);
+                notebooksAvailable.Remove(SelectedNotebook);
+                return notebooksAvailable;
+            }
+            set
+            {
+
             }
         }
 
@@ -337,7 +355,7 @@ namespace NotebookWPF.ViewModel
                     Title = result,
                     NotebookId = SelectedNotebook.Id,
                     Created = DateTime.Now,
-                    Updated = DateTime.Now                    
+                    Updated = DateTime.Now
                 };
 
                 // Create file and save file location
@@ -345,7 +363,7 @@ namespace NotebookWPF.ViewModel
                 string filePath = Path.Combine(SettingsHelper.noteDirectory, fileName);
                 try
                 {
-                    
+
                     File.Create(filePath);
                 }
                 catch (Exception ex)
@@ -421,7 +439,7 @@ namespace NotebookWPF.ViewModel
             }
 
             // Delete notebook from database
-            dbEngine.Delete(noteToRemove);            
+            dbEngine.Delete(noteToRemove);
         }
 
         /// <summary>
@@ -460,9 +478,36 @@ namespace NotebookWPF.ViewModel
             }
         }
 
-        public void MoveNote(object note)
+        /// <summary>
+        /// Move Note to another Notebook
+        /// </summary>
+        /// <param name="note"></param>
+        public void MoveNote(object notebookId)
         {
+            int id;
 
+            // If Id is not an integer, return
+            if (!int.TryParse(notebookId.ToString(), out id))
+                return;
+
+            // Get Note object
+            Note noteToMove = SelectedNote;
+
+            // Get Notebook
+            Notebook targetNotebook = Notebooks.SingleOrDefault(n => n.Id == id);
+
+            // If Note or Notebook can't be found, return
+            if (noteToMove == null || targetNotebook == null)
+                return;
+
+            // Update database
+            noteToMove.NotebookId = targetNotebook.Id;
+            dbEngine.Update(noteToMove);
+
+            // Remove Note from current Notebook
+            Notes.Remove(noteToMove);
+            SelectedNotebook.NoteCount--;
+            targetNotebook.NoteCount++;
         }
 
         #endregion

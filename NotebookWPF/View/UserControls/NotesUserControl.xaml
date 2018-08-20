@@ -35,7 +35,6 @@
 
     <!--- ListBoxItem Wrapper-->
     <DockPanel Width="200"
-               ContextMenu="{DynamicResource NoteContextMenu}"
                Tag="{Binding 
                         RelativeSource={RelativeSource 
                         Mode=FindAncestor, 
@@ -44,15 +43,27 @@
                Background="Transparent">
 
         <!--- ListBoxItem menu -->
-        <!--<DockPanel.ContextMenu>
-            <ContextMenu>
+        <DockPanel.ContextMenu>
+            <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                 <MenuItem Header="Delete"
                           Click="DeleteNoteButton_Click"/>
-                <MenuItem Header="Move To">
-                    <MenuItem Header="Item 1"/>
+                <MenuItem Header="Move to" ItemsSource="{Binding AvailableNotebooks}">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"
+                                       Padding="5"/>
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Command" Value="{Binding PlacementTarget.Tag.MoveNoteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                            <Setter Property="CommandParameter" Value="{Binding Id}"/>
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                    <!--<MenuItem Header="Menu1" Command="{Binding PlacementTarget.Tag.NewNotebookCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />-->
                 </MenuItem>
             </ContextMenu>
-        </DockPanel.ContextMenu>-->
+        </DockPanel.ContextMenu>
 
         <!--- Notebook Information and Actions -->
         <DockPanel ToolTip="{Binding Title}"
