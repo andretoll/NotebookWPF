@@ -17,8 +17,21 @@ namespace NotebookWPF.Helpers
     {
         #region Private Members
 
-        private static readonly string filePath = string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "/Simple Notes", @"/settings.xml");
-        private static readonly string directory = string.Concat(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "/Simple Notes");
+        // Directories
+        private static readonly string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Simple Notes", @"settings.xml");
+        private static readonly string mainDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Simple Notes");
+        private static readonly string noteDefaultDirectory = Path.Combine(mainDirectory, "Notes");
+
+        // Default Settings
+        private static readonly string defaultTheme = "BaseLight";
+        private static readonly string defaultAccent = "Blue";
+
+        #endregion
+
+        #region Public Members
+
+        // Writable Settings
+        public static string noteDirectory;
 
         #endregion
 
@@ -57,15 +70,26 @@ namespace NotebookWPF.Helpers
             // Setup directory and file if necessary
             SetupDirectory();
 
-            // Load settings file
-            XDocument doc = XDocument.Load(filePath);
+            try
+            {
+                // Load settings file
+                XDocument doc = XDocument.Load(filePath);
 
-            // Get settings from file
-            var theme = doc.Root.Elements("theme").FirstOrDefault().Attribute("color").Value;
-            var accent = doc.Root.Elements("accent").FirstOrDefault().Attribute("color").Value;
+                // Get appearance settings from file
+                var theme = doc.Root.Elements("theme").FirstOrDefault().Attribute("color").Value;
+                var accent = doc.Root.Elements("accent").FirstOrDefault().Attribute("color").Value;
 
-            // Apply visual settings
-            SettingsHelper.SetAppTheme(theme, accent);
+                // Apply visual settings
+                SetAppTheme(theme, accent);
+
+                // Get application settings from file
+                noteDirectory = doc.Root.Elements("noteDirectory").FirstOrDefault().Attribute("path").Value;                
+            }
+            catch
+            {
+                // If any errors occurs on loading, repair settings
+                RepairSettings();
+            }            
         }
 
         /// <summary>
@@ -73,26 +97,55 @@ namespace NotebookWPF.Helpers
         /// </summary>
         private static void SetupDirectory()
         {
-            // If directory does not exist
-            if (!Directory.Exists(directory))
+            // If main directory does not exist
+            if (!Directory.Exists(mainDirectory))
             {
-                // Create directory
-                Directory.CreateDirectory(directory);
+                // Create main directory
+                Directory.CreateDirectory(mainDirectory);
+            }
+
+            // If note directory does not exist
+            if (!Directory.Exists(noteDefaultDirectory))
+            {
+                // Create note directory
+                Directory.CreateDirectory(noteDefaultDirectory);
             }
 
             // If file does not exist
             if (!File.Exists(filePath))
             {
-                // Create file
-                var xdoc = new XDocument(
-                new XElement("settings",
-                    new XElement("theme",
-                        new XAttribute("color", "BaseLight")),
-                    new XElement("accent",
-                        new XAttribute("color", "Blue"))));
-
-                xdoc.Save(filePath);
+                CreateDefaultSettings();                
             }
+        }
+
+        /// <summary>
+        /// Create default settings for settings file
+        /// </summary>
+        private static void CreateDefaultSettings()
+        {
+            // Create file
+            var xdoc = new XDocument(
+            new XElement("settings",
+                new XElement("theme",
+                    new XAttribute("color", defaultTheme)),
+                new XElement("accent",
+                    new XAttribute("color", defaultAccent)),
+                new XElement("noteDirectory",
+                    new XAttribute("path", noteDefaultDirectory))));
+
+            xdoc.Save(filePath);
+        }
+
+        /// <summary>
+        /// Recreate settings file with default values
+        /// </summary>
+        private static void RepairSettings()
+        {
+            // Delete file
+            File.Delete(filePath);
+
+            // Create default settings
+            CreateDefaultSettings();
         }
 
         /// <summary>

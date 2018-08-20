@@ -17,7 +17,7 @@
     MinWidth="800"
     BorderThickness="0"
     GlowBrush="Black"
-    Title="Notebook" Height="600" Width="1200">
+    Title="Simple Notes" Height="600" Width="1200">
 
     <!--- Icon Template -->
     <Controls:MetroWindow.IconTemplate>
@@ -173,7 +173,7 @@
                 <!--- If no notebooks exists -->
                 <StackPanel HorizontalAlignment="Center"
                             VerticalAlignment="Top"
-                            Opacity="0.3">
+                            Opacity="0.5">
                     <TextBlock Text="No Notebooks."
                            Margin="0 20 0 0">
                         <TextBlock.Style>
@@ -292,7 +292,7 @@
 
                 <!--- If no notes exists -->
                 <StackPanel HorizontalAlignment="Center"
-                            Opacity="0.3"
+                            Opacity="0.5"
                             VerticalAlignment="Top">
                     <TextBlock Text="No Notes."
                                Margin="0 20 0 0">

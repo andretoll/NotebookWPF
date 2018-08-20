@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     
     <StackPanel Margin="20 0">
-        <TabControl>
+        <TabControl Padding="0 20">
 
             <!--- Appearance Settings -->
             <TabItem Header="Appearance">
@@ -21,6 +21,25 @@
                     <ComboBox ItemsSource="{Binding Path=Accents}"
                               SelectedItem="{Binding SelectedAccent, Mode=TwoWay}" />
                 </StackPanel>                
+            </TabItem>
+
+            <!--- Application Settings -->
+            <TabItem Header="Application">
+                <StackPanel>
+                    <Label Content="Note Directory"/>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left">
+                        <TextBox Text="{Binding NoteDirectory}"
+                                 Width="250"
+                                 Margin="0 0 10 0"/>
+                        <Button Style="{StaticResource AccentedSquareButtonStyle}"
+                                x:Name="BrowseNoteDirectory"
+                                Click="BrowseNoteDirectory_Click"
+                                Padding="7">
+                            <TextBlock Text="Browse"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
             </TabItem>
 
         </TabControl>

@@ -13,6 +13,16 @@ namespace NotebookWPF.ViewModel
     /// </summary>
     public class SettingsViewModel : BaseViewModel
     {
+        #region Private Members
+
+        private string selectedAccent;
+
+        private string selectedTheme;
+
+        private string noteDirectory;
+
+        #endregion
+
         #region Public Members
 
         // Collection of available themes
@@ -25,8 +35,6 @@ namespace NotebookWPF.ViewModel
 
         #region Properties
 
-        // Selected theme
-        private string selectedTheme;
         public string SelectedTheme
         {
             get { return SettingsHelper.GetCurrentTheme(); }
@@ -43,8 +51,6 @@ namespace NotebookWPF.ViewModel
             }
         }
 
-        // Selected accent
-        private string selectedAccent;
         public string SelectedAccent
         {
             get { return SettingsHelper.GetCurrentAccent(); }
@@ -57,6 +63,16 @@ namespace NotebookWPF.ViewModel
                 SettingsHelper.SaveSettings("accent", value);
 
                 // Notify property changed
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string NoteDirectory
+        {
+            get { return SettingsHelper.noteDirectory; }
+            set
+            {
+                noteDirectory = value;
                 NotifyPropertyChanged();
             }
         }

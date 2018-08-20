@@ -26,5 +26,10 @@ namespace NotebookWPF.View.UserControls
             InitializeComponent();
             this.DataContext = new SettingsViewModel();
         }
+
+        private void BrowseNoteDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

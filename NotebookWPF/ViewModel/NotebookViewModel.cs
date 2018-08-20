@@ -6,9 +6,11 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace NotebookWPF.ViewModel
@@ -322,7 +324,22 @@ namespace NotebookWPF.ViewModel
                     Updated = DateTime.Now                    
                 };
 
-                // TODO: Create file and save file location
+                // Create file and save file location
+                string fileName = string.Concat(result, ".rtf");
+                string filePath = Path.Combine(SettingsHelper.noteDirectory, fileName);
+                try
+                {
+                    
+                    File.Create(filePath);
+                }
+                catch (Exception ex)
+                {
+                    // If adding fails, show error message and return
+                    await dialogCoordinator.ShowMessageAsync(this, "Error", ex.Message);
+                    return;
+                }
+
+                newNote.FileLocation = filePath;
 
                 // Insert Note to database
                 dbEngine.Insert(newNote);
@@ -365,8 +382,22 @@ namespace NotebookWPF.ViewModel
             if (SelectedNotebook == null)
                 return;
 
-            // Delete note from list
+            // Get note to remove
             Note noteToRemove = Notes.Where(n => n.Id == (int)noteId).FirstOrDefault();
+
+            // Delete file from computer
+            try
+            {
+                File.Delete(noteToRemove.FileLocation);
+            }
+            catch (Exception ex)
+            {
+                // If deletion fails, show error message and return
+                dialogCoordinator.ShowMessageAsync(this, "Error", ex.Message);
+                return;
+            }
+
+            // Delete note from list
             if (noteToRemove != null)
             {
                 Notes.Remove(noteToRemove);
@@ -374,9 +405,7 @@ namespace NotebookWPF.ViewModel
             }
 
             // Delete notebook from database
-            dbEngine.Delete(noteToRemove);
-
-            // TODO: Delete file from computer
+            dbEngine.Delete(noteToRemove);            
         }
 
         /// <summary>
