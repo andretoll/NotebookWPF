@@ -41,13 +41,11 @@ namespace NotebookWPF.ViewModel
             set
             {
                 selectedTheme = value;
-                SettingsHelper.SetAppTheme(value, null);
+                NotifyPropertyChanged();
 
                 // Save changes
-                SettingsHelper.SaveSettings("theme", value);
-
-                // Notify property changed
-                NotifyPropertyChanged();
+                SettingsHelper.SetAppTheme(value, null);
+                SettingsHelper.SaveSettings("theme", SettingsHelper.SettingsProperties.color, value);
             }
         }
 
@@ -57,23 +55,28 @@ namespace NotebookWPF.ViewModel
             set
             {
                 selectedAccent = value;
-                SettingsHelper.SetAppTheme(null, value);
+                NotifyPropertyChanged();
 
                 // Save changes
-                SettingsHelper.SaveSettings("accent", value);
-
-                // Notify property changed
-                NotifyPropertyChanged();
+                SettingsHelper.SetAppTheme(null, value);
+                SettingsHelper.SaveSettings("accent", SettingsHelper.SettingsProperties.color, value);
             }
         }
 
         public string NoteDirectory
         {
-            get { return SettingsHelper.noteDirectory; }
+            get { return noteDirectory; }
             set
             {
+                bool initial = noteDirectory == null;
+
                 noteDirectory = value;
                 NotifyPropertyChanged();
+
+                // Prevent saving changes when loading settings
+                if (!initial)
+                    // Save Changes
+                    SettingsHelper.SaveSettings("noteDirectory", SettingsHelper.SettingsProperties.path, value);
             }
         }
 
@@ -86,8 +89,11 @@ namespace NotebookWPF.ViewModel
             // Load all available themes and accents
             Themes = new ObservableCollection<string>(SettingsHelper.GetAllThemes());
             Accents = new ObservableCollection<string>(SettingsHelper.GetAllAccents());
+
+            // Load Note Directory
+            NoteDirectory = SettingsHelper.noteDirectory;
         }
 
-        #endregion
+        #endregion        
     }
 }

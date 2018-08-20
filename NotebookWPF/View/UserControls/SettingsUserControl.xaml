@@ -29,17 +29,18 @@
                     <Label Content="Note Directory"/>
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left">
-                        <TextBox Text="{Binding NoteDirectory}"
+                        <TextBox Text="{Binding NoteDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 IsReadOnly="True"
+                                 x:Name="BrowseNoteDirectoryInput"
                                  Width="250"
                                  Margin="0 0 10 0"/>
                         <Button Style="{StaticResource AccentedSquareButtonStyle}"
                                 x:Name="BrowseNoteDirectory"
-                                Click="BrowseNoteDirectory_Click"
-                                Padding="7">
+                                Click="BrowseNoteDirectory_Click">
                             <TextBlock Text="Browse"/>
                         </Button>
                     </StackPanel>
-                </StackPanel>
+                </StackPanel>              
             </TabItem>
 
         </TabControl>

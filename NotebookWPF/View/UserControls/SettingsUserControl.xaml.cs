@@ -1,4 +1,5 @@
-﻿using NotebookWPF.ViewModel;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using NotebookWPF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,14 @@ namespace NotebookWPF.View.UserControls
 
         private void BrowseNoteDirectory_Click(object sender, RoutedEventArgs e)
         {
-            
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.InitialDirectory = BrowseNoteDirectoryInput.Text;
+            dialog.IsFolderPicker = true;
+
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                BrowseNoteDirectoryInput.Text = dialog.FileName;
+            }
         }
     }
 }

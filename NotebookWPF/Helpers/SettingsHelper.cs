@@ -41,8 +41,9 @@ namespace NotebookWPF.Helpers
         /// Save app settings to XML
         /// </summary>
         /// <param name="element"></param>
+        /// <param name="property"></param>
         /// <param name="value"></param>
-        public static void SaveSettings(string element, string value)
+        public static void SaveSettings(string element, SettingsProperties property, string value)
         {
             // Setup directory and file if necessary
             SetupDirectory();
@@ -53,10 +54,10 @@ namespace NotebookWPF.Helpers
             // Get target setting
             var result = doc.Descendants(element).FirstOrDefault();
 
-            if (result != null && value != null)
+            if (result != null && value != null && !string.IsNullOrEmpty(property.ToString()))
             {
                 // Change setting
-                result.Attribute("color").Value = value;
+                result.Attribute(property.ToString()).Value = value;
                 // Save changes
                 doc.Save(filePath);
             }
@@ -242,5 +243,11 @@ namespace NotebookWPF.Helpers
         }
 
         #endregion
+
+        public enum SettingsProperties
+        {
+            color,
+            path
+        }
     }
 }

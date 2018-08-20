@@ -35,18 +35,17 @@ namespace NotebookWPF
 
         public MainWindow()
         {
-            InitializeComponent();
-
             // Load app settings
             SettingsHelper.LoadSettings();
+
+            InitializeComponent();            
 
             // Initiate NotebookViewModel and pass in an instance of DialogCoordinator (for metro dialogs)
             notebookViewModel = new NotebookViewModel(DialogCoordinator.Instance);
 
             // Set DataContext to ViewModel
             this.DataContext = notebookViewModel;
-        }
-        
+        }        
 
         #endregion
 
