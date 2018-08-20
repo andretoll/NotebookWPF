@@ -203,6 +203,22 @@ namespace NotebookWPF.ViewModel
             }
         }
 
+        private ICommand moveNoteCommand;
+        public ICommand MoveNoteCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (moveNoteCommand == null)
+                    moveNoteCommand = new RelayCommand(p => { MoveNote(p); }, p => true);
+                return moveNoteCommand;
+            }
+            set
+            {
+                moveNoteCommand = value;
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -442,6 +458,11 @@ namespace NotebookWPF.ViewModel
                 string oldTitle = dbEngine.GetNoteName((note as Note).Id);
                 Notes.Where(n => n.Id == (note as Note).Id).FirstOrDefault().Title = oldTitle;
             }
+        }
+
+        public void MoveNote(object note)
+        {
+
         }
 
         #endregion

@@ -8,17 +8,51 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <!--- To Enable ContextMenu Command Bindings -->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ContextMenu x:Key="NoteContextMenu" 
+                         ItemsSource="{Binding 
+                                        RelativeSource={RelativeSource 
+                                        Mode=FindAncestor, 
+                                        AncestorType={x:Type ListBox}}, 
+                                        Path=DataContext.Notebooks}">
+                <ContextMenu.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ContextMenu.ItemTemplate>
+                <ContextMenu.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Command" Value="{Binding PlacementTarget.Tag.MoveNoteCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                        <Setter Property="CommandParameter" Value="{Binding Id}"/>
+                    </Style>
+                </ContextMenu.ItemContainerStyle>
+                <!--<MenuItem Header="Menu1" Command="{Binding PlacementTarget.Tag.NewNotebookCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />-->
+            </ContextMenu>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <!--- ListBoxItem Wrapper-->
     <DockPanel Width="200"
+               ContextMenu="{DynamicResource NoteContextMenu}"
+               Tag="{Binding 
+                        RelativeSource={RelativeSource 
+                        Mode=FindAncestor, 
+                        AncestorType={x:Type ListBox}}, 
+                        Path=DataContext}"
                Background="Transparent">
 
         <!--- ListBoxItem menu -->
-        <DockPanel.ContextMenu>
+        <!--<DockPanel.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Delete"
                           Click="DeleteNoteButton_Click"/>
+                <MenuItem Header="Move To">
+                    <MenuItem Header="Item 1"/>
+                </MenuItem>
             </ContextMenu>
-        </DockPanel.ContextMenu>
+        </DockPanel.ContextMenu>-->
 
         <!--- Notebook Information and Actions -->
         <DockPanel ToolTip="{Binding Title}"
