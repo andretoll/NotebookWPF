@@ -32,6 +32,7 @@ namespace NotebookWPF.Helpers
 
         // Writable Settings
         public static string noteDirectory;
+        public static bool sideBySidePanels;
 
         #endregion
 
@@ -61,6 +62,9 @@ namespace NotebookWPF.Helpers
                 // Save changes
                 doc.Save(filePath);
             }
+
+            // Reload settings
+            LoadSettings();
         }
 
         /// <summary>
@@ -84,7 +88,8 @@ namespace NotebookWPF.Helpers
                 SetAppTheme(theme, accent);
 
                 // Get application settings from file
-                noteDirectory = doc.Root.Elements("noteDirectory").FirstOrDefault().Attribute("path").Value;                
+                noteDirectory = doc.Root.Elements("noteDirectory").FirstOrDefault().Attribute("path").Value;     
+                sideBySidePanels = bool.Parse(doc.Root.Elements("sideBySidePanels").FirstOrDefault().Attribute("enabled").Value);
             }
             catch
             {
@@ -132,7 +137,9 @@ namespace NotebookWPF.Helpers
                 new XElement("accent",
                     new XAttribute("color", defaultAccent)),
                 new XElement("noteDirectory",
-                    new XAttribute("path", noteDefaultDirectory))));
+                    new XAttribute("path", noteDefaultDirectory)),
+                new XElement("sideBySidePanels",
+                    new XAttribute("enabled", "false"))));
 
             xdoc.Save(filePath);
         }
@@ -147,6 +154,8 @@ namespace NotebookWPF.Helpers
 
             // Create default settings
             CreateDefaultSettings();
+
+            LoadSettings();
         }
 
         /// <summary>
@@ -247,7 +256,8 @@ namespace NotebookWPF.Helpers
         public enum SettingsProperties
         {
             color,
-            path
+            path,
+            enabled
         }
     }
 }

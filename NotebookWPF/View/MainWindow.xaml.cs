@@ -57,5 +57,25 @@ namespace NotebookWPF
         }
 
         #endregion
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((sender as ListBox).SelectedItems.Count > 0)
+            {
+                // TODO: Check settings for side-by-side panels
+                if (!SettingsHelper.sideBySidePanels)
+                    NotebooksPanel.Visibility = Visibility.Collapsed;
+
+                NotesPanel.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)
+        {
+            NotebooksPanel.Visibility = Visibility.Visible;
+            NotesPanel.Visibility = Visibility.Collapsed;
+
+            NotebooksListBox.SelectedItem = null;
+        }
     }
 }

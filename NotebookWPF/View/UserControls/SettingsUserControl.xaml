@@ -14,10 +14,12 @@
             <!--- Appearance Settings -->
             <TabItem Header="Appearance">
                 <StackPanel>
-                    <Label Content="Theme"/>
+                    <Label Content="Theme" 
+                           Style="{StaticResource LabelStyle}"/>
                     <ComboBox ItemsSource="{Binding Path=Themes}"
                               SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" />
-                    <Label Content="Accent"/>
+                    <Label Content="Accent"
+                           Style="{StaticResource LabelStyle}"/>
                     <ComboBox ItemsSource="{Binding Path=Accents}"
                               SelectedItem="{Binding SelectedAccent, Mode=TwoWay}" />
                 </StackPanel>                
@@ -26,7 +28,8 @@
             <!--- Application Settings -->
             <TabItem Header="Application">
                 <StackPanel>
-                    <Label Content="Note Directory"/>
+                    <Label Content="Note Directory"
+                           Style="{StaticResource LabelStyle}"/>
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left">
                         <TextBox Text="{Binding NoteDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -39,6 +42,13 @@
                                 Click="BrowseNoteDirectory_Click">
                             <TextBlock Text="Browse"/>
                         </Button>
+                    </StackPanel>
+                    <Label Content="Side by Side Panels"
+                           Style="{StaticResource LabelStyle}"/>
+                    <StackPanel Width="100"
+                                HorizontalAlignment="Left">
+                        <controls:ToggleSwitch Margin="5 0 0 0"
+                                               IsChecked="{Binding SideBySidePanels}"/>
                     </StackPanel>
                 </StackPanel>              
             </TabItem>

@@ -21,6 +21,8 @@ namespace NotebookWPF.ViewModel
 
         private string noteDirectory;
 
+        private bool sideBySidePanels;
+
         #endregion
 
         #region Public Members
@@ -80,6 +82,19 @@ namespace NotebookWPF.ViewModel
             }
         }
 
+        public bool SideBySidePanels
+        {
+            get { return sideBySidePanels; }
+            set
+            {
+                sideBySidePanels = value;
+                NotifyPropertyChanged();
+
+                // Save changes
+                SettingsHelper.SaveSettings("sideBySidePanels", SettingsHelper.SettingsProperties.enabled, value.ToString());
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -92,6 +107,7 @@ namespace NotebookWPF.ViewModel
 
             // Load Note Directory
             NoteDirectory = SettingsHelper.noteDirectory;
+            SideBySidePanels = SettingsHelper.sideBySidePanels;
         }
 
         #endregion        
