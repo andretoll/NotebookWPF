@@ -175,7 +175,8 @@
                             VerticalAlignment="Top"
                             Opacity="0.5">
                     <TextBlock Text="No Notebooks."
-                           Margin="0 20 0 0">
+                               Margin="0 20 0 0"
+                               Foreground="White">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -295,6 +296,7 @@
                             Opacity="0.5"
                             VerticalAlignment="Top">
                     <TextBlock Text="No Notes."
+                               Foreground="White"
                                Margin="0 20 0 0">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
