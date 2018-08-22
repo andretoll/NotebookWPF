@@ -23,7 +23,7 @@ namespace NotebookWPF.Helpers
 
         List<Note> GetNotes(int id);
 
-        bool DeleteNotes(int id);
+        List<Note> DeleteNotes(int id);
 
         string GetNotebookName(int id);
 

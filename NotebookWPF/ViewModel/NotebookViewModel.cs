@@ -414,11 +414,26 @@ namespace NotebookWPF.ViewModel
             if (notebookToRemove != null)
                 Notebooks.Remove(notebookToRemove);
 
-            // Delete notes, if any
-            dbEngine.DeleteNotes(id);
+            // Return and Delete notes, if any
+            var notesToDelete = dbEngine.DeleteNotes(id);
 
             // Delete notebook from database
             dbEngine.Delete(notebookToRemove);
+
+            if (notes.Count > 0)
+            {
+                // Delete notes from device
+                try
+                {
+                    foreach (var note in notesToDelete)
+                    {
+                        File.Delete(note.FileLocation);
+                    }
+                }
+                catch
+                {
+                }
+            }    
         }
 
         /// <summary>

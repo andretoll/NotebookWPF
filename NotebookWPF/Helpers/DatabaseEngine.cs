@@ -181,7 +181,7 @@ namespace NotebookWPF.Helpers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool DeleteNotes(int id)
+        public List<Note> DeleteNotes(int id)
         {
             // Insert an item
             using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
@@ -202,11 +202,11 @@ namespace NotebookWPF.Helpers
 
                 // If any rows were affected, return true
                 if (totalNumberOfRows > 0)
-                    return true;
+                    return notesToDelete;
             }
 
             // Else, return false
-            return false;
+            return null;
         }
 
         /// <summary>
@@ -236,6 +236,11 @@ namespace NotebookWPF.Helpers
             return null;
         }
 
+        /// <summary>
+        /// Determine if a note title exist
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
         public bool NoteTitleExists(string title)
         {
             using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))

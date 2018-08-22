@@ -129,9 +129,10 @@
                     HorizontalAlignment="Center">
             
             <!--- Confirmation Message -->
-            <TextBlock Text="Are you sure?"
-                       HorizontalAlignment="Center"
-                       Style="{StaticResource SmallText}"/>
+            <TextBlock HorizontalAlignment="Center"
+                       Style="{StaticResource SmallText}">
+                Your notes will be lost.<LineBreak/>Are you sure?
+            </TextBlock>
             
             <!--- Button Container -->
             <StackPanel Orientation="Horizontal"
