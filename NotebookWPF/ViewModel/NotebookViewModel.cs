@@ -307,7 +307,7 @@ namespace NotebookWPF.ViewModel
 
             // If input was cancelled, return
             if (result == null)
-                return;
+                return;            
 
             // If something was entered
             if (result.Count() > 0)
@@ -335,16 +335,31 @@ namespace NotebookWPF.ViewModel
                 return;
 
             // Open dialog
-            var result = await dialogCoordinator.ShowInputAsync(this, "New Note", "Enter a name for your new Note.", new MetroDialogSettings()
+            var result = await dialogCoordinator.ShowInputAsync(this, "New Note", "Enter a title for your new Note.", new MetroDialogSettings()
             {
                 ColorScheme = MetroDialogColorScheme.Accented,
                 AffirmativeButtonText = "Save",
                 AnimateHide = false
             });
 
+            // If note title already exists, accept new input
+            if (dbEngine.NoteTitleExists(result))
+            {
+                while (dbEngine.NoteTitleExists(result) && result != null)
+                {                    
+                    result = await dialogCoordinator.ShowInputAsync(this, "Title taken", "A Note with that title already exists! \n\nEnter a title for your new Note.", new MetroDialogSettings()
+                    {
+                        ColorScheme = MetroDialogColorScheme.Theme,
+                        AffirmativeButtonText = "Save",
+                        AnimateHide = false,
+                        DefaultText = result                        
+                    });
+                }
+            }
+
             // If input was cancelled, return
             if (result == null)
-                return;
+                return;            
 
             // If something was entered
             if (result.Count() > 0)
@@ -466,8 +481,18 @@ namespace NotebookWPF.ViewModel
         /// <param name="note"></param>
         public void RenameNote(object note)
         {
+            // If the Note has any characters
             if ((note as Note).Title.Count() > 0)
             {
+                // If note title already exists
+                if (dbEngine.NoteTitleExists((note as Note).Title))
+                {
+                    string oldTitle = dbEngine.GetNoteName((note as Note).Id);
+                    Notes.Where(n => n.Id == (note as Note).Id).FirstOrDefault().Title = oldTitle;
+
+                    dialogCoordinator.ShowMessageAsync(this, "Title taken", "A Note with that title already exists!");
+                }
+
                 // Update database
                 dbEngine.Update((note as Note));
             }

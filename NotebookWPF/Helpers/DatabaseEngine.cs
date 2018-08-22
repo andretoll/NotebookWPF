@@ -236,6 +236,19 @@ namespace NotebookWPF.Helpers
             return null;
         }
 
+        public bool NoteTitleExists(string title)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
+            {
+                conn.CreateTable<Note>();
+
+                // Get notebooks
+                bool exists = conn.Table<Note>().Any(n => n.Title == title);
+
+                return exists;
+            }
+        }
+
         #endregion
     }
 }

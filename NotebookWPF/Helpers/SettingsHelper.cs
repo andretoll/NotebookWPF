@@ -139,7 +139,7 @@ namespace NotebookWPF.Helpers
                 new XElement("noteDirectory",
                     new XAttribute("path", noteDefaultDirectory)),
                 new XElement("sideBySidePanels",
-                    new XAttribute("enabled", "false"))));
+                    new XAttribute("enabled", "true"))));
 
             xdoc.Save(filePath);
         }

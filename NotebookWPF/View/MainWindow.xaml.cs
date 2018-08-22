@@ -68,6 +68,7 @@ namespace NotebookWPF
 
                 NotesPanel.Visibility = Visibility.Visible;
             }
+            else NotesPanel.Visibility = Visibility.Collapsed;
         }
 
         private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)

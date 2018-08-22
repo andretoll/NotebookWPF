@@ -28,5 +28,7 @@ namespace NotebookWPF.Helpers
         string GetNotebookName(int id);
 
         string GetNoteName(int id);
+
+        bool NoteTitleExists(string title);
     }
 }

@@ -175,8 +175,7 @@
                             VerticalAlignment="Top"
                             Opacity="0.5">
                     <TextBlock Text="No Notebooks."
-                               Margin="0 20 0 0"
-                               Foreground="White">
+                               Margin="0 20 0 0">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -190,13 +189,6 @@
                     </TextBlock>
                 </StackPanel>
             </DockPanel>
-
-            <!--- Separator -->
-            <!--<StackPanel Margin="0"
-                        Orientation="Horizontal">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
-                           Opacity="0.3"/>
-            </StackPanel>-->
 
             <!--- Notes -->
             <DockPanel Width="250"
@@ -320,7 +312,6 @@
                             Opacity="0.5"
                             VerticalAlignment="Top">
                     <TextBlock Text="No Notes."
-                               Foreground="White"
                                Margin="0 20 0 0">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
