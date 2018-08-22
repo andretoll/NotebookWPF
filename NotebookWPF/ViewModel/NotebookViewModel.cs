@@ -343,9 +343,9 @@ namespace NotebookWPF.ViewModel
             });
 
             // If note title already exists, accept new input
-            if (dbEngine.NoteTitleExists(result))
+            if (dbEngine.NoteTitleExists(result, 0))
             {
-                while (dbEngine.NoteTitleExists(result) && result != null)
+                while (dbEngine.NoteTitleExists(result, 0) && result != null)
                 {                    
                     result = await dialogCoordinator.ShowInputAsync(this, "Title taken", "A Note with that title already exists! \n\nEnter a title for your new Note.", new MetroDialogSettings()
                     {
@@ -420,7 +420,7 @@ namespace NotebookWPF.ViewModel
             // Delete notebook from database
             dbEngine.Delete(notebookToRemove);
 
-            if (notes.Count > 0)
+            if (notes != null)
             {
                 // Delete notes from device
                 try
@@ -500,7 +500,7 @@ namespace NotebookWPF.ViewModel
             if ((note as Note).Title.Count() > 0)
             {
                 // If note title already exists
-                if (dbEngine.NoteTitleExists((note as Note).Title))
+                if (dbEngine.NoteTitleExists((note as Note).Title, (note as Note).Id))
                 {
                     string oldTitle = dbEngine.GetNoteName((note as Note).Id);
                     Notes.Where(n => n.Id == (note as Note).Id).FirstOrDefault().Title = oldTitle;

@@ -241,16 +241,13 @@ namespace NotebookWPF.Helpers
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        public bool NoteTitleExists(string title)
+        public bool NoteTitleExists(string title, int noteToEditId)
         {
             using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
             {
                 conn.CreateTable<Note>();
 
-                // Get notebooks
-                bool exists = conn.Table<Note>().Any(n => n.Title == title);
-
-                return exists;
+                return conn.Table<Note>().ToList().Exists(n => n.Id != noteToEditId && n.Title == title); ;
             }
         }
 

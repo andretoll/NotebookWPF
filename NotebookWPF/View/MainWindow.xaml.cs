@@ -78,5 +78,10 @@ namespace NotebookWPF
 
             NotebooksListBox.SelectedItem = null;
         }
+
+        private void ListViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }

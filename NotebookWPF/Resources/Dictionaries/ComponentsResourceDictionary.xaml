@@ -3,9 +3,6 @@
                     xmlns:local="clr-namespace:NotebookWPF.Resources.Dictionaries"
                     xmlns:valueconverters="clr-namespace:NotebookWPF.ValueConverters">
 
-    <!--- Color Brushes -->
-    <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#2e343d"></SolidColorBrush>
-
     <FontFamily x:Key="DefaultFont">Lato</FontFamily>
     <FontFamily x:Key="FancyFont">Lucida Calligraphy</FontFamily>
     

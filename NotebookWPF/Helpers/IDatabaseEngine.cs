@@ -29,6 +29,6 @@ namespace NotebookWPF.Helpers
 
         string GetNoteName(int id);
 
-        bool NoteTitleExists(string title);
+        bool NoteTitleExists(string title, int noteToEditId);
     }
 }

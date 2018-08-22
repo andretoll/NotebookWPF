@@ -153,6 +153,13 @@
                      VerticalContentAlignment="Top"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      ScrollViewer.CanContentScroll="False">
+                    <ListBox.ItemContainerStyle>
+                        <!--- Prevent Right-Click Selection -->
+                        <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
+                            <EventSetter Event="PreviewMouseRightButtonDown"
+                         Handler="ListViewItem_PreviewMouseRightButtonDown" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
                     <ListBox.Style>
                         <Style TargetType="ListBox">
                             <Style.Triggers>
