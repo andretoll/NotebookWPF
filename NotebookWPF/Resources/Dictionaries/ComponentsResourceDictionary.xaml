@@ -79,7 +79,8 @@
     <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
     <valueconverters:ReversedBooleanToVisibilityConverter x:Key="reversedBooleanToVisibilityConverter"/>
 
-    <!--- Visibility/Opacity Animation -->
+    <!--- Animations -->
+    
     <Style TargetType="FrameworkElement" x:Key="VisibleAnimation">
         <Setter Property="Visibility" Value="Collapsed"/>
         <Setter Property="Opacity" Value="0"/>
@@ -96,5 +97,12 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Storyboard x:Key="sbShowLeftMenu" >
+        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-500,0,0,0" To="0,0,0,0" DecelerationRatio=".9" Duration="0:0:1" />
+    </Storyboard>
+    <Storyboard x:Key="sbHideLeftMenu">
+        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,0,0,0" To="-500,0,0,0" AccelerationRatio=".9" Duration="0:0:1" />
+    </Storyboard>
 
 </ResourceDictionary>

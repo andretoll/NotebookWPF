@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 
 namespace NotebookWPF
 {
@@ -56,8 +57,6 @@ namespace NotebookWPF
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
         }
 
-        #endregion
-
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if ((sender as ListBox).SelectedItems.Count > 0)
@@ -83,5 +82,36 @@ namespace NotebookWPF
         {
             e.Handled = true;
         }
+
+        private void btnLeftMenuShowHide_Checked(object sender, RoutedEventArgs e)
+        {
+            if ((sender as System.Windows.Controls.Primitives.ToggleButton).IsChecked ?? false)
+            {
+                ShowHideMenu("sbHideLeftMenu", pnlLeftMenu);
+            }
+            else ShowHideMenu("sbShowLeftMenu", pnlLeftMenu);
+
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        /// <summary>
+        /// Show or hide side menu
+        /// </summary>
+        /// <param name="Storyboard"></param>
+        /// <param name="pnl"></param>
+        private void ShowHideMenu(string Storyboard, DockPanel pnl)
+        {
+            //Storyboard sb = Resources[Storyboard] as Storyboard;
+            var sb = this.FindResource(Storyboard);
+
+            // If Storyboard was found, play it
+            if (sb != null)
+                ((Storyboard)sb).Begin(pnl);
+        }
+
+        #endregion
     }
 }

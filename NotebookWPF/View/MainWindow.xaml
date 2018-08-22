@@ -79,7 +79,9 @@
     <DockPanel>
 
         <!--- Left Panel -->
-        <DockPanel DockPanel.Dock="Left">
+        <DockPanel DockPanel.Dock="Left" 
+                   Panel.ZIndex="2" 
+                   Name="pnlLeftMenu">            
 
             <!--- Notebooks -->
             <DockPanel x:Name="NotebooksPanel">
@@ -335,6 +337,27 @@
             </DockPanel>
 
         </DockPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <ToggleButton Name="btnLeftMenuShowHide"
+                          ToolTip="Show/Hide menu"
+                          VerticalAlignment="Center"
+                          Checked="btnLeftMenuShowHide_Checked"
+                          Unchecked="btnLeftMenuShowHide_Checked"
+                          Margin="5 0"
+                          Width="45"
+                          Height="45"
+                          Style="{DynamicResource CircleToggleButton}">
+                <Rectangle Width="15"
+                           Height="15"
+                           Fill="{DynamicResource BlackBrush}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill"
+                                     Visual="{DynamicResource appbar_lines_horizontal_4}"/>
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </ToggleButton>
+        </StackPanel>
 
         <!--- Separator -->
         <StackPanel Margin="0"
