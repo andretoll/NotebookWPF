@@ -70,15 +70,11 @@ namespace NotebookWPF.ViewModel
             get { return noteDirectory; }
             set
             {
-                bool initial = noteDirectory == null;
-
                 noteDirectory = value;
                 NotifyPropertyChanged();
 
-                // Prevent saving changes when loading settings
-                if (!initial)
-                    // Save Changes
-                    SettingsHelper.SaveSettings("noteDirectory", SettingsHelper.SettingsProperties.path, value);
+                // Save Changes
+                SettingsHelper.SaveSettings("noteDirectory", SettingsHelper.SettingsProperties.path, value);
             }
         }
 
@@ -105,9 +101,9 @@ namespace NotebookWPF.ViewModel
             Themes = new ObservableCollection<string>(SettingsHelper.GetAllThemes());
             Accents = new ObservableCollection<string>(SettingsHelper.GetAllAccents());
 
-            // Load Note Directory
-            NoteDirectory = SettingsHelper.noteDirectory;
-            SideBySidePanels = SettingsHelper.sideBySidePanels;
+            // Load Application settings
+            noteDirectory = SettingsHelper.noteDirectory;
+            sideBySidePanels = SettingsHelper.sideBySidePanels;
         }
 
         #endregion        

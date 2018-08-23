@@ -64,7 +64,7 @@ namespace NotebookWPF.Helpers
             }
 
             // Reload settings
-            //LoadSettings();
+            LoadSettings();
         }
 
         /// <summary>
