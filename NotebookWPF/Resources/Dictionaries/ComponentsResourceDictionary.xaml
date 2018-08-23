@@ -5,34 +5,21 @@
 
     <!--- Colors -->
     <Color x:Key="DarkGrayColor">#1e1e1e</Color>
+    <Color x:Key="LightGrayColor">#303030</Color>
     
     
     
     
     <!---SolidColorBrushes -->
     <SolidColorBrush x:Key="DarkGrayColorBrush" Color="{StaticResource DarkGrayColor}"></SolidColorBrush>
-
-
-    <Rectangle Width="200" Height="100" x:Key="HorizontalGradient">
-
-        <Rectangle.Fill>
-
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" >
-
-                <GradientStop Color="Blue" Offset="0" />
-
-                <GradientStop Color="Red" Offset="1.0" />
-
-            </LinearGradientBrush>
-
-        </Rectangle.Fill>
-
-    </Rectangle>
+    <SolidColorBrush x:Key="LightGrayColorBrush" Color="{StaticResource LightGrayColor}"></SolidColorBrush>
+    
+    
+    
 
     <!--- Font Families -->
     <FontFamily x:Key="DefaultFont">Lato</FontFamily>
-    <FontFamily x:Key="FancyFont">Lucida Calligraphy</FontFamily>
-    
+    <FontFamily x:Key="FancyFont">Lucida Calligraphy</FontFamily>    
     
     
     
@@ -253,10 +240,10 @@
         </Style.Triggers>
     </Style>
     <Storyboard x:Key="sbShowLeftMenu" >
-        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-500,0,0,0" To="0,0,0,0" DecelerationRatio=".9" Duration="0:0:1" />
+        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-500,0,0,0" To="0,0,0,0" DecelerationRatio=".9" Duration="0:0:0.6" />
     </Storyboard>
     <Storyboard x:Key="sbHideLeftMenu">
-        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,0,0,0" To="-500,0,0,0" AccelerationRatio=".9" Duration="0:0:1" />
+        <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,0,0,0" To="-500,0,0,0" AccelerationRatio=".9" Duration="0:0:0.8" />
     </Storyboard>
 
 </ResourceDictionary>

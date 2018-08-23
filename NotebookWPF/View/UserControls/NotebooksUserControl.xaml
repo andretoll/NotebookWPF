@@ -22,7 +22,6 @@
 
         <!--- Notebook Information and Actions -->
         <DockPanel ToolTip="{Binding Name}"
-                   Margin="5"
                    DockPanel.Dock="Top">
 
             <!--- Information -->
