@@ -51,11 +51,11 @@
                         DockPanel.Dock="Left">
 
                 <!--- Title -->
-                <StackPanel Height="30">
+                <StackPanel Height="40">
                     <TextBlock Text="{Binding Title, Mode=TwoWay}"
                                TextTrimming="CharacterEllipsis"
                                Style="{StaticResource LargeText}"
-                               Margin="5 5 0 0"
+                               Margin="5 10 0 0"
                                Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
@@ -66,6 +66,7 @@
                     <TextBox Text="{Binding Title, Mode=TwoWay}"
                              Height="30"
                              FontSize="15"
+                             Margin="0 5 0 0"                             
                              Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 

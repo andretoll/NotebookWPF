@@ -46,13 +46,11 @@
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Foreground" Value="White" />
                     <Setter Property="Background" Value="{StaticResource LightGrayColorBrush}" />
-                    <Setter Property="BorderThickness" Value="5 0 0 0"/>
                     <Setter Property="BorderBrush" Value="{DynamicResource AccentBaseColorBrush}"/>
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="{StaticResource LightGrayColorBrush}" />
                     <Setter Property="Foreground" Value="White" />
-                    <Setter Property="BorderThickness" Value="5 0 0 0"/>
                     <Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush}"/>
                 </Trigger>
                 <MultiTrigger>
@@ -73,9 +71,10 @@
                 <MultiTrigger>
                     <MultiTrigger.Conditions>
                         <Condition Property="IsSelected" Value="True" />
-                        <Condition Property="Selector.IsSelectionActive" Value="True" />
+                        <Condition Property="IsMouseOver" Value="True" />
                     </MultiTrigger.Conditions>
                     <Setter Property="Background" Value="{StaticResource LightGrayColorBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource AccentBaseColorBrush}"/>
                 </MultiTrigger>
             </Style.Triggers>
         </Style>

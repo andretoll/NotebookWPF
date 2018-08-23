@@ -31,12 +31,12 @@
                         DockPanel.Dock="Left">
                 
                 <!--- Name -->
-                <StackPanel Height="30">
+                <StackPanel Height="40">
                     <TextBlock x:Name="NotebookNameTextBlock"
                                Text="{Binding Name, Mode=TwoWay}"
                                TextTrimming="CharacterEllipsis"
                                Style="{StaticResource LargeText}"
-                               Margin="5 5 0 0"
+                               Margin="5 10 0 0"
                                Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
@@ -48,6 +48,7 @@
                              Text="{Binding Name, Mode=TwoWay}"
                              Height="30"
                              FontSize="15"
+                             Margin="0 5 0 0"
                              Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
