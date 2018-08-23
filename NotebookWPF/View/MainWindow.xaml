@@ -13,6 +13,7 @@
     ShowIconOnTitleBar="True"
     Icon="/Resources/notebook.ico"
     TitleCaps="False"
+    WindowTitleBrush="{StaticResource DarkGrayColorBrush}"
     MinHeight="450"
     MinWidth="800"
     BorderThickness="0"
@@ -80,8 +81,9 @@
 
         <!--- Left Panel -->
         <DockPanel DockPanel.Dock="Left" 
+                   Background="{DynamicResource AccentBaseColorBrush}"
                    Panel.ZIndex="2" 
-                   Name="pnlLeftMenu">            
+                   Name="pnlLeftMenu">
 
             <!--- Notebooks -->
             <DockPanel x:Name="NotebooksPanel">
@@ -90,6 +92,7 @@
                             DockPanel.Dock="Top"
                             Margin="15">
                     <TextBlock Style="{StaticResource HugeText}"
+                               Foreground="White"
                                Margin="0 0 0 15"
                                Text="Notebooks"/>
                     <!--- Buttons -->
@@ -123,16 +126,15 @@
 
                         <!--- Button to toggle edit mode -->
                         <ToggleButton ToolTip="Edit Notebooks"
-                                      Width="45"
-                                      Height="45"
+                                      Width="40"
+                                      Height="40"
                                       IsChecked="{Binding NotebookIsEditing}"
-                                      Style="{DynamicResource CircleToggleButton}">
+                                      Style="{DynamicResource CircleToggleButtonWhite}">
                             <Rectangle Width="15"
                                        Height="15"
                                        Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_edit}"/>
+                                    <VisualBrush Visual="{DynamicResource appbar_edit}"/>
                                 </Rectangle.OpacityMask>
                             </Rectangle>
                         </ToggleButton>
@@ -215,12 +217,12 @@
                         <Button ToolTip="Back to Notebooks"
                                 Click="BackToNotebooksButton_Click"
                                 DockPanel.Dock="Right"
-                                Width="45"
-                                Height="45"
-                                Style="{DynamicResource CircleButton}">
+                                Width="40"
+                                Height="40"
+                                Style="{DynamicResource CircleButtonWhite}">
                             <Rectangle Width="15"
                                        Height="15"
-                                       Fill="{DynamicResource BlackBrush}">
+                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill"
                                                  Visual="{DynamicResource appbar_arrow_left}"/>
@@ -229,14 +231,15 @@
                         </Button>
                         <StackPanel>
                             <TextBlock Style="{StaticResource HugeText}"
+                                       Foreground="White"
                                        TextTrimming="WordEllipsis"
                                        DockPanel.Dock="Left"
                                        Text="{Binding SelectedNotebook.Name}"
 />
-                        </StackPanel>                        
-                        
+                        </StackPanel>
+
                     </DockPanel>
-                    
+
 
                     <!--- Buttons -->
                     <StackPanel Orientation="Horizontal"
@@ -269,13 +272,13 @@
 
                         <!--- Button to toggle edit mode -->
                         <ToggleButton ToolTip="Edit Notes"
-                                      Width="45"
-                                      Height="45"
+                                      Width="40"
+                                      Height="40"
                                       IsChecked="{Binding NoteIsEditing}"
-                                      Style="{DynamicResource CircleToggleButton}">
+                                      Style="{DynamicResource CircleToggleButtonWhite}">
                             <Rectangle Width="15"
                                        Height="15"
-                                       Fill="{DynamicResource BlackBrush}">
+                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                 <Rectangle.OpacityMask>
                                     <VisualBrush Stretch="Fill"
                                                  Visual="{DynamicResource appbar_edit}"/>
@@ -338,19 +341,21 @@
 
         </DockPanel>
 
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal"
+                    Background="{DynamicResource AccentColorBrush}">
+
             <ToggleButton Name="btnLeftMenuShowHide"
                           ToolTip="Show/Hide menu"
                           VerticalAlignment="Center"
                           Checked="btnLeftMenuShowHide_Checked"
                           Unchecked="btnLeftMenuShowHide_Checked"
-                          Margin="5 0"
-                          Width="45"
-                          Height="45"
-                          Style="{DynamicResource CircleToggleButton}">
+                          Margin="5 0" 
+                          Width="40"
+                          Height="40"
+                          Style="{DynamicResource CircleToggleButtonWhite}">
                 <Rectangle Width="15"
                            Height="15"
-                           Fill="{DynamicResource BlackBrush}">
+                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                     <Rectangle.OpacityMask>
                         <VisualBrush Stretch="Fill"
                                      Visual="{DynamicResource appbar_lines_horizontal_4}"/>
@@ -360,11 +365,11 @@
         </StackPanel>
 
         <!--- Separator -->
-        <StackPanel Margin="0"
+        <!--<StackPanel Margin="0"
                     Orientation="Horizontal">
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
                        Opacity="0.3"/>
-        </StackPanel>
+        </StackPanel>-->
 
         <!--- Text Editor -->
         <StackPanel>
