@@ -57,17 +57,30 @@ namespace NotebookWPF
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void NotebooksListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if ((sender as ListBox).SelectedItems.Count > 0)
             {
-                // TODO: Check settings for side-by-side panels
+                // Check settings for side-by-side panels
                 if (!SettingsHelper.sideBySidePanels)
                     NotebooksPanel.Visibility = Visibility.Collapsed;
 
                 NotesPanel.Visibility = Visibility.Visible;
             }
             else NotesPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((sender as ListBox).SelectedItems.Count > 0)
+            {
+                // Check settings for autohide panel
+                if (SettingsHelper.autohidePanels)
+                {
+                    ShowHideMenu("sbHideLeftMenu", pnlLeftMenu);
+                    btnLeftMenuShowHide.IsChecked = true;
+                }
+            }
         }
 
         private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)
@@ -113,5 +126,7 @@ namespace NotebookWPF
         }
 
         #endregion
+
+        
     }
 }

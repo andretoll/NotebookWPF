@@ -23,6 +23,8 @@ namespace NotebookWPF.ViewModel
 
         private bool sideBySidePanels;
 
+        private bool autohidePanels;
+
         #endregion
 
         #region Public Members
@@ -46,7 +48,6 @@ namespace NotebookWPF.ViewModel
                 NotifyPropertyChanged();
 
                 // Save changes
-                SettingsHelper.SetAppTheme(value, null);
                 SettingsHelper.SaveSettings("theme", SettingsHelper.SettingsProperties.color, value);
             }
         }
@@ -60,7 +61,6 @@ namespace NotebookWPF.ViewModel
                 NotifyPropertyChanged();
 
                 // Save changes
-                SettingsHelper.SetAppTheme(null, value);
                 SettingsHelper.SaveSettings("accent", SettingsHelper.SettingsProperties.color, value);
             }
         }
@@ -74,7 +74,7 @@ namespace NotebookWPF.ViewModel
                 NotifyPropertyChanged();
 
                 // Save Changes
-                SettingsHelper.SaveSettings("noteDirectory", SettingsHelper.SettingsProperties.path, value);
+                SettingsHelper.SaveSettings(nameof(noteDirectory), SettingsHelper.SettingsProperties.path, value);
             }
         }
 
@@ -87,7 +87,20 @@ namespace NotebookWPF.ViewModel
                 NotifyPropertyChanged();
 
                 // Save changes
-                SettingsHelper.SaveSettings("sideBySidePanels", SettingsHelper.SettingsProperties.enabled, value.ToString());
+                SettingsHelper.SaveSettings(nameof(sideBySidePanels), SettingsHelper.SettingsProperties.enabled, value.ToString());
+            }
+        }
+
+        public bool AutohidePanels
+        {
+            get { return autohidePanels; }
+            set
+            {
+                autohidePanels = value;
+                NotifyPropertyChanged();
+
+                // Save changes
+                SettingsHelper.SaveSettings(nameof(autohidePanels), SettingsHelper.SettingsProperties.enabled, value.ToString());
             }
         }
 
@@ -104,6 +117,7 @@ namespace NotebookWPF.ViewModel
             // Load Application settings
             noteDirectory = SettingsHelper.noteDirectory;
             sideBySidePanels = SettingsHelper.sideBySidePanels;
+            autohidePanels = SettingsHelper.autohidePanels;
         }
 
         #endregion        

@@ -216,11 +216,12 @@
     <valueconverters:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
     <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
     <valueconverters:ReversedBooleanToVisibilityConverter x:Key="reversedBooleanToVisibilityConverter"/>
-    
-    
-    
-    
-    
+    <valueconverters:BooleanToVisibilityMultiConverter x:Key="booleanToVisibilityMultiConverter"/>
+
+
+
+
+
 
     <!--- Animations -->    
     <Style TargetType="FrameworkElement" x:Key="VisibleAnimation">

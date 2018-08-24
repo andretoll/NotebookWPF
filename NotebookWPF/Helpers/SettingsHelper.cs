@@ -30,9 +30,10 @@ namespace NotebookWPF.Helpers
 
         #region Public Members
 
-        // Writable Settings
+        // Writable public Settings
         public static string noteDirectory;
         public static bool sideBySidePanels;
+        public static bool autohidePanels;
 
         #endregion
 
@@ -90,6 +91,7 @@ namespace NotebookWPF.Helpers
                 // Get application settings from file
                 noteDirectory = doc.Root.Elements("noteDirectory").FirstOrDefault().Attribute("path").Value;     
                 sideBySidePanels = bool.Parse(doc.Root.Elements("sideBySidePanels").FirstOrDefault().Attribute("enabled").Value);
+                autohidePanels = bool.Parse(doc.Root.Elements("autohidePanels").FirstOrDefault().Attribute("enabled").Value);
             }
             catch
             {
@@ -139,7 +141,9 @@ namespace NotebookWPF.Helpers
                 new XElement("noteDirectory",
                     new XAttribute("path", noteDefaultDirectory)),
                 new XElement("sideBySidePanels",
-                    new XAttribute("enabled", "true"))));
+                    new XAttribute("enabled", "true")),
+                new XElement("autohidePanels",
+                    new XAttribute("enabled", "false"))));
 
             xdoc.Save(filePath);
         }
@@ -247,8 +251,23 @@ namespace NotebookWPF.Helpers
             accents.Add("Yellow");
             accents.Add("Pink");
             accents.Add("Purple");
+            accents.Add("Lime");
+            accents.Add("Emerald");
+            accents.Add("Teal");
+            accents.Add("Cobalt");
+            accents.Add("Indigo");
+            accents.Add("Violet");
+            accents.Add("Magenta");
+            accents.Add("Crimson");
+            accents.Add("Amber");
+            accents.Add("Brown");
+            accents.Add("Olive");
+            accents.Add("Steel");
+            accents.Add("Mauve");
+            accents.Add("Taupe");
+            accents.Add("Sienna");
 
-            return accents;
+            return accents.OrderBy(a => a).ToList();
         }
 
         #endregion

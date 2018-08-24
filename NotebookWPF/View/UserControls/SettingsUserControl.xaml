@@ -21,6 +21,7 @@
                     <Label Content="Accent"
                            Style="{StaticResource LabelStyle}"/>
                     <ComboBox ItemsSource="{Binding Path=Accents}"
+                              MaxDropDownHeight="200"
                               SelectedItem="{Binding SelectedAccent, Mode=TwoWay}" />
                 </StackPanel>                
             </TabItem>
@@ -28,6 +29,7 @@
             <!--- Application Settings -->
             <TabItem Header="Application">
                 <StackPanel>
+                    
                     <Label Content="Note Directory"
                            Style="{StaticResource LabelStyle}"/>
                     <StackPanel Orientation="Horizontal"
@@ -43,6 +45,7 @@
                             <TextBlock Text="Browse"/>
                         </Button>
                     </StackPanel>
+                    
                     <Label Content="Side by Side Panels"
                            Style="{StaticResource LabelStyle}"/>
                     <StackPanel Width="100"
@@ -50,6 +53,15 @@
                         <controls:ToggleSwitch Margin="5 0 0 0"
                                                IsChecked="{Binding SideBySidePanels}"/>
                     </StackPanel>
+
+                    <Label Content="Auto-hide Panels"
+                           Style="{StaticResource LabelStyle}"/>
+                    <StackPanel Width="100"
+                                HorizontalAlignment="Left">
+                        <controls:ToggleSwitch Margin="5 0 0 0"
+                                               IsChecked="{Binding AutohidePanels}"/>
+                    </StackPanel>
+
                 </StackPanel>              
             </TabItem>
 

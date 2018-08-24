@@ -378,8 +378,8 @@ namespace NotebookWPF.ViewModel
                 string filePath = Path.Combine(SettingsHelper.noteDirectory, fileName);
                 try
                 {
-
-                    File.Create(filePath);
+                    FileStream fs = File.Create(filePath);
+                    fs.Close();
                 }
                 catch (Exception ex)
                 {
@@ -506,6 +506,23 @@ namespace NotebookWPF.ViewModel
                     Notes.Where(n => n.Id == (note as Note).Id).FirstOrDefault().Title = oldTitle;
 
                     dialogCoordinator.ShowMessageAsync(this, "Title taken", "A Note with that title already exists!");
+                }
+
+                // Update file name
+                try
+                {
+                    string newFileName = (note as Note).Title;
+                    string oldFileLocation = (note as Note).FileLocation;
+                    string newFileLocation = Path.Combine(Path.GetDirectoryName(oldFileLocation), newFileName + ".rtf");
+                    File.Move(oldFileLocation, newFileLocation);
+
+                    (note as Note).FileLocation = newFileLocation;
+                }
+                catch (Exception ex)
+                {
+                    dialogCoordinator.ShowMessageAsync(this, "Could not rename Note.", ex.Message);
+
+                    return;
                 }
 
                 // Update database

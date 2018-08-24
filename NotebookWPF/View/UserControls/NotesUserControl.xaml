@@ -10,6 +10,7 @@
 
     <!--- ListBoxItem Wrapper-->
     <DockPanel Width="200"
+               Margin="5 5 0 0"
                Tag="{Binding 
                         RelativeSource={RelativeSource 
                         Mode=FindAncestor, 
@@ -46,16 +47,15 @@
 
             <!--- Information -->
             <StackPanel Orientation="Vertical"
-                        Margin="5 0 0 0"
                         MaxWidth="120"
                         DockPanel.Dock="Left">
 
                 <!--- Title -->
-                <StackPanel Height="40">
+                <StackPanel Height="30">
                     <TextBlock Text="{Binding Title, Mode=TwoWay}"
+                               Margin="5 5 0 0"                               
                                TextTrimming="CharacterEllipsis"
                                Style="{StaticResource LargeText}"
-                               Margin="5 10 0 0"
                                Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
@@ -66,7 +66,6 @@
                     <TextBox Text="{Binding Title, Mode=TwoWay}"
                              Height="30"
                              FontSize="15"
-                             Margin="0 5 0 0"                             
                              Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
@@ -90,13 +89,12 @@
 
                 <!--- Other information -->
                 <StackPanel>
-
-                    <TextBlock Text="{Binding Created, StringFormat={}Created: {0:yyyy/MM/dd}}"
+                    <!--<TextBlock Text="{Binding Created, StringFormat={}Created: {0:yyyy/MM/dd}}"
                                Style="{StaticResource TinyText}"
-                               Margin="5 5 0 0"/>
-                    <TextBlock Text="{Binding Updated, StringFormat={}Updated: {0:MM/dd HH:mm}}"
+                               Margin="5 5 0 0"/>-->
+                    <TextBlock Text="{Binding Updated, StringFormat={}Edited: {0:MM/dd HH:mm}}"
                                Style="{StaticResource TinyText}"
-                               Margin="5 0 0 5"/>
+                               Margin="5 0 0 0"/>
                 </StackPanel>
 
             </StackPanel>
@@ -148,6 +146,7 @@
                     DockPanel.Dock="Bottom"
                     Style="{StaticResource VisibleAnimation}"
                     Visibility="Collapsed"
+                    Margin="0 0 0 5"
                     HorizontalAlignment="Center">
 
             <!--- Confirmation Message -->

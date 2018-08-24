@@ -10,6 +10,7 @@
 
     <!--- ListBoxItem Wrapper-->
     <DockPanel Width="200"
+               Margin="5 5 0 0"
                Background="Transparent">
 
         <!--- ListBoxItem menu -->
@@ -26,17 +27,16 @@
 
             <!--- Information -->
             <StackPanel Orientation="Vertical"
-                        Margin="5 0 0 0"
                         MaxWidth="120"
                         DockPanel.Dock="Left">
                 
                 <!--- Name -->
-                <StackPanel Height="40">
+                <StackPanel Height="30">
                     <TextBlock x:Name="NotebookNameTextBlock"
+                               Margin="5 5 0 0"
                                Text="{Binding Name, Mode=TwoWay}"
                                TextTrimming="CharacterEllipsis"
                                Style="{StaticResource LargeText}"
-                               Margin="5 10 0 0"
                                Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
@@ -48,7 +48,6 @@
                              Text="{Binding Name, Mode=TwoWay}"
                              Height="30"
                              FontSize="15"
-                             Margin="0 5 0 0"
                              Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
@@ -73,8 +72,8 @@
                 <!--- Note count -->
                 <StackPanel>
                     <TextBlock Text="{Binding NoteCount, StringFormat='({0} notes)'}"
-                               Style="{StaticResource SmallText}"
-                               Margin="5"/>
+                               Style="{StaticResource TinyText}"
+                               Margin="5 0 0 0"/>
                 </StackPanel>
                 
             </StackPanel>
@@ -126,6 +125,7 @@
                     DockPanel.Dock="Bottom"
                     Style="{StaticResource VisibleAnimation}"
                     Visibility="Collapsed"
+                    Margin="0 0 0 5"
                     HorizontalAlignment="Center">
             
             <!--- Confirmation Message -->

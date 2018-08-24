@@ -26,6 +26,8 @@
                BasedOn="{StaticResource MetroListBoxItem}"
                TargetType="{x:Type ListBoxItem}">
             <Setter Property="BorderThickness" Value="5 0 0 0"/>
+            <Setter Property="Background" Value="{Binding DarkGrayColorBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -139,6 +141,28 @@
 
     <DockPanel>
 
+        <!--- Bottom Panel -->
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    Background="{StaticResource DarkGrayColorBrush}"
+                    Height="40">
+
+            <TextBlock Text="Edit mode activated."
+                       Style="{StaticResource LargeText}"
+                       Foreground="White"
+                       Name="Txt"
+                       VerticalAlignment="Center"
+                       Margin="15 0 0 0">
+                <TextBlock.Visibility>
+                    <MultiBinding Converter="{StaticResource booleanToVisibilityMultiConverter}">
+                        <Binding Path="NotebookIsEditing" />
+                        <Binding Path="NoteIsEditing" />
+                    </MultiBinding>
+                </TextBlock.Visibility>
+            </TextBlock>
+
+        </StackPanel>
+
         <!--- Left Panel -->
         <DockPanel DockPanel.Dock="Left" 
                    Background="{DynamicResource AccentBaseColorBrush}"
@@ -206,13 +230,13 @@
                 <!--- List of Notebooks -->
                 <ListBox ItemsSource="{Binding Notebooks, Mode=TwoWay}"
                          Name="NotebooksListBox"
-                         SelectionChanged="ListBox_SelectionChanged"
+                         SelectionChanged="NotebooksListBox_SelectionChanged"
                          SelectedItem="{Binding 
                                     SelectedNotebook, 
                                     Mode=TwoWay, 
                                     UpdateSourceTrigger=PropertyChanged}"
                          Margin="15 0 0 15"
-                         Background="{DynamicResource WindowBackgroundBrush}"
+                         Background="{DynamicResource DarkGrayColorBrush}"
                          BorderThickness="0"
                          VerticalContentAlignment="Top"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -348,13 +372,15 @@
 
                 <!--- List of Notes -->
                 <ListBox ItemsSource="{Binding Notes, Mode=TwoWay}"
+                         Name="NotesListBox"
+                         SelectionChanged="NotesListBox_SelectionChanged"
                          SelectedItem="{Binding 
                                         SelectedNote, 
                                         Mode=TwoWay, 
                                         UpdateSourceTrigger=PropertyChanged}"
                          Margin="15 0 0 15"
                          BorderThickness="0"
-                         Background="{DynamicResource WindowBackgroundBrush}"
+                         Background="{DynamicResource DarkGrayColorBrush}"
                          VerticalContentAlignment="Top"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False"
@@ -420,6 +446,8 @@
                 </Rectangle>
             </ToggleButton>
         </StackPanel>
+
+        
 
         <!--- Separator -->
         <!--<StackPanel Margin="0"
