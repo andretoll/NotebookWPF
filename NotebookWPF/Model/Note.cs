@@ -15,6 +15,8 @@ namespace NotebookWPF.Model
 
         private string title;
 
+        private bool isFavorite;
+
         #endregion
 
         #region Properties
@@ -40,6 +42,16 @@ namespace NotebookWPF.Model
         public DateTime Updated { get; set; }
 
         public string FileLocation { get; set; }
+
+        public bool IsFavorite
+        {
+            get { return isFavorite; }
+            set
+            {
+                isFavorite = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         #endregion
 

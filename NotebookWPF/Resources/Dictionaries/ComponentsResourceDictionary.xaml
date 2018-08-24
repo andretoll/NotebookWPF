@@ -217,6 +217,7 @@
     <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
     <valueconverters:ReversedBooleanToVisibilityConverter x:Key="reversedBooleanToVisibilityConverter"/>
     <valueconverters:BooleanToVisibilityMultiConverter x:Key="booleanToVisibilityMultiConverter"/>
+    <valueconverters:BooleanToStringConverter x:Key="booleanToStringConverter"/>
 
 
 

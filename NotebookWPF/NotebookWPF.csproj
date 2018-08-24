@@ -91,6 +91,7 @@
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Model\Note.cs" />
     <Compile Include="Model\Notebook.cs" />
+    <Compile Include="ValueConverters\BooleanToStringConverter.cs" />
     <Compile Include="ValueConverters\BooleanToVisibilityMultiConverter.cs" />
     <Compile Include="ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\ReversedBooleanToVisibilityConverter.cs" />

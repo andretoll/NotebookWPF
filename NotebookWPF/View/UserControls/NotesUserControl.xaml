@@ -21,9 +21,39 @@
         <!--- ListBoxItem menu -->
         <DockPanel.ContextMenu>
             <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+
                 <MenuItem Header="Delete"
                           Click="DeleteNoteButton_Click"/>
-                <MenuItem Header="Move to" ItemsSource="{Binding AvailableNotebooks}">
+
+                <MenuItem Header="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToStringConverter}}"
+                          IsCheckable="True"
+                          IsChecked="{Binding SelectedNote.IsFavorite}">
+                    <MenuItem.Icon>
+                        <Rectangle Width="22" 
+                                   Height="22"
+                                   Margin="10 0 0 0"
+                                   Visibility="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToVisibilityConverter}}">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="Gold"/>
+                            </Rectangle.Fill>
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{DynamicResource appbar_star}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Move to" 
+                          ItemsSource="{Binding AvailableNotebooks}">
+                    <MenuItem.Style>
+                        <Style TargetType="MenuItem" BasedOn="{StaticResource MetroMenuItem}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AvailableNotebooks.Count}" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"
@@ -36,8 +66,8 @@
                             <Setter Property="CommandParameter" Value="{Binding Id}"/>
                         </Style>
                     </MenuItem.ItemContainerStyle>
-                    <!--<MenuItem Header="Menu1" Command="{Binding PlacementTarget.Tag.NewNotebookCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />-->
                 </MenuItem>
+
             </ContextMenu>
         </DockPanel.ContextMenu>
 
@@ -47,13 +77,28 @@
 
             <!--- Information -->
             <StackPanel Orientation="Vertical"
-                        MaxWidth="120"
                         DockPanel.Dock="Left">
 
                 <!--- Title -->
-                <StackPanel Height="30">
-                    <TextBlock Text="{Binding Title, Mode=TwoWay}"
-                               Margin="5 5 0 0"                               
+                <StackPanel Height="30"
+                            Orientation="Horizontal">
+                    
+                    <!--- Favorite Icon -->
+                    <Rectangle Width="15"
+                               Height="15"
+                               Fill="Gold"
+                               Visibility="{Binding IsFavorite, Converter={StaticResource booleanToVisibilityConverter}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Visual="{DynamicResource appbar_star}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    
+                    <!--- Name Container -->
+                    <StackPanel Orientation="Horizontal"
+                                MaxWidth="120">
+                        <TextBlock Text="{Binding Title, Mode=TwoWay}"
+                               Margin="5 5 0 0"
+                                   MaxWidth="120"
                                TextTrimming="CharacterEllipsis"
                                Style="{StaticResource LargeText}"
                                Visibility="{Binding 
@@ -63,28 +108,31 @@
                                 Path=DataContext.NoteIsEditing, 
                                 Converter={StaticResource reversedBooleanToVisibilityConverter}, 
                                 Mode=TwoWay}"/>
-                    <TextBox Text="{Binding Title, Mode=TwoWay}"
-                             Height="30"
-                             FontSize="15"
-                             Visibility="{Binding 
+
+                        <TextBox Text="{Binding Title, Mode=TwoWay}"
+                                 Height="30"
+                                 MaxWidth="120"
+                                 FontSize="15"
+                                 Visibility="{Binding 
                                 RelativeSource={RelativeSource 
                                 Mode=FindAncestor, 
                                 AncestorType={x:Type ListBox}}, 
                                 Path=DataContext.NoteIsEditing, 
                                 Converter={StaticResource booleanToVisibilityConverter}, 
                                 Mode=TwoWay}">
-                        <!--- If TextBox loses focus, save Notebook edit -->
-                        <b:Interaction.Triggers>
-                            <b:EventTrigger EventName="LostFocus">
-                                <b:InvokeCommandAction Command="{Binding 
+                            <!--- If TextBox loses focus, save Notebook edit -->
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="LostFocus">
+                                    <b:InvokeCommandAction Command="{Binding 
                                                         RelativeSource={RelativeSource 
                                                         Mode=FindAncestor, 
                                                         AncestorType={x:Type ListBox}}, 
                                                         Path=DataContext.StopNoteEditingCommand}"
                                                         CommandParameter="{Binding}"/>
-                            </b:EventTrigger>
-                        </b:Interaction.Triggers>
-                    </TextBox>                   
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </TextBox>
+                    </StackPanel>                    
                 </StackPanel>
 
                 <!--- Other information -->

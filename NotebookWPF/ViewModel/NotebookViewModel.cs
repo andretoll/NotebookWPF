@@ -237,6 +237,22 @@ namespace NotebookWPF.ViewModel
             }
         }
 
+        private ICommand makeNoteFavorite;
+        public ICommand MakeNoteFavorite
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (moveNoteCommand == null)
+                    moveNoteCommand = new RelayCommand(p => { ToggleNoteFavorite(); }, p => true);
+                return moveNoteCommand;
+            }
+            set
+            {
+                makeNoteFavorite = value;
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -565,6 +581,16 @@ namespace NotebookWPF.ViewModel
             Notes.Remove(noteToMove);
             SelectedNotebook.NoteCount--;
             targetNotebook.NoteCount++;
+        }
+
+        /// <summary>
+        /// Make Note Favorite
+        /// </summary>
+        /// <param name="noteId"></param>
+        public void ToggleNoteFavorite()
+        {
+            SelectedNote.IsFavorite = !SelectedNote.IsFavorite;
+            dbEngine.Update(SelectedNote);
         }
 
         #endregion
