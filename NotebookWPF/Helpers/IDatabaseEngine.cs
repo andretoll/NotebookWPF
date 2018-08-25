@@ -21,6 +21,8 @@ namespace NotebookWPF.Helpers
 
         List<Notebook> GetNotebooks();
 
+        List<Note> GetFavoriteNotes();
+
         List<Note> GetNotes(int id);
 
         List<Note> DeleteNotes(int id);

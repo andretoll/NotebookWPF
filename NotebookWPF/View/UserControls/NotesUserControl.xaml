@@ -22,12 +22,9 @@
         <DockPanel.ContextMenu>
             <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
 
-                <MenuItem Header="Delete"
-                          Click="DeleteNoteButton_Click"/>
-
                 <MenuItem Header="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToStringConverter}}"
                           IsCheckable="True"
-                          IsChecked="{Binding SelectedNote.IsFavorite}">
+                          IsChecked="{Binding SelectedNoteIsFavorite}">
                     <MenuItem.Icon>
                         <Rectangle Width="22" 
                                    Height="22"
@@ -67,6 +64,9 @@
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
+                
+                <MenuItem Header="Delete"
+                          Click="DeleteNoteButton_Click"/>
 
             </ContextMenu>
         </DockPanel.ContextMenu>

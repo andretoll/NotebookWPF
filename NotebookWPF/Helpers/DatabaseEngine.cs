@@ -251,6 +251,23 @@ namespace NotebookWPF.Helpers
             }
         }
 
+        /// <summary>
+        /// Returns favorite notes
+        /// </summary>
+        /// <returns></returns>
+        public List<Note> GetFavoriteNotes()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(dbFileLocation))
+            {
+                conn.CreateTable<Note>();
+
+                // Get notebooks
+                var favoriteNotes = conn.Table<Note>().Where(n => n.IsFavorite == true).OrderByDescending(n => n.Updated).ToList();
+
+                return favoriteNotes;
+            }
+        }
+
         #endregion
     }
 }

@@ -144,7 +144,7 @@
         <!--- Bottom Panel -->
         <StackPanel DockPanel.Dock="Bottom"
                     Orientation="Horizontal"
-                    Background="{StaticResource DarkGrayColorBrush}"
+                    Background="{StaticResource LightGrayColorBrush}"
                     Height="40">
 
             <TextBlock Text="Edit mode activated."
@@ -163,9 +163,36 @@
 
         </StackPanel>
 
+        <!--- Far Right Panel -->
+        <Border BorderThickness="0 0 1 0" 
+                    Panel.ZIndex="1000">
+            <StackPanel Orientation="Vertical" 
+                    DockPanel.Dock="Left"
+                    Background="{DynamicResource AccentBaseColorBrush}">
+
+                <ToggleButton ToolTip="Show/Hide menu"
+                          Name="btnLeftMenuShowHide"
+                          Checked="btnLeftMenuShowHide_Checked"
+                          Unchecked="btnLeftMenuShowHide_Checked"
+                          Margin="10" 
+                          Width="50"
+                          Height="50"
+                          Style="{DynamicResource CircleToggleButtonWhite}">
+                    <Rectangle Width="15"
+                           Height="15"
+                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                     Visual="{DynamicResource appbar_lines_horizontal_4}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </ToggleButton>
+            </StackPanel>
+        </Border>        
+
         <!--- Left Panel -->
         <DockPanel DockPanel.Dock="Left" 
-                   Background="{DynamicResource AccentBaseColorBrush}"
+                   Background="{DynamicResource AccentColorBrush}"
                    Panel.ZIndex="2" 
                    Name="pnlLeftMenu">
 
@@ -175,10 +202,17 @@
                 <StackPanel Orientation="Vertical"
                             DockPanel.Dock="Top"
                             Margin="15">
-                    <TextBlock Style="{StaticResource HugeText}"
-                               Foreground="White"
-                               Margin="0 0 0 15"
-                               Text="Notebooks"/>
+
+                    <DockPanel Height="50">
+                        <TextBlock Style="{StaticResource HugeText}"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Text="Notebooks"/>
+                    </DockPanel>
+                    
+
+                    
+                    
                     <!--- Buttons -->
                     <StackPanel Orientation="Horizontal"
                                 Height="50">
@@ -235,7 +269,7 @@
                                     SelectedNotebook, 
                                     Mode=TwoWay, 
                                     UpdateSourceTrigger=PropertyChanged}"
-                         Margin="15 0 0 15"
+                         Margin="15 0 15 15"
                          Background="{DynamicResource DarkGrayColorBrush}"
                          BorderThickness="0"
                          VerticalContentAlignment="Top"
@@ -293,7 +327,7 @@
                 <StackPanel Orientation="Vertical"
                             DockPanel.Dock="Top"
                             Margin="15">
-                    <DockPanel>
+                    <DockPanel Height="50">
                         <Button ToolTip="Back to Notebooks"
                                 Click="BackToNotebooksButton_Click"
                                 DockPanel.Dock="Right"
@@ -309,14 +343,11 @@
                                 </Rectangle.OpacityMask>
                             </Rectangle>
                         </Button>
-                        <StackPanel>
-                            <TextBlock Style="{StaticResource HugeText}"
+                        <TextBlock Style="{StaticResource HugeText}"
+                                   VerticalAlignment="Center"
                                        Foreground="White"
                                        TextTrimming="WordEllipsis"
-                                       DockPanel.Dock="Left"
-                                       Text="{Binding SelectedNotebook.Name}"
-/>
-                        </StackPanel>
+                                       Text="Notes"/>
 
                     </DockPanel>
 
@@ -424,18 +455,16 @@
 
         </DockPanel>
 
-        <StackPanel Orientation="Horizontal"
-                    Background="{DynamicResource AccentColorBrush}">                     
+        <!--<StackPanel Orientation="Vertical">                     
 
             <ToggleButton Name="btnLeftMenuShowHide"
                           ToolTip="Show/Hide menu"
-                          VerticalAlignment="Center"
                           Checked="btnLeftMenuShowHide_Checked"
                           Unchecked="btnLeftMenuShowHide_Checked"
-                          Margin="5 0" 
-                          Width="40"
-                          Height="40"
-                          Style="{DynamicResource CircleToggleButtonWhite}">
+                          Margin="10" 
+                          Width="50"
+                          Height="50"
+                          Style="{DynamicResource MetroCircleToggleButtonStyle}">
                 <Rectangle Width="15"
                            Height="15"
                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
@@ -445,7 +474,7 @@
                     </Rectangle.OpacityMask>
                 </Rectangle>
             </ToggleButton>
-        </StackPanel>
+        </StackPanel>-->
 
         
 

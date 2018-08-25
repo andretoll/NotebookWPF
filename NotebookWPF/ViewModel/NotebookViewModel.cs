@@ -19,13 +19,15 @@ namespace NotebookWPF.ViewModel
     {
         #region Private Members
 
-        private DatabaseEngine dbEngine;
+        private IDatabaseEngine dbEngine;
 
         private IDialogCoordinator dialogCoordinator;
 
         private ObservableCollection<Notebook> notebooks;
 
         private ObservableCollection<Note> notes;
+
+        private ObservableCollection<Note> favoriteNotes;
 
         private Notebook selectedNotebook;
 
@@ -34,6 +36,8 @@ namespace NotebookWPF.ViewModel
         private bool notebookIsEditing;
 
         private bool noteIsEditing;
+
+        private bool selectedNoteIsFavorite;
 
         #endregion
 
@@ -63,6 +67,16 @@ namespace NotebookWPF.ViewModel
             }
         }
 
+        public ObservableCollection<Note> FavoriteNotes
+        {
+            get { return favoriteNotes; }
+            set
+            {
+                favoriteNotes = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public Notebook SelectedNotebook
         {
             get { return selectedNotebook; }
@@ -71,7 +85,6 @@ namespace NotebookWPF.ViewModel
                 selectedNotebook = value;
                 NotifyPropertyChanged();
 
-                // Get notes
                 if (selectedNotebook != null)
                     GetNotes(selectedNotebook.Id);
             }
@@ -118,6 +131,18 @@ namespace NotebookWPF.ViewModel
             set
             {
 
+            }
+        }
+
+        public bool SelectedNoteIsFavorite
+        {
+            get { return SelectedNote.IsFavorite; }
+            set
+            {
+                selectedNoteIsFavorite = value;
+                NotifyPropertyChanged();
+
+                ToggleNoteFavorite(value);
             }
         }
 
@@ -237,22 +262,6 @@ namespace NotebookWPF.ViewModel
             }
         }
 
-        private ICommand makeNoteFavorite;
-        public ICommand MakeNoteFavorite
-        {
-            get
-            {
-                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
-                if (moveNoteCommand == null)
-                    moveNoteCommand = new RelayCommand(p => { ToggleNoteFavorite(); }, p => true);
-                return moveNoteCommand;
-            }
-            set
-            {
-                makeNoteFavorite = value;
-            }
-        }
-
         #endregion
 
         #region Constructor
@@ -262,10 +271,13 @@ namespace NotebookWPF.ViewModel
             // Initiate properties
             dbEngine = new DatabaseEngine();
             Notebooks = new ObservableCollection<Notebook>();
+            FavoriteNotes = new ObservableCollection<Note>();
             dialogCoordinator = instance;
 
             // Get notebooks
             GetNotebooks();
+            GetFavoriteNotes();
+
         }
 
         #endregion
@@ -306,6 +318,14 @@ namespace NotebookWPF.ViewModel
             {
                 Notes.Add(item);
             }
+        }
+
+        /// <summary>
+        /// Get all favorite notes
+        /// </summary>
+        public void GetFavoriteNotes()
+        {
+            var favoriteNotesFromDb = dbEngine.GetFavoriteNotes();
         }
 
         /// <summary>
@@ -587,9 +607,9 @@ namespace NotebookWPF.ViewModel
         /// Make Note Favorite
         /// </summary>
         /// <param name="noteId"></param>
-        public void ToggleNoteFavorite()
+        public void ToggleNoteFavorite(bool favorite)
         {
-            SelectedNote.IsFavorite = !SelectedNote.IsFavorite;
+            SelectedNote.IsFavorite = favorite;
             dbEngine.Update(SelectedNote);
         }
 
