@@ -479,7 +479,7 @@ namespace NotebookWPF.ViewModel
             // Delete notebook from database
             dbEngine.Delete(notebookToRemove);
 
-            if (notes != null)
+            if (notesToDelete != null)
             {
                 // Delete notes from device
                 try
@@ -487,12 +487,17 @@ namespace NotebookWPF.ViewModel
                     foreach (var note in notesToDelete)
                     {
                         File.Delete(note.FileLocation);
+
+                        
                     }
                 }
                 catch
                 {
                 }
             }
+
+            // Refresh Favorite Notes
+            GetFavoriteNotes();
         }
 
         /// <summary>
@@ -526,6 +531,9 @@ namespace NotebookWPF.ViewModel
                 Notes.Remove(noteToRemove);
                 SelectedNotebook.NoteCount--;
             }
+
+            if (noteToRemove.IsFavorite)
+                FavoriteNotes.Remove(noteToRemove);
 
             // Delete notebook from database
             dbEngine.Delete(noteToRemove);

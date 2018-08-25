@@ -232,7 +232,7 @@
 
         <!--- Main Panel -->
         <DockPanel DockPanel.Dock="Left" 
-                   Background="{DynamicResource AccentColorBrush}"
+                   Background="{StaticResource DarkGrayColorBrush}"
                    Panel.ZIndex="2" 
                    Name="pnlLeftMenu">
 
@@ -340,6 +340,7 @@
                             VerticalAlignment="Top"
                             Opacity="0.7">
                     <TextBlock Text="No Notebooks."
+                               Foreground="White"
                                Margin="0 20 0 0">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
@@ -358,6 +359,7 @@
             <!--- Notes -->
             <DockPanel Width="250"
                        DockPanel.Dock="Left"
+                       Background="{StaticResource DarkGrayColorBrush}"
                        Name="NotesPanel"
                        Visibility="{Binding 
                         SelectedNotebook, 
@@ -479,6 +481,7 @@
                             Opacity="0.7"
                             VerticalAlignment="Top">
                     <TextBlock Text="No Notes."
+                               Foreground="White"
                                Margin="0 20 0 0">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
