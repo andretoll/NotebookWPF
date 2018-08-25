@@ -19,7 +19,7 @@
     BorderThickness="0"
     GlowBrush="Black"
     Title="Simple Notes" Height="600" Width="1200">
-    
+
     <!--- Window Local Resources -->
     <Window.Resources>
         <Style x:Key="CustomMetroListBoxItem"
@@ -163,13 +163,14 @@
 
         </StackPanel>
 
-        <!--- Far Right Panel -->
+        <!--- Far Left Panel -->
         <Border BorderThickness="0 0 1 0" 
                     Panel.ZIndex="1000">
             <StackPanel Orientation="Vertical" 
                     DockPanel.Dock="Left"
                     Background="{DynamicResource AccentBaseColorBrush}">
 
+                <!--- Button to toggle panel show/hide -->
                 <ToggleButton ToolTip="Show/Hide menu"
                           Name="btnLeftMenuShowHide"
                           Checked="btnLeftMenuShowHide_Checked"
@@ -187,10 +188,49 @@
                         </Rectangle.OpacityMask>
                     </Rectangle>
                 </ToggleButton>
-            </StackPanel>
-        </Border>        
 
-        <!--- Left Panel -->
+                <!--- Button to open favorites panel -->
+                <Controls:Badged Badge="{Binding Path=FavoriteNotes.Count}"
+                                 Margin="5"
+                                 BadgePlacementMode="Top"
+                                 BadgeBackground="{StaticResource DarkGrayColorBrush}">
+                    <Button ToolTip="Favorite Notes"
+                                Click="FavoriteNotes_Click"
+                                Width="50"
+                                Height="50"
+                                Style="{DynamicResource CircleButtonWhite}">
+                        <Rectangle Width="20"
+                                       Height="20"
+                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill"
+                                                 Visual="{DynamicResource appbar_star}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                </Controls:Badged>                
+
+                <!--- Button to open settings flyout -->
+                <Button ToolTip="Settings"
+                                Click="SettingsButton_Click"
+                        Margin="10"
+                                Width="50"
+                                Height="50"
+                                Style="{DynamicResource CircleButtonWhite}">
+                    <Rectangle Width="20"
+                                       Height="20"
+                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                                 Visual="{DynamicResource appbar_settings}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Button>
+
+            </StackPanel>
+        </Border>
+
+        <!--- Main Panel -->
         <DockPanel DockPanel.Dock="Left" 
                    Background="{DynamicResource AccentColorBrush}"
                    Panel.ZIndex="2" 
@@ -205,14 +245,14 @@
 
                     <DockPanel Height="50">
                         <TextBlock Style="{StaticResource HugeText}"
-                                   VerticalAlignment="Center"
+                                   VerticalAlignment="Bottom"
                                    Foreground="White"
                                    Text="Notebooks"/>
                     </DockPanel>
-                    
 
-                    
-                    
+
+
+
                     <!--- Buttons -->
                     <StackPanel Orientation="Horizontal"
                                 Height="50">
@@ -276,7 +316,7 @@
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False" 
                          ItemContainerStyle="{StaticResource CustomMetroListBoxItem}">
-                    
+
                     <ListBox.Style>
                         <Style TargetType="ListBox">
                             <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
@@ -343,8 +383,9 @@
                                 </Rectangle.OpacityMask>
                             </Rectangle>
                         </Button>
+                        
                         <TextBlock Style="{StaticResource HugeText}"
-                                   VerticalAlignment="Center"
+                                   VerticalAlignment="Bottom"
                                        Foreground="White"
                                        TextTrimming="WordEllipsis"
                                        Text="Notes"/>
@@ -453,37 +494,97 @@
                 </StackPanel>
             </DockPanel>
 
+            <!--- Favorite Notes -->
+            <DockPanel Width="250"
+                       DockPanel.Dock="Left"
+                       Name="FavoritePanel"
+                       Background="{StaticResource DarkGrayColorBrush}"
+                       Visibility="Collapsed">
+
+                <!--- Header -->
+                <StackPanel Orientation="Vertical"
+                            DockPanel.Dock="Top"
+                            Margin="15">
+                    <DockPanel Height="50">
+                        <Button ToolTip="Back to Notebooks"
+                                Click="CloseFavoritesButton_Click"
+                                DockPanel.Dock="Right"
+                                Width="40"
+                                Height="40"
+                                Style="{DynamicResource CircleButtonWhite}">
+                            <Rectangle Width="15"
+                                       Height="15"
+                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill"
+                                                 Visual="{DynamicResource appbar_arrow_left}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </Button>
+
+                        <TextBlock Style="{StaticResource HugeText}"
+                                   VerticalAlignment="Bottom"
+                                       Foreground="White"
+                                       TextTrimming="WordEllipsis"
+                                       Text="Favorite notes"/>
+
+                    </DockPanel>
+                </StackPanel>
+
+                <!--- List of Favorite Notes -->
+                <ListBox ItemsSource="{Binding FavoriteNotes, Mode=TwoWay}"
+                         Name="FavoriteNotesListBox"
+                         SelectionChanged="NotesListBox_SelectionChanged"
+                         SelectedItem="{Binding 
+                                        SelectedNote, 
+                                        Mode=TwoWay, 
+                                        UpdateSourceTrigger=PropertyChanged}"
+                         Margin="15 0 0 15"
+                         BorderThickness="0"
+                         Background="{DynamicResource DarkGrayColorBrush}"
+                         VerticalContentAlignment="Top"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.CanContentScroll="False"
+                         ItemContainerStyle="{StaticResource CustomMetroListBoxItem}">
+                    <ListBox.Style>
+                        <Style TargetType="ListBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding FavoriteNotes.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.Style>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <!--- Note Data Template -->
+                            <uc:FavoriteNotesUserControl DataContext="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!--- If no notes exists -->
+                <StackPanel HorizontalAlignment="Center"
+                            Opacity="0.7"
+                            VerticalAlignment="Top">
+                    <TextBlock Text="No Favorites."
+                               Foreground="White"
+                               Margin="0 20 0 0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding FavoriteNotes.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
+            </DockPanel>
+
         </DockPanel>
-
-        <!--<StackPanel Orientation="Vertical">                     
-
-            <ToggleButton Name="btnLeftMenuShowHide"
-                          ToolTip="Show/Hide menu"
-                          Checked="btnLeftMenuShowHide_Checked"
-                          Unchecked="btnLeftMenuShowHide_Checked"
-                          Margin="10" 
-                          Width="50"
-                          Height="50"
-                          Style="{DynamicResource MetroCircleToggleButtonStyle}">
-                <Rectangle Width="15"
-                           Height="15"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Stretch="Fill"
-                                     Visual="{DynamicResource appbar_lines_horizontal_4}"/>
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-            </ToggleButton>
-        </StackPanel>-->
-
-        
-
-        <!--- Separator -->
-        <!--<StackPanel Margin="0"
-                    Orientation="Horizontal">
-            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
-                       Opacity="0.3"/>
-        </StackPanel>-->
 
         <!--- Text Editor -->
         <StackPanel>

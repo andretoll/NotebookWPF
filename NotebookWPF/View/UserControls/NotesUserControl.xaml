@@ -86,6 +86,7 @@
                     <!--- Favorite Icon -->
                     <Rectangle Width="15"
                                Height="15"
+                               Margin="5 0 0 0"
                                Fill="Gold"
                                Visibility="{Binding IsFavorite, Converter={StaticResource booleanToVisibilityConverter}}">
                         <Rectangle.OpacityMask>

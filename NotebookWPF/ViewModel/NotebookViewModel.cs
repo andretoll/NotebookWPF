@@ -262,6 +262,22 @@ namespace NotebookWPF.ViewModel
             }
         }
 
+        private ICommand favoriteNotesCommand;
+        public ICommand FavoriteNotesCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (favoriteNotesCommand == null)
+                    favoriteNotesCommand = new RelayCommand(p => { GetFavoriteNotes(); }, p => true);
+                return favoriteNotesCommand;
+            }
+            set
+            {
+                favoriteNotesCommand = value;
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -326,6 +342,13 @@ namespace NotebookWPF.ViewModel
         public void GetFavoriteNotes()
         {
             var favoriteNotesFromDb = dbEngine.GetFavoriteNotes();
+
+            FavoriteNotes = new ObservableCollection<Note>();
+
+            foreach (var item in favoriteNotesFromDb)
+            {
+                FavoriteNotes.Add(item);
+            }
         }
 
         /// <summary>
@@ -343,7 +366,7 @@ namespace NotebookWPF.ViewModel
 
             // If input was cancelled, return
             if (result == null)
-                return;            
+                return;
 
             // If something was entered
             if (result.Count() > 0)
@@ -382,20 +405,20 @@ namespace NotebookWPF.ViewModel
             if (dbEngine.NoteTitleExists(result, 0))
             {
                 while (dbEngine.NoteTitleExists(result, 0) && result != null)
-                {                    
+                {
                     result = await dialogCoordinator.ShowInputAsync(this, "Title taken", "A Note with that title already exists! \n\nEnter a title for your new Note.", new MetroDialogSettings()
                     {
                         ColorScheme = MetroDialogColorScheme.Theme,
                         AffirmativeButtonText = "Save",
                         AnimateHide = false,
-                        DefaultText = result                        
+                        DefaultText = result
                     });
                 }
             }
 
             // If input was cancelled, return
             if (result == null)
-                return;            
+                return;
 
             // If something was entered
             if (result.Count() > 0)
@@ -469,7 +492,7 @@ namespace NotebookWPF.ViewModel
                 catch
                 {
                 }
-            }    
+            }
         }
 
         /// <summary>
@@ -611,6 +634,12 @@ namespace NotebookWPF.ViewModel
         {
             SelectedNote.IsFavorite = favorite;
             dbEngine.Update(SelectedNote);
+
+            if (favorite)
+                FavoriteNotes.Add(SelectedNote);
+            else
+                FavoriteNotes.Remove(SelectedNote);
+
         }
 
         #endregion

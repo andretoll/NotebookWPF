@@ -97,6 +97,9 @@
     <Compile Include="ValueConverters\ReversedBooleanToVisibilityConverter.cs" />
     <Compile Include="ViewModel\NotebookViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="View\UserControls\FavoriteNotesUserControl.xaml.cs">
+      <DependentUpon>FavoriteNotesUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\NotebooksUserControl.xaml.cs">
       <DependentUpon>NotebooksUserControl.xaml</DependentUpon>
     </Compile>
@@ -131,6 +134,10 @@
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControls\FavoriteNotesUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\NotebooksUserControl.xaml">
       <SubType>Designer</SubType>

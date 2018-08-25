@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="NotebookWPF.View.UserControls.FavoriteNotesUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NotebookWPF.View.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <!--- ListBoxItem Wrapper-->
+    <DockPanel Width="200"
+               Margin="5 5 0 0"
+               Tag="{Binding 
+                        RelativeSource={RelativeSource 
+                        Mode=FindAncestor, 
+                        AncestorType={x:Type ListBox}}, 
+                        Path=DataContext}"
+               Background="Transparent">
+
+        <!--- ListBoxItem menu -->
+        <DockPanel.ContextMenu>
+            <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+
+                <MenuItem Header="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToStringConverter}}"
+                          IsCheckable="True"
+                          IsChecked="{Binding SelectedNoteIsFavorite}">
+                    <MenuItem.Icon>
+                        <Rectangle Width="22" 
+                                   Height="22"
+                                   Margin="10 0 0 0"
+                                   Visibility="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToVisibilityConverter}}">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="Gold"/>
+                            </Rectangle.Fill>
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{DynamicResource appbar_star}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+            </ContextMenu>
+        </DockPanel.ContextMenu>
+
+        <!--- Notebook Information and Actions -->
+        <DockPanel ToolTip="{Binding Title}"
+                   DockPanel.Dock="Top">
+
+            <!--- Information -->
+            <StackPanel Orientation="Vertical"
+                        DockPanel.Dock="Left">
+
+                <!--- Title -->
+                <StackPanel Height="30"
+                            Orientation="Horizontal">
+
+                    <!--- Favorite Icon -->
+                    <Rectangle Width="15"
+                               Margin="5 0 0 0"
+                               Height="15"
+                               Fill="Gold"
+                               Visibility="{Binding IsFavorite, Converter={StaticResource booleanToVisibilityConverter}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Visual="{DynamicResource appbar_star}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+
+                    <!--- Name Container -->
+                    <StackPanel Orientation="Horizontal"
+                                MaxWidth="120">
+                        <TextBlock Text="{Binding Title, Mode=TwoWay}"
+                               Margin="5 5 0 0"
+                                   MaxWidth="120"
+                               TextTrimming="CharacterEllipsis"
+                               Style="{StaticResource LargeText}"
+                               Visibility="{Binding 
+                                RelativeSource={RelativeSource 
+                                Mode=FindAncestor, 
+                                AncestorType={x:Type ListBox}}, 
+                                Path=DataContext.NoteIsEditing, 
+                                Converter={StaticResource reversedBooleanToVisibilityConverter}, 
+                                Mode=TwoWay}"/>
+
+                    </StackPanel>
+                </StackPanel>
+
+                <!--- Other information -->
+                <StackPanel>
+                    <TextBlock Text="{Binding Updated, StringFormat={}Edited: {0:MM/dd HH:mm}}"
+                               Style="{StaticResource TinyText}"
+                               Margin="5 0 0 10"/>
+                </StackPanel>
+
+            </StackPanel>
+
+        </DockPanel>
+        
+    </DockPanel>
+
+</UserControl>

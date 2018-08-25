@@ -13,9 +13,9 @@
     <!---SolidColorBrushes -->
     <SolidColorBrush x:Key="DarkGrayColorBrush" Color="{StaticResource DarkGrayColor}"></SolidColorBrush>
     <SolidColorBrush x:Key="LightGrayColorBrush" Color="{StaticResource LightGrayColor}"></SolidColorBrush>
-    
-    
-    
+
+
+
 
     <!--- Font Families -->
     <FontFamily x:Key="DefaultFont">Lato</FontFamily>

@@ -141,7 +141,7 @@ namespace NotebookWPF.Helpers
                     conn.CreateTable<Note>();
 
                     // Get notebooks
-                    var notes = conn.Table<Note>().Where(n => n.NotebookId == id).OrderByDescending(n => n.Updated).ToList();
+                    var notes = conn.Table<Note>().Where(n => n.NotebookId == id).OrderByDescending(n => n.IsFavorite).ThenByDescending(n => n.Updated).ToList();
 
                     return notes;
                 }

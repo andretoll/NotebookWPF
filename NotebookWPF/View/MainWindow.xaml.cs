@@ -68,6 +68,9 @@ namespace NotebookWPF
                 NotesPanel.Visibility = Visibility.Visible;
             }
             else NotesPanel.Visibility = Visibility.Collapsed;
+
+            // Close favorite notes panel if open
+            FavoritePanel.Visibility = Visibility.Collapsed;
         }
 
         private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -106,6 +109,32 @@ namespace NotebookWPF
 
         }
 
+        private void FavoriteNotes_Click(object sender, RoutedEventArgs e)
+        {
+            NotebooksListBox.SelectedItem = null;
+
+            if (FavoritePanel.Visibility == Visibility.Visible)
+            {
+                FavoritePanel.Visibility = Visibility.Collapsed;
+                NotebooksPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // Check settings for side-by-side panels
+                if (!SettingsHelper.sideBySidePanels)
+                    NotebooksPanel.Visibility = Visibility.Collapsed;
+
+                FavoritePanel.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void CloseFavoritesButton_Click(object sender, RoutedEventArgs e)
+        {
+            FavoritePanel.Visibility = Visibility.Collapsed;
+
+            NotebooksPanel.Visibility = Visibility.Visible;
+        }
+
         #endregion
 
         #region Helper Methods
@@ -125,8 +154,7 @@ namespace NotebookWPF
                 ((Storyboard)sb).Begin(pnl);
         }
 
-        #endregion
 
-        
+        #endregion
     }
 }
