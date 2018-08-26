@@ -97,7 +97,7 @@
                     <!--- Name Container -->
                     <StackPanel Orientation="Horizontal"
                                 MaxWidth="120">
-                        <TextBlock Text="{Binding Title, Mode=TwoWay}"
+                        <TextBlock Text="{Binding Title, Mode=OneWay}"
                                Margin="5 5 0 0"
                                    MaxWidth="120"
                                TextTrimming="CharacterEllipsis"

@@ -39,14 +39,14 @@ namespace NotebookWPF
             // Load app settings
             SettingsHelper.LoadSettings();
 
-            InitializeComponent();            
+            InitializeComponent();
 
             // Initiate NotebookViewModel and pass in an instance of DialogCoordinator (for metro dialogs)
             notebookViewModel = new NotebookViewModel(DialogCoordinator.Instance);
 
             // Set DataContext to ViewModel
             this.DataContext = notebookViewModel;
-        }        
+        }
 
         #endregion
 
@@ -120,9 +120,7 @@ namespace NotebookWPF
             }
             else
             {
-                // Check settings for side-by-side panels
-                if (!SettingsHelper.sideBySidePanels)
-                    NotebooksPanel.Visibility = Visibility.Collapsed;
+                NotebooksPanel.Visibility = Visibility.Collapsed;
 
                 FavoritePanel.Visibility = Visibility.Visible;
             }

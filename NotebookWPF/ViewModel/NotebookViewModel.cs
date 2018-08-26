@@ -87,6 +87,8 @@ namespace NotebookWPF.ViewModel
 
                 if (selectedNotebook != null)
                     GetNotes(selectedNotebook.Id);
+
+                NoteIsEditing = false;
             }
         }
 
@@ -130,7 +132,6 @@ namespace NotebookWPF.ViewModel
             }
             set
             {
-
             }
         }
 
