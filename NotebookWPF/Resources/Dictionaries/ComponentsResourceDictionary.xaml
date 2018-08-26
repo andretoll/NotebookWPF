@@ -58,6 +58,7 @@
     <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="TinyText">
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Opacity" Value="0.6"/>
+        <Setter Property="Margin" Value="0 0 0 5"/>
     </Style>
     
     

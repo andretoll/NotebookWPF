@@ -89,6 +89,7 @@ namespace NotebookWPF
             NotesPanel.Visibility = Visibility.Collapsed;
 
             NotebooksListBox.SelectedItem = null;
+            NotesListBox.SelectedItem = null;
         }
 
         private void ListViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)

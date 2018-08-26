@@ -141,7 +141,7 @@
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
 
-    <DockPanel>
+    <DockPanel LastChildFill="True">
 
         <!--- Bottom Panel -->
         <StackPanel DockPanel.Dock="Bottom"
@@ -363,12 +363,12 @@
                 </DockPanel>
 
                 <!--- Separator -->
-                <StackPanel Margin="0" 
+                <!--<StackPanel Margin="0" 
                             Orientation="Horizontal"
-                            Visibility="{Binding Path=Visibility, ElementName=NotesPanel}">
+                            Visibility="{Binding Path=Visibility, ElementName=NotebooksPanel}">
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
                        Opacity="0.5"/>
-                </StackPanel>
+                </StackPanel>-->
 
                 <!--- Notes -->
                 <DockPanel MinWidth="{Binding Path=ActualWidth, ElementName=NotebooksPanel}"
@@ -378,6 +378,13 @@
                            Visibility="{Binding 
                         SelectedNotebook, 
                         Converter={StaticResource nullToVisibilityConverter}}">
+
+                    <StackPanel Margin="0" 
+                            Orientation="Horizontal"
+                            Visibility="{Binding Path=Visibility, ElementName=NotebooksPanel}">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
+                       Opacity="0.5"/>
+                    </StackPanel>
 
                     <!--- Header -->
                     <StackPanel Orientation="Vertical"
@@ -593,9 +600,85 @@
         </DockPanel>
 
         <!--- Text Editor -->
-        <StackPanel>
+        <DockPanel LastChildFill="True"
+                   Margin="10"
+                   Visibility="{Binding SelectedNote, Converter={StaticResource nullToVisibilityConverter}}">
 
-        </StackPanel>
+            <!--- Header -->
+            <StackPanel HorizontalAlignment="Stretch"
+                        DockPanel.Dock="Top"
+                        VerticalAlignment="Top">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--- Note Information -->
+                    <StackPanel Orientation="Vertical"
+                                Grid.Column="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding SelectedNotebook.Name, StringFormat={}{0} /}"
+                                       Style="{StaticResource HugeText}"
+                                       Opacity="0.3"/>
+                            <TextBlock Text="{Binding SelectedNote.Title, StringFormat={} {0}}"
+                                       Style="{StaticResource HugeText}"/>
+                        </StackPanel>
+                        <TextBlock Text="{Binding SelectedNote.Created, StringFormat={}Created: {0:yyyy/MM/dd HH:mm}}"
+                               Style="{StaticResource TinyText}"/>
+                        <TextBlock Text="{Binding SelectedNote.Updated, StringFormat={}Updated: {0:yyyy/MM/dd HH:mm}}"
+                               Style="{StaticResource TinyText}"/>
+                    </StackPanel>
+
+                </Grid>
+                
+            </StackPanel>
+
+            <!--- Separator -->
+            <StackPanel Margin="0 10 0 20" 
+                        DockPanel.Dock="Top"
+                        Orientation="Vertical">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                           Opacity="0.5"/>
+            </StackPanel>            
+
+            <!--- Buttons -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0 10 0 0"
+                        DockPanel.Dock="Bottom">
+
+                <!--- Save Note Button -->
+                <Button ToolTip="Save Note"
+                        Style="{StaticResource LargeButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <!--- Draw Icon -->
+                        <Rectangle Width="20"
+                                               Height="20"
+                                               Fill="{Binding 
+                                                RelativeSource={RelativeSource 
+                                                AncestorType=Button}, 
+                                                Path=Foreground}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill"
+                                                        Visual="{StaticResource appbar_save}"/>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                        <!--- Button text -->
+                        <TextBlock Margin="4 0 0 0"
+                                               VerticalAlignment="Center"
+                                               Text="Save Note"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+
+            <!--- Editor -->
+            <RichTextBox x:Name="NoteTextEditor"
+                         Padding="2"
+                         FontSize="12">
+
+            </RichTextBox>
+        </DockPanel>
 
     </DockPanel>
 
