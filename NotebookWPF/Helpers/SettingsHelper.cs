@@ -33,7 +33,6 @@ namespace NotebookWPF.Helpers
         // Writable public Settings
         public static string noteDirectory;
         public static bool sideBySidePanels;
-        public static bool autohidePanels;
 
         #endregion
 
@@ -91,7 +90,6 @@ namespace NotebookWPF.Helpers
                 // Get application settings from file
                 noteDirectory = doc.Root.Elements("noteDirectory").FirstOrDefault().Attribute("path").Value;     
                 sideBySidePanels = bool.Parse(doc.Root.Elements("sideBySidePanels").FirstOrDefault().Attribute("enabled").Value);
-                autohidePanels = bool.Parse(doc.Root.Elements("autohidePanels").FirstOrDefault().Attribute("enabled").Value);
             }
             catch
             {
@@ -142,9 +140,7 @@ namespace NotebookWPF.Helpers
                 new XElement("noteDirectory",
                     new XAttribute("path", noteDefaultDirectory)),
                 new XElement("sideBySidePanels",
-                    new XAttribute("enabled", "true")),
-                new XElement("autohidePanels",
-                    new XAttribute("enabled", "false"))));
+                    new XAttribute("enabled", "true"))));
 
             xdoc.Save(filePath);
         }

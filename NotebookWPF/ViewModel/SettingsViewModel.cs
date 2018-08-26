@@ -23,8 +23,6 @@ namespace NotebookWPF.ViewModel
 
         private bool sideBySidePanels;
 
-        private bool autohidePanels;
-
         #endregion
 
         #region Public Members
@@ -91,19 +89,6 @@ namespace NotebookWPF.ViewModel
             }
         }
 
-        public bool AutohidePanels
-        {
-            get { return autohidePanels; }
-            set
-            {
-                autohidePanels = value;
-                NotifyPropertyChanged();
-
-                // Save changes
-                SettingsHelper.SaveSettings(nameof(autohidePanels), SettingsHelper.SettingsProperties.enabled, value.ToString());
-            }
-        }
-
         #endregion
 
         #region Constructor
@@ -117,7 +102,6 @@ namespace NotebookWPF.ViewModel
             // Load Application settings
             noteDirectory = SettingsHelper.noteDirectory;
             sideBySidePanels = SettingsHelper.sideBySidePanels;
-            autohidePanels = SettingsHelper.autohidePanels;
         }
 
         #endregion        

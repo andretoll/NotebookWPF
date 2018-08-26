@@ -75,16 +75,13 @@ namespace NotebookWPF
 
         private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((sender as ListBox).SelectedItems.Count > 0)
-            {
-                // Check settings for autohide panel
-                if (SettingsHelper.autohidePanels)
-                {
-                    ShowHideMenu("sbHideLeftMenu", MainPanel);
-                    ShowHidePanelButton.IsChecked = true;
-                }
-            }
+
         }
+
+        private void FavoriteNotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }        
 
         private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)
         {

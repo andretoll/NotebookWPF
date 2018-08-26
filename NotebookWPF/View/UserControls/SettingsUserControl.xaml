@@ -61,15 +61,6 @@
                                                IsChecked="{Binding SideBySidePanels}"/>
                     </StackPanel>
 
-                    <!--- Auto-hide Panels -->
-                    <Label Content="Auto-hide Panels"
-                           Style="{StaticResource LabelStyle}"/>
-                    <StackPanel Width="100"
-                                HorizontalAlignment="Left">
-                        <controls:ToggleSwitch Margin="5 0 0 0"
-                                               IsChecked="{Binding AutohidePanels}"/>
-                    </StackPanel>
-
                 </StackPanel>
             </TabItem>
 

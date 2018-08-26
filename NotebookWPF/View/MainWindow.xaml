@@ -211,7 +211,11 @@
                 </RadioButton>
 
                 <!--- Button to show favorite Notes -->
-                <RadioButton ToolTip="All Notebooks"
+                <Controls:Badged Badge="{Binding Path=FavoriteNotes.Count}"
+                                 Margin="0 10 0 0"
+                                 BadgePlacementMode="Bottom"
+                                 BadgeBackground="{StaticResource DarkGrayColorBrush}"/>
+                <RadioButton ToolTip="Favorite Notes"
                              Name="FavoritesRadioButton"
                              Checked="FavoritesRadioButton_Checked"
                              Unchecked="FavoritesRadioButton_Checked"
@@ -227,7 +231,7 @@
                                          Visual="{DynamicResource appbar_star}"/>
                         </Rectangle.OpacityMask>
                     </Rectangle>
-                </RadioButton>
+                </RadioButton>                              
 
             </StackPanel>
         </Border>
@@ -542,7 +546,7 @@
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False"
                          ItemContainerStyle="{StaticResource CustomMetroListBoxItem}"
-                         SelectionChanged="NotesListBox_SelectionChanged"
+                         SelectionChanged="FavoriteNotesListBox_SelectionChanged"
                          SelectedItem="{Binding 
                                         SelectedNote, 
                                         Mode=TwoWay, 
