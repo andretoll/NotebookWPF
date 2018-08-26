@@ -28,7 +28,7 @@ namespace NotebookWPF
     {
         #region Private Members
 
-        private NotebookViewModel notebookViewModel;
+        private NotebookViewModel _notebookViewModel;
 
         #endregion
 
@@ -42,10 +42,10 @@ namespace NotebookWPF
             InitializeComponent();
 
             // Initiate NotebookViewModel and pass in an instance of DialogCoordinator (for metro dialogs)
-            notebookViewModel = new NotebookViewModel(DialogCoordinator.Instance);
+            _notebookViewModel = new NotebookViewModel(DialogCoordinator.Instance);
 
             // Set DataContext to ViewModel
-            this.DataContext = notebookViewModel;
+            this.DataContext = _notebookViewModel;
         }
 
         #endregion
@@ -54,6 +54,7 @@ namespace NotebookWPF
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
+            // Open or close SettingsFlyout
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
         }
 
@@ -96,11 +97,13 @@ namespace NotebookWPF
 
         private void ListViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            // Prevent right-click selection
             e.Handled = true;
         }
 
         private void btnLeftMenuShowHide_Checked(object sender, RoutedEventArgs e)
         {
+            // Toggle show/hide panels
             if ((sender as System.Windows.Controls.Primitives.ToggleButton).IsChecked ?? false)
             {
                 ShowHideMenu("sbHideLeftMenu", pnlLeftMenu);
@@ -144,7 +147,6 @@ namespace NotebookWPF
         /// <param name="pnl"></param>
         private void ShowHideMenu(string Storyboard, DockPanel pnl)
         {
-            //Storyboard sb = Resources[Storyboard] as Storyboard;
             var sb = this.FindResource(Storyboard);
 
             // If Storyboard was found, play it

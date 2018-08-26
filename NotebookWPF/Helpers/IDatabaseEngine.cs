@@ -13,6 +13,8 @@ namespace NotebookWPF.Helpers
     /// </summary>
     interface IDatabaseEngine
     {
+        #region Interface Members
+
         int Insert<T>(T item);
 
         bool Update<T>(T item);
@@ -32,5 +34,7 @@ namespace NotebookWPF.Helpers
         string GetNoteName(int id);
 
         bool NoteTitleExists(string title, int noteToEditId);
+
+        #endregion
     }
 }

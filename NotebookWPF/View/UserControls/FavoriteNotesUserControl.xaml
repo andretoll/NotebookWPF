@@ -3,31 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:NotebookWPF.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <!--- ListBoxItem Wrapper-->
     <DockPanel Width="200"
-               Margin="5 5 0 0"
+               ToolTip="{Binding Name}"                   
+               Margin="5 5 0 0"               
+               Background="Transparent"
                Tag="{Binding 
                         RelativeSource={RelativeSource 
                         Mode=FindAncestor, 
                         AncestorType={x:Type ListBox}}, 
-                        Path=DataContext}"
-               Background="Transparent">
+                        Path=DataContext}">
 
         <!--- ListBoxItem menu -->
         <DockPanel.ContextMenu>
             <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
 
+                <!--- Toggle favorite -->
                 <MenuItem Header="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToStringConverter}}"
                           IsCheckable="True"
                           IsChecked="{Binding SelectedNoteIsFavorite}">
                     <MenuItem.Icon>
                         <Rectangle Width="22" 
                                    Height="22"
-                                   Margin="10 0 0 0"
                                    Visibility="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToVisibilityConverter}}">
                             <Rectangle.Fill>
                                 <SolidColorBrush Color="Gold"/>
@@ -43,8 +43,7 @@
         </DockPanel.ContextMenu>
 
         <!--- Notebook Information and Actions -->
-        <DockPanel ToolTip="{Binding Title}"
-                   DockPanel.Dock="Top">
+        <DockPanel DockPanel.Dock="Top">
 
             <!--- Information -->
             <StackPanel Orientation="Vertical"
@@ -68,24 +67,29 @@
                     <!--- Name Container -->
                     <StackPanel Orientation="Horizontal"
                                 MaxWidth="120">
-                        <TextBlock Text="{Binding Title, Mode=TwoWay}"
-                               Margin="5 5 0 0"
-                                   MaxWidth="120"
-                               TextTrimming="CharacterEllipsis"
-                               Style="{StaticResource LargeText}"
-                               Visibility="{Binding 
-                                RelativeSource={RelativeSource 
-                                Mode=FindAncestor, 
-                                AncestorType={x:Type ListBox}}, 
-                                Path=DataContext.NoteIsEditing, 
-                                Converter={StaticResource reversedBooleanToVisibilityConverter}, 
-                                Mode=TwoWay}"/>
+                        
+                        <!--- Text -->
+                        <TextBlock Text="{Binding Title, Mode=OneWay}"
+                                   Margin="5 5 0 0"
+                                   MaxWidth="110"
+                                   TextTrimming="CharacterEllipsis"
+                                   Style="{StaticResource LargeText}"
+                                   Visibility="{Binding 
+                                    RelativeSource={RelativeSource 
+                                    Mode=FindAncestor, 
+                                    AncestorType={x:Type ListBox}}, 
+                                    Path=DataContext.NoteIsEditing, 
+                                    Converter={StaticResource reversedBooleanToVisibilityConverter}, 
+                                    Mode=TwoWay}"/>
 
                     </StackPanel>
+                    
                 </StackPanel>
 
                 <!--- Other information -->
                 <StackPanel>
+                    
+                    <!--- Note updated -->
                     <TextBlock Text="{Binding Updated, StringFormat={}Edited: {0:MM/dd HH:mm}}"
                                Style="{StaticResource TinyText}"
                                Margin="5 0 0 10"/>

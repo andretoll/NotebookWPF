@@ -20,9 +20,13 @@ namespace NotebookWPF.View.UserControls
     /// </summary>
     public partial class FavoriteNotesUserControl : UserControl
     {
+        #region Constructor
+
         public FavoriteNotesUserControl()
         {
             InitializeComponent();
         }
+
+        #endregion
     }
 }

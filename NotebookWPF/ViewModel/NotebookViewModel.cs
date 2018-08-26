@@ -293,8 +293,9 @@ namespace NotebookWPF.ViewModel
 
             // Get notebooks
             GetNotebooks();
-            GetFavoriteNotes();
 
+            // Get favorite notes
+            GetFavoriteNotes();
         }
 
         #endregion
@@ -487,9 +488,7 @@ namespace NotebookWPF.ViewModel
                 {
                     foreach (var note in notesToDelete)
                     {
-                        File.Delete(note.FileLocation);
-
-                        
+                        File.Delete(note.FileLocation);                        
                     }
                 }
                 catch
@@ -647,7 +646,14 @@ namespace NotebookWPF.ViewModel
             if (favorite)
                 FavoriteNotes.Add(SelectedNote);
             else
-                FavoriteNotes.Remove(SelectedNote);
+            {
+                // Find favorite note
+                var noteToRemove = FavoriteNotes.Where(n => n.Id == SelectedNote.Id).FirstOrDefault();
+
+                // Remove note from favorites
+                if (noteToRemove != null)
+                    FavoriteNotes.Remove(noteToRemove);
+            }
 
         }
 

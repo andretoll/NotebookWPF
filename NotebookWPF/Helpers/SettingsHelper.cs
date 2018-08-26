@@ -64,7 +64,7 @@ namespace NotebookWPF.Helpers
                 doc.Save(filePath);
             }
 
-            // Reload settings
+            // Reload all settings
             LoadSettings();
         }
 
@@ -122,6 +122,7 @@ namespace NotebookWPF.Helpers
             // If file does not exist
             if (!File.Exists(filePath))
             {
+                // Create default settings
                 CreateDefaultSettings();                
             }
         }
@@ -177,10 +178,9 @@ namespace NotebookWPF.Helpers
 
                 // Apply either theme or accent
                 if (string.IsNullOrEmpty(theme))
-                {
                     theme = appStyle.Item1.Name;
-                }
-                else
+                
+                if (string.IsNullOrEmpty(accent))
                     accent = appStyle.Item2.Name;
             }
 
@@ -198,8 +198,8 @@ namespace NotebookWPF.Helpers
                 // If any errors occur, set base theme and accent
                 ThemeManager.ChangeAppStyle(
                     Application.Current,
-                    ThemeManager.GetAccent("Blue"),
-                    ThemeManager.GetAppTheme("BaseLight")
+                    ThemeManager.GetAccent(defaultAccent),
+                    ThemeManager.GetAppTheme(defaultTheme)
                 );
             }
         }
@@ -267,6 +267,7 @@ namespace NotebookWPF.Helpers
             accents.Add("Taupe");
             accents.Add("Sienna");
 
+            // Return list ordered alphabetically
             return accents.OrderBy(a => a).ToList();
         }
 

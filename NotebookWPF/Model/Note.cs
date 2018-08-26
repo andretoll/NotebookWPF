@@ -14,7 +14,6 @@ namespace NotebookWPF.Model
         #region Private Members
 
         private string title;
-
         private bool isFavorite;
 
         #endregion

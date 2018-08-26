@@ -7,7 +7,6 @@
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     Dialog:DialogParticipation.Register="{Binding}"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:NotebookWPF"
     xmlns:uc="clr-namespace:NotebookWPF.View.UserControls"
     mc:Ignorable="d"
     ShowIconOnTitleBar="True"
@@ -22,6 +21,8 @@
 
     <!--- Window Local Resources -->
     <Window.Resources>
+        
+        <!--- ListBoxItem -->
         <Style x:Key="CustomMetroListBoxItem"
                BasedOn="{StaticResource MetroListBoxItem}"
                TargetType="{x:Type ListBoxItem}">
@@ -32,14 +33,14 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
                         <Border x:Name="Border"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <ContentPresenter Margin="{TemplateBinding Padding}"
-                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -80,6 +81,7 @@
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
+        
     </Window.Resources>
 
     <!--- Icon Template -->
@@ -165,26 +167,26 @@
 
         <!--- Far Left Panel -->
         <Border BorderThickness="0 0 1 0" 
-                    Panel.ZIndex="1000">
-            <StackPanel Orientation="Vertical" 
-                    DockPanel.Dock="Left"
-                    Background="{DynamicResource AccentBaseColorBrush}">
+                Panel.ZIndex="1000">
+            <StackPanel Orientation="Vertical"
+                        DockPanel.Dock="Left"
+                        Background="{DynamicResource AccentBaseColorBrush}">
 
                 <!--- Button to toggle panel show/hide -->
                 <ToggleButton ToolTip="Show/Hide menu"
-                          Name="btnLeftMenuShowHide"
-                          Checked="btnLeftMenuShowHide_Checked"
-                          Unchecked="btnLeftMenuShowHide_Checked"
-                          Margin="10" 
-                          Width="50"
-                          Height="50"
-                          Style="{DynamicResource CircleToggleButtonWhite}">
+                              Name="btnLeftMenuShowHide"
+                              Checked="btnLeftMenuShowHide_Checked"
+                              Unchecked="btnLeftMenuShowHide_Checked"
+                              Margin="10" 
+                              Width="50"
+                              Height="50"
+                              Style="{DynamicResource CircleToggleButtonWhite}">
                     <Rectangle Width="15"
-                           Height="15"
-                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                               Height="15"
+                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill"
-                                     Visual="{DynamicResource appbar_lines_horizontal_4}"/>
+                                         Visual="{DynamicResource appbar_lines_horizontal_4}"/>
                         </Rectangle.OpacityMask>
                     </Rectangle>
                 </ToggleButton>
@@ -195,16 +197,16 @@
                                  BadgePlacementMode="Top"
                                  BadgeBackground="{StaticResource DarkGrayColorBrush}">
                     <Button ToolTip="Favorite Notes"
-                                Click="FavoriteNotes_Click"
-                                Width="50"
-                                Height="50"
-                                Style="{DynamicResource CircleButtonWhite}">
+                            Click="FavoriteNotes_Click"
+                            Width="50"
+                            Height="50"
+                            Style="{DynamicResource CircleButtonWhite}">
                         <Rectangle Width="20"
-                                       Height="20"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                   Height="20"
+                                   Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                             <Rectangle.OpacityMask>
                                 <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_star}"/>
+                                             Visual="{DynamicResource appbar_star}"/>
                             </Rectangle.OpacityMask>
                         </Rectangle>
                     </Button>
@@ -212,17 +214,17 @@
 
                 <!--- Button to open settings flyout -->
                 <Button ToolTip="Settings"
-                                Click="SettingsButton_Click"
+                        Click="SettingsButton_Click"
                         Margin="10"
-                                Width="50"
-                                Height="50"
-                                Style="{DynamicResource CircleButtonWhite}">
+                        Width="50"
+                        Height="50"
+                        Style="{DynamicResource CircleButtonWhite}">
                     <Rectangle Width="20"
-                                       Height="20"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                               Height="20"
+                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_settings}"/>
+                                         Visual="{DynamicResource appbar_settings}"/>
                         </Rectangle.OpacityMask>
                     </Rectangle>
                 </Button>
@@ -238,6 +240,7 @@
 
             <!--- Notebooks -->
             <DockPanel x:Name="NotebooksPanel">
+                
                 <!--- Header -->
                 <StackPanel Orientation="Vertical"
                             DockPanel.Dock="Top"
@@ -249,10 +252,7 @@
                                    Foreground="White"
                                    Text="Notebooks"/>
                     </DockPanel>
-
-
-
-
+                    
                     <!--- Buttons -->
                     <StackPanel Orientation="Horizontal"
                                 Height="50">
@@ -304,19 +304,18 @@
                 <!--- List of Notebooks -->
                 <ListBox ItemsSource="{Binding Notebooks, Mode=TwoWay}"
                          Name="NotebooksListBox"
-                         SelectionChanged="NotebooksListBox_SelectionChanged"
-                         SelectedItem="{Binding 
-                                    SelectedNotebook, 
-                                    Mode=TwoWay, 
-                                    UpdateSourceTrigger=PropertyChanged}"
                          Margin="15 0 15 15"
                          Background="{DynamicResource DarkGrayColorBrush}"
                          BorderThickness="0"
                          VerticalContentAlignment="Top"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False" 
-                         ItemContainerStyle="{StaticResource CustomMetroListBoxItem}">
-
+                         ItemContainerStyle="{StaticResource CustomMetroListBoxItem}"
+                         SelectionChanged="NotebooksListBox_SelectionChanged"
+                         SelectedItem="{Binding 
+                                        SelectedNotebook, 
+                                        Mode=TwoWay, 
+                                        UpdateSourceTrigger=PropertyChanged}">
                     <ListBox.Style>
                         <Style TargetType="ListBox">
                             <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
@@ -357,7 +356,7 @@
             </DockPanel>
 
             <!--- Notes -->
-            <DockPanel Width="250"
+            <DockPanel MinWidth="{Binding Path=ActualWidth, ElementName=NotebooksPanel}"
                        DockPanel.Dock="Left"
                        Background="{StaticResource DarkGrayColorBrush}"
                        Name="NotesPanel"
@@ -446,19 +445,19 @@
 
                 <!--- List of Notes -->
                 <ListBox ItemsSource="{Binding Notes, Mode=TwoWay}"
-                         Name="NotesListBox"
-                         SelectionChanged="NotesListBox_SelectionChanged"
-                         SelectedItem="{Binding 
-                                        SelectedNote, 
-                                        Mode=TwoWay, 
-                                        UpdateSourceTrigger=PropertyChanged}"
+                         Name="NotesListBox"                         
                          Margin="15 0 0 15"
                          BorderThickness="0"
                          Background="{DynamicResource DarkGrayColorBrush}"
                          VerticalContentAlignment="Top"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False"
-                         ItemContainerStyle="{StaticResource CustomMetroListBoxItem}">
+                         ItemContainerStyle="{StaticResource CustomMetroListBoxItem}"
+                         SelectionChanged="NotesListBox_SelectionChanged"
+                         SelectedItem="{Binding 
+                                        SelectedNote, 
+                                        Mode=TwoWay, 
+                                        UpdateSourceTrigger=PropertyChanged}">                    
                     <ListBox.Style>
                         <Style TargetType="ListBox">
                             <Style.Triggers>
@@ -495,10 +494,11 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </StackPanel>
+                
             </DockPanel>
 
             <!--- Favorite Notes -->
-            <DockPanel Width="250"
+            <DockPanel MinWidth="{Binding Path=ActualWidth, ElementName=NotebooksPanel}"
                        DockPanel.Dock="Left"
                        Name="FavoritePanel"
                        Background="{StaticResource DarkGrayColorBrush}"
@@ -536,19 +536,19 @@
 
                 <!--- List of Favorite Notes -->
                 <ListBox ItemsSource="{Binding FavoriteNotes, Mode=TwoWay}"
-                         Name="FavoriteNotesListBox"
-                         SelectionChanged="NotesListBox_SelectionChanged"
-                         SelectedItem="{Binding 
-                                        SelectedNote, 
-                                        Mode=TwoWay, 
-                                        UpdateSourceTrigger=PropertyChanged}"
+                         Name="FavoriteNotesListBox"                         
                          Margin="15 0 0 15"
                          BorderThickness="0"
                          Background="{DynamicResource DarkGrayColorBrush}"
                          VerticalContentAlignment="Top"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          ScrollViewer.CanContentScroll="False"
-                         ItemContainerStyle="{StaticResource CustomMetroListBoxItem}">
+                         ItemContainerStyle="{StaticResource CustomMetroListBoxItem}"
+                         SelectionChanged="NotesListBox_SelectionChanged"
+                         SelectedItem="{Binding 
+                                        SelectedNote, 
+                                        Mode=TwoWay, 
+                                        UpdateSourceTrigger=PropertyChanged}">
                     <ListBox.Style>
                         <Style TargetType="ListBox">
                             <Style.Triggers>
@@ -585,6 +585,7 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </StackPanel>
+                
             </DockPanel>
 
         </DockPanel>

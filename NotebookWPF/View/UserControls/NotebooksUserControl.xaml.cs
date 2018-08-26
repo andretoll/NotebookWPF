@@ -20,10 +20,16 @@ namespace NotebookWPF.View.UserControls
     /// </summary>
     public partial class NotebooksUserControl : UserControl
     {
+        #region Constructor
+
         public NotebooksUserControl()
         {
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Events
 
         private void DeleteNotebookButton_Click(object sender, RoutedEventArgs e)
         {
@@ -37,5 +43,7 @@ namespace NotebookWPF.View.UserControls
         {
             ConfirmDeletePanel.Visibility = Visibility.Collapsed;
         }
+
+        #endregion
     }
 }

@@ -10,36 +10,26 @@
 
     <!--- ListBoxItem Wrapper-->
     <DockPanel Width="200"
-               Margin="5 5 0 0"
+               ToolTip="{Binding Title}"
+               Margin="5 5 0 0"               
+               Background="Transparent"
                Tag="{Binding 
                         RelativeSource={RelativeSource 
                         Mode=FindAncestor, 
                         AncestorType={x:Type ListBox}}, 
-                        Path=DataContext}"
-               Background="Transparent">
+                        Path=DataContext}">
 
         <!--- ListBoxItem menu -->
         <DockPanel.ContextMenu>
             <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
 
+                <!--- Toggle favorite -->
                 <MenuItem Header="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToStringConverter}}"
                           IsCheckable="True"
                           IsChecked="{Binding SelectedNoteIsFavorite}">
-                    <MenuItem.Icon>
-                        <Rectangle Width="22" 
-                                   Height="22"
-                                   Margin="10 0 0 0"
-                                   Visibility="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToVisibilityConverter}}">
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="Gold"/>
-                            </Rectangle.Fill>
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{DynamicResource appbar_star}"/>
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </MenuItem.Icon>
                 </MenuItem>
 
+                <!--- Move to another Notebook -->
                 <MenuItem Header="Move to" 
                           ItemsSource="{Binding AvailableNotebooks}">
                     <MenuItem.Style>
@@ -65,6 +55,7 @@
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
                 
+                <!--- Delete note -->
                 <MenuItem Header="Delete"
                           Click="DeleteNoteButton_Click"/>
 
@@ -72,8 +63,7 @@
         </DockPanel.ContextMenu>
 
         <!--- Notebook Information and Actions -->
-        <DockPanel ToolTip="{Binding Title}"
-                   DockPanel.Dock="Top">
+        <DockPanel DockPanel.Dock="Top">
 
             <!--- Information -->
             <StackPanel Orientation="Vertical"
@@ -94,53 +84,57 @@
                         </Rectangle.OpacityMask>
                     </Rectangle>
                     
-                    <!--- Name Container -->
+                    <!--- Note Name -->
                     <StackPanel Orientation="Horizontal"
                                 MaxWidth="120">
+                        
+                        <!--- Text -->
                         <TextBlock Text="{Binding Title, Mode=OneWay}"
-                               Margin="5 5 0 0"
-                                   MaxWidth="120"
-                               TextTrimming="CharacterEllipsis"
-                               Style="{StaticResource LargeText}"
-                               Visibility="{Binding 
-                                RelativeSource={RelativeSource 
-                                Mode=FindAncestor, 
-                                AncestorType={x:Type ListBox}}, 
-                                Path=DataContext.NoteIsEditing, 
-                                Converter={StaticResource reversedBooleanToVisibilityConverter}, 
-                                Mode=TwoWay}"/>
+                                   Margin="5 7 0 0"
+                                   MaxWidth="110"
+                                   TextTrimming="CharacterEllipsis"
+                                   Style="{StaticResource LargeText}"
+                                   Visibility="{Binding 
+                                    RelativeSource={RelativeSource 
+                                    Mode=FindAncestor, 
+                                    AncestorType={x:Type ListBox}}, 
+                                    Path=DataContext.NoteIsEditing, 
+                                    Converter={StaticResource reversedBooleanToVisibilityConverter}, 
+                                    Mode=TwoWay}"/>
 
+                        <!--- Text Box -->
                         <TextBox Text="{Binding Title, Mode=TwoWay}"
                                  Height="30"
                                  MaxWidth="120"
                                  FontSize="15"
                                  Visibility="{Binding 
-                                RelativeSource={RelativeSource 
-                                Mode=FindAncestor, 
-                                AncestorType={x:Type ListBox}}, 
-                                Path=DataContext.NoteIsEditing, 
-                                Converter={StaticResource booleanToVisibilityConverter}, 
-                                Mode=TwoWay}">
+                                    RelativeSource={RelativeSource 
+                                    Mode=FindAncestor, 
+                                    AncestorType={x:Type ListBox}}, 
+                                    Path=DataContext.NoteIsEditing, 
+                                    Converter={StaticResource booleanToVisibilityConverter}, 
+                                    Mode=TwoWay}">
                             <!--- If TextBox loses focus, save Notebook edit -->
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="LostFocus">
                                     <b:InvokeCommandAction Command="{Binding 
-                                                        RelativeSource={RelativeSource 
-                                                        Mode=FindAncestor, 
-                                                        AncestorType={x:Type ListBox}}, 
-                                                        Path=DataContext.StopNoteEditingCommand}"
-                                                        CommandParameter="{Binding}"/>
+                                                            RelativeSource={RelativeSource 
+                                                            Mode=FindAncestor, 
+                                                            AncestorType={x:Type ListBox}}, 
+                                                            Path=DataContext.StopNoteEditingCommand}"
+                                                           CommandParameter="{Binding}"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
                         </TextBox>
-                    </StackPanel>                    
+                        
+                    </StackPanel>      
+                    
                 </StackPanel>
 
                 <!--- Other information -->
                 <StackPanel>
-                    <!--<TextBlock Text="{Binding Created, StringFormat={}Created: {0:yyyy/MM/dd}}"
-                               Style="{StaticResource TinyText}"
-                               Margin="5 5 0 0"/>-->
+                    
+                    <!--- Note updated -->
                     <TextBlock Text="{Binding Updated, StringFormat={}Edited: {0:MM/dd HH:mm}}"
                                Style="{StaticResource TinyText}"
                                Margin="5 0 0 0"/>
@@ -158,7 +152,6 @@
                         ToolTip="Delete"
                         Width="30"                        
                         Height="30"
-                        BorderThickness="1"
                         Click="DeleteNoteButton_Click">
                     <Button.Style>
                         <Style BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type Button}">
@@ -170,20 +163,18 @@
                             </Style.Triggers>
                         </Style>
                     </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <!--- Draw Icon -->
-                        <Rectangle Width="15"
+                    <!--- Draw Icon -->
+                    <Rectangle Width="15"
                                    Height="15"
                                    Fill="{Binding 
                                             Path=Foreground, 
                                             RelativeSource={RelativeSource 
                                             FindAncestor, 
                                             AncestorType={x:Type Button}}}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </StackPanel>
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
                 </Button>
 
             </StackPanel>
@@ -195,7 +186,7 @@
                     DockPanel.Dock="Bottom"
                     Style="{StaticResource VisibleAnimation}"
                     Visibility="Collapsed"
-                    Margin="0 0 0 5"
+                    Margin="0 0 0 10"
                     HorizontalAlignment="Center">
 
             <!--- Confirmation Message -->
@@ -204,13 +195,11 @@
                        Style="{StaticResource SmallText}"/>
 
             <!--- Button Container -->
-            <StackPanel Orientation="Horizontal"
-                        Margin="0 0 0 5">
+            <StackPanel Orientation="Horizontal">
 
                 <!--- Confirm Delete Button -->
                 <Button ToolTip="Delete"
                         Style="{StaticResource WarningButton}"
-                        Background="Red"
                         Width="75"
                         Margin="0 0 5 0"
                         Command="{Binding 
@@ -218,8 +207,7 @@
                                     Mode=FindAncestor, 
                                     AncestorType={x:Type ListBox}}, 
                                     Path=DataContext.DeleteNoteCommand}"
-                        CommandParameter="{Binding Id}"
-                        Grid.Column="2">
+                        CommandParameter="{Binding Id}">
                     <TextBlock Text="Delete"/>
                 </Button>
 

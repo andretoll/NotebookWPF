@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:b="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:local="clr-namespace:NotebookWPF.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <!--- ListBoxItem Wrapper-->
     <DockPanel Width="200"
+               ToolTip="{Binding Name}"                   
                Margin="5 5 0 0"
                Background="Transparent">
 
@@ -22,28 +22,31 @@
         </DockPanel.ContextMenu>
 
         <!--- Notebook Information and Actions -->
-        <DockPanel ToolTip="{Binding Name}"
-                   DockPanel.Dock="Top">
+        <DockPanel DockPanel.Dock="Top">
 
             <!--- Information -->
             <StackPanel Orientation="Vertical"
                         MaxWidth="120"
                         DockPanel.Dock="Left">
                 
-                <!--- Name -->
-                <StackPanel Height="30">
+                <!--- Notebook Name -->
+                <StackPanel Height="30" MaxWidth="110">
+                    
+                    <!--- Text -->
                     <TextBlock x:Name="NotebookNameTextBlock"
                                Margin="5 5 0 0"
-                               Text="{Binding Name, Mode=TwoWay}"
+                               Text="{Binding Name, Mode=OneWay}"
                                TextTrimming="CharacterEllipsis"
                                Style="{StaticResource LargeText}"
                                Visibility="{Binding 
-                                RelativeSource={RelativeSource 
-                                Mode=FindAncestor, 
-                                AncestorType={x:Type ListBox}}, 
-                                Path=DataContext.NotebookIsEditing, 
-                                Converter={StaticResource reversedBooleanToVisibilityConverter}, 
-                                Mode=TwoWay}"/>
+                                    RelativeSource={RelativeSource 
+                                    Mode=FindAncestor, 
+                                    AncestorType={x:Type ListBox}}, 
+                                    Path=DataContext.NotebookIsEditing, 
+                                    Converter={StaticResource reversedBooleanToVisibilityConverter}, 
+                                    Mode=TwoWay}"/>
+                    
+                    <!--- Text Box -->
                     <TextBox x:Name="NotebookNameTextBox"
                              Text="{Binding Name, Mode=TwoWay}"
                              Height="30"
@@ -67,6 +70,7 @@
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
                     </TextBox>
+                    
                 </StackPanel>
                 
                 <!--- Note count -->
@@ -88,7 +92,6 @@
                         ToolTip="Delete"
                         Width="30"                        
                         Height="30"
-                        BorderThickness="1"
                         Click="DeleteNotebookButton_Click">
                     <Button.Style>
                         <Style BasedOn="{StaticResource SquareButtonStyle}" TargetType="{x:Type Button}">
@@ -100,20 +103,18 @@
                             </Style.Triggers>
                         </Style>
                     </Button.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <!--- Draw Icon -->
-                        <Rectangle Width="15"
+                    <!--- Draw Icon -->
+                    <Rectangle Width="15"
                                    Height="15"
                                    Fill="{Binding 
                                             Path=Foreground, 
                                             RelativeSource={RelativeSource 
                                             FindAncestor, 
                                             AncestorType={x:Type Button}}}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </StackPanel>
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{DynamicResource appbar_delete}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
                 </Button>
                 
             </StackPanel>
@@ -125,7 +126,7 @@
                     DockPanel.Dock="Bottom"
                     Style="{StaticResource VisibleAnimation}"
                     Visibility="Collapsed"
-                    Margin="0 0 0 5"
+                    Margin="0 0 0 10"
                     HorizontalAlignment="Center">
             
             <!--- Confirmation Message -->
@@ -135,13 +136,11 @@
             </TextBlock>
             
             <!--- Button Container -->
-            <StackPanel Orientation="Horizontal"
-                        Margin="0 0 0 5">
+            <StackPanel Orientation="Horizontal">
                 
                 <!--- Confirm Delete Button -->
                 <Button ToolTip="Delete"
                         Style="{StaticResource WarningButton}"
-                        Background="Red"
                         Width="75"
                         Margin="0 0 5 0"
                         Command="{Binding 
@@ -149,8 +148,7 @@
                                     Mode=FindAncestor, 
                                     AncestorType={x:Type ListBox}}, 
                                     Path=DataContext.DeleteNotebookCommand}"
-                        CommandParameter="{Binding Id}"
-                        Grid.Column="2">
+                        CommandParameter="{Binding Id}">
                     <TextBlock Text="Delete"/>
                 </Button>
                 

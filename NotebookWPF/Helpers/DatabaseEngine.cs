@@ -247,6 +247,7 @@ namespace NotebookWPF.Helpers
             {
                 conn.CreateTable<Note>();
 
+                // Return true if title already exists
                 return conn.Table<Note>().ToList().Exists(n => n.Id != noteToEditId && n.Title == title); ;
             }
         }

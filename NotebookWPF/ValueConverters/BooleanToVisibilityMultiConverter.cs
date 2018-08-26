@@ -9,6 +9,9 @@ using System.Windows.Data;
 
 namespace NotebookWPF.ValueConverters
 {
+    /// <summary>
+    /// Returns a visibility value indicating if either two values are true
+    /// </summary>
     public class BooleanToVisibilityMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

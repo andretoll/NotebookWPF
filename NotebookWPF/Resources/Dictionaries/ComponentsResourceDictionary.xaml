@@ -5,46 +5,42 @@
 
     <!--- Colors -->
     <Color x:Key="DarkGrayColor">#1e1e1e</Color>
-    <Color x:Key="LightGrayColor">#303030</Color>
-    
-    
-    
+    <Color x:Key="LightGrayColor">#303030</Color> 
     
     <!---SolidColorBrushes -->
     <SolidColorBrush x:Key="DarkGrayColorBrush" Color="{StaticResource DarkGrayColor}"></SolidColorBrush>
     <SolidColorBrush x:Key="LightGrayColorBrush" Color="{StaticResource LightGrayColor}"></SolidColorBrush>
 
-
-
-
     <!--- Font Families -->
     <FontFamily x:Key="DefaultFont">Lato</FontFamily>
-    <FontFamily x:Key="FancyFont">Lucida Calligraphy</FontFamily>    
+    <FontFamily x:Key="FancyFont">Lucida Calligraphy</FontFamily>   
     
     
-    
+    <!---!!! BASE STYLES !!!-->
     
     <!--- Base TextBlock Style -->
     <Style TargetType="TextBlock" x:Key="BaseText">
         <Setter Property="Margin" Value="0 0 0 10"/>
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
     </Style>
     
     <!--- Base Button Style -->
     <Style BasedOn="{StaticResource SquareButtonStyle}" TargetType="Button" x:Key="BaseButton">
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="10"/>
-    </Style>  
-    
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    </Style>
     
     
     
     
 
+    <!---!!! TEXTBLOCKS !!!-->
+    
     <!--- Huge TextBlock -->
     <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="HugeText">
         <Setter Property="FontSize" Value="24"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}"/>
     </Style>
 
     <!--- Large TextBlock -->
@@ -67,9 +63,9 @@
     
     
     
-    
-    
 
+    <!---!!! BUTTONS !!!-->
+    
     <!--- Large Button -->
     <Style BasedOn="{StaticResource BaseButton}" TargetType="Button" x:Key="LargeButton">
         <Setter Property="Height" Value="40"/>
@@ -91,8 +87,8 @@
         </Style.Triggers>
     </Style>
 
-    <!--- Circle Button (Suitable on accents) -->
-    <Style x:Key="CircleButtonWhite" TargetType="Button">
+    <!--- (CUSTOM) Circle Button (Suitable on accents or dark background) -->
+    <Style TargetType="Button" x:Key="CircleButtonWhite">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Margin" Value="2"/>
         <Setter Property="Margin" Value="2 2 2 2"/>
@@ -136,6 +132,12 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    
+    
+    
+    
+    <!---!!! TOGGLEBUTTONS !!!-->
 
     <!--- Circle ToggleButton -->
     <Style BasedOn="{StaticResource MetroCircleToggleButtonStyle}" TargetType="ToggleButton" x:Key="CircleToggleButton">
@@ -143,8 +145,8 @@
         <Setter Property="BorderBrush" Value="White"/>
     </Style>
 
-    <!--- Circle ToggleButton (Suitable on accents) -->
-    <Style x:Key="CircleToggleButtonWhite" TargetType="ToggleButton">
+    <!--- (CUSTOM) Circle ToggleButton (Suitable on accents or dark background) -->
+    <Style TargetType="ToggleButton" x:Key="CircleToggleButtonWhite">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="Margin" Value="2"/>
         <Setter Property="Margin" Value="2 2 2 2"/>
@@ -198,33 +200,34 @@
     
     
     
-    
+
+    <!---!!! Labels !!!-->
 
     <!--- Label -->
     <Style TargetType="Label" x:Key="LabelStyle">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Margin" Value="0 10 0 5"/>
-    </Style>
+    </Style>   
     
     
     
     
-    
-
-    <!--- Value Converters -->
-    <valueconverters:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
+      
+    <!---!!! Value Converters !!!-->
     <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
+    <valueconverters:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
     <valueconverters:ReversedBooleanToVisibilityConverter x:Key="reversedBooleanToVisibilityConverter"/>
     <valueconverters:BooleanToVisibilityMultiConverter x:Key="booleanToVisibilityMultiConverter"/>
     <valueconverters:BooleanToStringConverter x:Key="booleanToStringConverter"/>
+    
+    
+    
+    
 
-
-
-
-
-
-    <!--- Animations -->    
+    <!---!!! ANIMATIONS !!!--> 
+    
+    <!--- Visible Property Animation -->
     <Style TargetType="FrameworkElement" x:Key="VisibleAnimation">
         <Setter Property="Visibility" Value="Collapsed"/>
         <Setter Property="Opacity" Value="0"/>
@@ -241,9 +244,13 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    
+    <!--- Show Left Menu Animation -->
     <Storyboard x:Key="sbShowLeftMenu" >
         <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-500,0,0,0" To="0,0,0,0" DecelerationRatio=".9" Duration="0:0:0.6" />
     </Storyboard>
+    
+    <!--- Hide Left Menu Animation -->
     <Storyboard x:Key="sbHideLeftMenu">
         <ThicknessAnimation Storyboard.TargetProperty="Margin" From="0,0,0,0" To="-500,0,0,0" AccelerationRatio=".9" Duration="0:0:0.8" />
     </Storyboard>
