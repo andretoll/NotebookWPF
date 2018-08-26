@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
+using System.Windows.Controls.Primitives;
 
 namespace NotebookWPF
 {
@@ -46,6 +47,8 @@ namespace NotebookWPF
 
             // Set DataContext to ViewModel
             this.DataContext = _notebookViewModel;
+
+            HomeRadioButton.IsChecked = true;
         }
 
         #endregion
@@ -68,10 +71,6 @@ namespace NotebookWPF
 
                 NotesPanel.Visibility = Visibility.Visible;
             }
-            else NotesPanel.Visibility = Visibility.Collapsed;
-
-            // Close favorite notes panel if open
-            FavoritePanel.Visibility = Visibility.Collapsed;
         }
 
         private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -81,8 +80,8 @@ namespace NotebookWPF
                 // Check settings for autohide panel
                 if (SettingsHelper.autohidePanels)
                 {
-                    ShowHideMenu("sbHideLeftMenu", pnlLeftMenu);
-                    btnLeftMenuShowHide.IsChecked = true;
+                    ShowHideMenu("sbHideLeftMenu", MainPanel);
+                    ShowHidePanelButton.IsChecked = true;
                 }
             }
         }
@@ -101,39 +100,41 @@ namespace NotebookWPF
             e.Handled = true;
         }
 
-        private void btnLeftMenuShowHide_Checked(object sender, RoutedEventArgs e)
+        private void ShowHidePanelButton_Checked(object sender, RoutedEventArgs e)
         {
             // Toggle show/hide panels
-            if ((sender as System.Windows.Controls.Primitives.ToggleButton).IsChecked ?? false)
+            if ((sender as ToggleButton).IsChecked ?? false)
             {
-                ShowHideMenu("sbHideLeftMenu", pnlLeftMenu);
+                ShowHideMenu("sbHideLeftMenu", MainPanel);
             }
-            else ShowHideMenu("sbShowLeftMenu", pnlLeftMenu);
+            else ShowHideMenu("sbShowLeftMenu", MainPanel);
 
         }
 
-        private void FavoriteNotes_Click(object sender, RoutedEventArgs e)
+        private void HomeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            NotebooksListBox.SelectedItem = null;
-
-            if (FavoritePanel.Visibility == Visibility.Visible)
+            if ((sender as RadioButton).IsChecked ?? true)
             {
-                FavoritePanel.Visibility = Visibility.Collapsed;
-                NotebooksPanel.Visibility = Visibility.Visible;
+                HomePanel.Visibility = Visibility.Visible;
+                ShowHidePanelButton.IsChecked = false;
             }
             else
             {
-                NotebooksPanel.Visibility = Visibility.Collapsed;
-
-                FavoritePanel.Visibility = Visibility.Visible;
+                HomePanel.Visibility = Visibility.Collapsed;
             }
         }
 
-        private void CloseFavoritesButton_Click(object sender, RoutedEventArgs e)
+        private void FavoritesRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            FavoritePanel.Visibility = Visibility.Collapsed;
-
-            NotebooksPanel.Visibility = Visibility.Visible;
+            if ((sender as RadioButton).IsChecked ?? true)
+            {
+                FavoritePanel.Visibility = Visibility.Visible;
+                ShowHidePanelButton.IsChecked = false;
+            }
+            else
+            {
+                FavoritePanel.Visibility = Visibility.Collapsed;
+            }
         }
 
         #endregion
@@ -155,6 +156,6 @@ namespace NotebookWPF
         }
 
 
-        #endregion
+        #endregion        
     }
 }

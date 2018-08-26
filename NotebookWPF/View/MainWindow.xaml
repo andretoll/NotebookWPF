@@ -174,9 +174,9 @@
 
                 <!--- Button to toggle panel show/hide -->
                 <ToggleButton ToolTip="Show/Hide menu"
-                              Name="btnLeftMenuShowHide"
-                              Checked="btnLeftMenuShowHide_Checked"
-                              Unchecked="btnLeftMenuShowHide_Checked"
+                              Name="ShowHidePanelButton"
+                              Checked="ShowHidePanelButton_Checked"
+                              Unchecked="ShowHidePanelButton_Checked"
                               Margin="10" 
                               Width="50"
                               Height="50"
@@ -191,311 +191,324 @@
                     </Rectangle>
                 </ToggleButton>
 
-                <!--- Button to open favorites panel -->
-                <Controls:Badged Badge="{Binding Path=FavoriteNotes.Count}"
-                                 Margin="5"
-                                 BadgePlacementMode="Top"
-                                 BadgeBackground="{StaticResource DarkGrayColorBrush}">
-                    <Button ToolTip="Favorite Notes"
-                            Click="FavoriteNotes_Click"
-                            Width="50"
-                            Height="50"
-                            Style="{DynamicResource CircleButtonWhite}">
-                        <Rectangle Width="20"
-                                   Height="20"
-                                   Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill"
-                                             Visual="{DynamicResource appbar_star}"/>
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </Button>
-                </Controls:Badged>                
-
-                <!--- Button to open settings flyout -->
-                <Button ToolTip="Settings"
-                        Click="SettingsButton_Click"
-                        Margin="10"
-                        Width="50"
-                        Height="50"
-                        Style="{DynamicResource CircleButtonWhite}">
-                    <Rectangle Width="20"
-                               Height="20"
-                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                <!--- Button to show all Notebooks -->
+                <RadioButton ToolTip="All Notebooks"
+                             Name="HomeRadioButton"
+                             Checked="HomeRadioButton_Checked"
+                             Unchecked="HomeRadioButton_Checked"
+                             Margin="10"
+                             Width="50"
+                             Height="50"
+                             Style="{StaticResource CircleToggleButtonWhite}">
+                    <Rectangle Width="15"
+                               Height="15"
+                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill"
-                                         Visual="{DynamicResource appbar_settings}"/>
+                                         Visual="{DynamicResource appbar_home}"/>
                         </Rectangle.OpacityMask>
                     </Rectangle>
-                </Button>
+                </RadioButton>
+
+                <!--- Button to show favorite Notes -->
+                <RadioButton ToolTip="All Notebooks"
+                             Name="FavoritesRadioButton"
+                             Checked="FavoritesRadioButton_Checked"
+                             Unchecked="FavoritesRadioButton_Checked"
+                             Margin="10"
+                             Width="50"
+                             Height="50"
+                             Style="{StaticResource CircleToggleButtonWhite}">
+                    <Rectangle Width="15"
+                               Height="15"
+                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill"
+                                         Visual="{DynamicResource appbar_star}"/>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </RadioButton>
 
             </StackPanel>
         </Border>
 
         <!--- Main Panel -->
         <DockPanel DockPanel.Dock="Left" 
+                   Name="MainPanel"
                    Background="{StaticResource DarkGrayColorBrush}"
-                   Panel.ZIndex="2" 
-                   Name="pnlLeftMenu">
+                   Panel.ZIndex="2">
 
-            <!--- Notebooks -->
-            <DockPanel x:Name="NotebooksPanel">
+            <DockPanel Name="HomePanel">
                 
-                <!--- Header -->
-                <StackPanel Orientation="Vertical"
-                            DockPanel.Dock="Top"
-                            Margin="15">
+                <!--- Notebooks -->
+                <DockPanel x:Name="NotebooksPanel">
 
-                    <DockPanel Height="50">
-                        <TextBlock Style="{StaticResource HugeText}"
-                                   VerticalAlignment="Bottom"
-                                   Foreground="White"
-                                   Text="Notebooks"/>
-                    </DockPanel>
-                    
-                    <!--- Buttons -->
-                    <StackPanel Orientation="Horizontal"
-                                Height="50">
+                    <!--- Header -->
+                    <StackPanel Orientation="Vertical"
+                                DockPanel.Dock="Top"
+                                Margin="15">
 
-                        <!--- Button to add new Notebook -->
-                        <Button ToolTip="New notebook"
-                                Command="{Binding NewNotebookCommand}"
-                                Margin="0 0 20 0"
-                                Style="{StaticResource LargeButton}">
-                            <StackPanel Orientation="Horizontal">
-                                <!--- Draw Icon -->
-                                <Rectangle Width="20"
-                                           Height="20"
-                                           Fill="{Binding 
-                                            RelativeSource={RelativeSource 
-                                            AncestorType=Button}, 
-                                            Path=Foreground}">
+                        <DockPanel Height="50">
+                            <TextBlock Style="{StaticResource HugeText}"
+                                       VerticalAlignment="Bottom"
+                                       Foreground="White"
+                                       Text="Notebooks"/>
+                        </DockPanel>
+
+                        <!--- Buttons -->
+                        <StackPanel Orientation="Horizontal"
+                                    Height="50">
+
+                            <!--- Button to add new Notebook -->
+                            <Button ToolTip="New notebook"
+                                    Command="{Binding NewNotebookCommand}"
+                                    Margin="0 0 20 0"
+                                    Style="{StaticResource LargeButton}">
+                                <StackPanel Orientation="Horizontal">
+                                    <!--- Draw Icon -->
+                                    <Rectangle Width="20"
+                                               Height="20"
+                                               Fill="{Binding 
+                                                RelativeSource={RelativeSource 
+                                                AncestorType=Button}, 
+                                                Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill"
+                                                        Visual="{StaticResource appbar_book}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <!--- Button text -->
+                                    <TextBlock Margin="4 0 0 0"
+                                               VerticalAlignment="Center"
+                                               Text="NEW NOTEBOOK"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!--- Button to toggle edit mode -->
+                            <ToggleButton ToolTip="Edit Notebooks"
+                                          Width="40"
+                                          Height="40"
+                                          IsChecked="{Binding NotebookIsEditing}"
+                                          Style="{DynamicResource CircleToggleButtonWhite}">
+                                <Rectangle Width="15"
+                                           Height="15"
+                                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                     <Rectangle.OpacityMask>
-                                        <VisualBrush Stretch="Fill"
-                                                     Visual="{StaticResource appbar_book}"/>
+                                        <VisualBrush Visual="{DynamicResource appbar_edit}"/>
                                     </Rectangle.OpacityMask>
                                 </Rectangle>
-                                <!--- Button text -->
-                                <TextBlock Margin="4 0 0 0"
-                                           VerticalAlignment="Center"
-                                           Text="NEW NOTEBOOK"/>
-                            </StackPanel>
-                        </Button>
+                            </ToggleButton>
 
-                        <!--- Button to toggle edit mode -->
-                        <ToggleButton ToolTip="Edit Notebooks"
-                                      Width="40"
-                                      Height="40"
-                                      IsChecked="{Binding NotebookIsEditing}"
-                                      Style="{DynamicResource CircleToggleButtonWhite}">
-                            <Rectangle Width="15"
-                                       Height="15"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Visual="{DynamicResource appbar_edit}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </ToggleButton>
+                        </StackPanel>
 
                     </StackPanel>
 
-                </StackPanel>
-
-                <!--- List of Notebooks -->
-                <ListBox ItemsSource="{Binding Notebooks, Mode=TwoWay}"
-                         Name="NotebooksListBox"
-                         Margin="15 0 15 15"
-                         Background="{DynamicResource DarkGrayColorBrush}"
-                         BorderThickness="0"
-                         VerticalContentAlignment="Top"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         ScrollViewer.CanContentScroll="False" 
-                         ItemContainerStyle="{StaticResource CustomMetroListBoxItem}"
-                         SelectionChanged="NotebooksListBox_SelectionChanged"
-                         SelectedItem="{Binding 
-                                        SelectedNotebook, 
-                                        Mode=TwoWay, 
-                                        UpdateSourceTrigger=PropertyChanged}">
-                    <ListBox.Style>
-                        <Style TargetType="ListBox">
-                            <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Notebooks.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListBox.Style>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <!--- Notebook Data Template -->
-                            <uc:NotebooksUserControl DataContext="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-                <!--- If no notebooks exists -->
-                <StackPanel HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            Opacity="0.7">
-                    <TextBlock Text="No Notebooks."
-                               Foreground="White"
-                               Margin="0 20 0 0">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
+                    <!--- List of Notebooks -->
+                    <ListBox ItemsSource="{Binding Notebooks, Mode=TwoWay}"
+                             Name="NotebooksListBox"
+                             Margin="15 0 15 15"
+                             Background="{DynamicResource DarkGrayColorBrush}"
+                             BorderThickness="0"
+                             VerticalContentAlignment="Top"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.CanContentScroll="False" 
+                             ItemContainerStyle="{StaticResource CustomMetroListBoxItem}"
+                             SelectionChanged="NotebooksListBox_SelectionChanged"
+                             SelectedItem="{Binding 
+                                            SelectedNotebook, 
+                                            Mode=TwoWay, 
+                                            UpdateSourceTrigger=PropertyChanged}">
+                        <ListBox.Style>
+                            <Style TargetType="ListBox">
+                                <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Notebooks.Count}" Value="0">
-                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-            </DockPanel>
+                        </ListBox.Style>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <!--- Notebook Data Template -->
+                                <uc:NotebooksUserControl DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-            <!--- Notes -->
-            <DockPanel MinWidth="{Binding Path=ActualWidth, ElementName=NotebooksPanel}"
-                       DockPanel.Dock="Left"
-                       Background="{StaticResource DarkGrayColorBrush}"
-                       Name="NotesPanel"
-                       Visibility="{Binding 
+                    <!--- If no notebooks exists -->
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Opacity="0.7">
+                        <TextBlock Text="No Notebooks."
+                                   Foreground="White"
+                                   Margin="0 20 0 0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Notebooks.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+                    
+                </DockPanel>
+
+                <!--- Separator -->
+                <StackPanel Margin="0" 
+                            Orientation="Horizontal"
+                            Visibility="{Binding Path=Visibility, ElementName=NotesPanel}">
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
+                       Opacity="0.5"/>
+                </StackPanel>
+
+                <!--- Notes -->
+                <DockPanel MinWidth="{Binding Path=ActualWidth, ElementName=NotebooksPanel}"
+                           DockPanel.Dock="Left"
+                           Background="{StaticResource DarkGrayColorBrush}"
+                           Name="NotesPanel"
+                           Visibility="{Binding 
                         SelectedNotebook, 
                         Converter={StaticResource nullToVisibilityConverter}}">
 
-                <!--- Header -->
-                <StackPanel Orientation="Vertical"
-                            DockPanel.Dock="Top"
-                            Margin="15">
-                    <DockPanel Height="50">
-                        <Button ToolTip="Back to Notebooks"
-                                Click="BackToNotebooksButton_Click"
-                                DockPanel.Dock="Right"
-                                Width="40"
-                                Height="40"
-                                Style="{DynamicResource CircleButtonWhite}">
-                            <Rectangle Width="15"
-                                       Height="15"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_arrow_left}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </Button>
-                        
-                        <TextBlock Style="{StaticResource HugeText}"
-                                   VerticalAlignment="Bottom"
+                    <!--- Header -->
+                    <StackPanel Orientation="Vertical"
+                                DockPanel.Dock="Top"
+                                Margin="15">
+                        <DockPanel Height="50">
+                            <Button ToolTip="Back to Notebooks"
+                                    Click="BackToNotebooksButton_Click"
+                                    DockPanel.Dock="Right"
+                                    Width="40"
+                                    Height="40"
+                                    Style="{DynamicResource CircleButtonWhite}">
+                                <Rectangle Width="15"
+                                           Height="15"
+                                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill"
+                                                     Visual="{DynamicResource appbar_arrow_left}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+
+                            <TextBlock Style="{StaticResource HugeText}"
+                                       VerticalAlignment="Bottom"
                                        Foreground="White"
                                        TextTrimming="WordEllipsis"
                                        Text="Notes"/>
 
-                    </DockPanel>
+                        </DockPanel>
 
 
-                    <!--- Buttons -->
-                    <StackPanel Orientation="Horizontal"
-                                Height="50">
+                        <!--- Buttons -->
+                        <StackPanel Orientation="Horizontal"
+                                    Height="50">
 
-                        <!--- Button to add new Note -->
-                        <Button ToolTip="New note"
-                                Command="{Binding NewNoteCommand}"
-                                Margin="0 0 20 0"
-                                Style="{StaticResource LargeButton}">
-                            <StackPanel Orientation="Horizontal">
-                                <!--- Draw Icon -->
-                                <Rectangle Width="20"
-                                           Height="20"
-                                           Fill="{Binding 
-                                            RelativeSource={RelativeSource 
-                                            AncestorType=Button}, 
-                                            Path=Foreground}">
+                            <!--- Button to add new Note -->
+                            <Button ToolTip="New note"
+                                    Command="{Binding NewNoteCommand}"
+                                    Margin="0 0 20 0"
+                                    Style="{StaticResource LargeButton}">
+                                <StackPanel Orientation="Horizontal">
+                                    <!--- Draw Icon -->
+                                    <Rectangle Width="20"
+                                               Height="20"
+                                               Fill="{Binding 
+                                                RelativeSource={RelativeSource 
+                                                AncestorType=Button}, 
+                                                Path=Foreground}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill"
+                                                         Visual="{StaticResource appbar_paper}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                    <!--- Button text -->
+                                    <TextBlock Margin="4 0 0 0"
+                                               VerticalAlignment="Center"
+                                               Text="NEW NOTE"/>
+                                </StackPanel>
+                            </Button>
+
+                            <!--- Button to toggle edit mode -->
+                            <ToggleButton ToolTip="Edit Notes"
+                                          Width="40"
+                                          Height="40"
+                                          IsChecked="{Binding NoteIsEditing}"
+                                          Style="{DynamicResource CircleToggleButtonWhite}">
+                                <Rectangle Width="15"
+                                           Height="15"
+                                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                                     <Rectangle.OpacityMask>
                                         <VisualBrush Stretch="Fill"
-                                                     Visual="{StaticResource appbar_paper}"/>
+                                                     Visual="{DynamicResource appbar_edit}"/>
                                     </Rectangle.OpacityMask>
                                 </Rectangle>
-                                <!--- Button text -->
-                                <TextBlock Margin="4 0 0 0"
-                                           VerticalAlignment="Center"
-                                           Text="NEW NOTE"/>
-                            </StackPanel>
-                        </Button>
+                            </ToggleButton>
 
-                        <!--- Button to toggle edit mode -->
-                        <ToggleButton ToolTip="Edit Notes"
-                                      Width="40"
-                                      Height="40"
-                                      IsChecked="{Binding NoteIsEditing}"
-                                      Style="{DynamicResource CircleToggleButtonWhite}">
-                            <Rectangle Width="15"
-                                       Height="15"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_edit}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </ToggleButton>
+                        </StackPanel>
 
                     </StackPanel>
 
-                </StackPanel>
-
-                <!--- List of Notes -->
-                <ListBox ItemsSource="{Binding Notes, Mode=TwoWay}"
-                         Name="NotesListBox"                         
-                         Margin="15 0 0 15"
-                         BorderThickness="0"
-                         Background="{DynamicResource DarkGrayColorBrush}"
-                         VerticalContentAlignment="Top"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         ScrollViewer.CanContentScroll="False"
-                         ItemContainerStyle="{StaticResource CustomMetroListBoxItem}"
-                         SelectionChanged="NotesListBox_SelectionChanged"
-                         SelectedItem="{Binding 
-                                        SelectedNote, 
-                                        Mode=TwoWay, 
-                                        UpdateSourceTrigger=PropertyChanged}">                    
-                    <ListBox.Style>
-                        <Style TargetType="ListBox">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Notes.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListBox.Style>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <!--- Note Data Template -->
-                            <uc:NotesUserControl DataContext="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-                <!--- If no notes exists -->
-                <StackPanel HorizontalAlignment="Center"
-                            Opacity="0.7"
-                            VerticalAlignment="Top">
-                    <TextBlock Text="No Notes."
-                               Foreground="White"
-                               Margin="0 20 0 0">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
+                    <!--- List of Notes -->
+                    <ListBox ItemsSource="{Binding Notes, Mode=TwoWay}"
+                             Name="NotesListBox"                         
+                             Margin="15 0 0 15"
+                             BorderThickness="0"
+                             Background="{DynamicResource DarkGrayColorBrush}"
+                             VerticalContentAlignment="Top"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.CanContentScroll="False"
+                             ItemContainerStyle="{StaticResource CustomMetroListBoxItem}"
+                             SelectionChanged="NotesListBox_SelectionChanged"
+                             SelectedItem="{Binding 
+                                            SelectedNote, 
+                                            Mode=TwoWay, 
+                                            UpdateSourceTrigger=PropertyChanged}">
+                        <ListBox.Style>
+                            <Style TargetType="ListBox">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Notes.Count}" Value="0">
-                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </StackPanel>
-                
-            </DockPanel>
+                        </ListBox.Style>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <!--- Note Data Template -->
+                                <uc:NotesUserControl DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!--- If no notes exists -->
+                    <StackPanel HorizontalAlignment="Center"
+                                Opacity="0.7"
+                                VerticalAlignment="Top">
+                        <TextBlock Text="No Notes."
+                                   Foreground="White"
+                                   Margin="0 20 0 0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource HugeText}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Notes.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+
+                </DockPanel>
+            
+            </DockPanel>            
 
             <!--- Favorite Notes -->
             <DockPanel MinWidth="{Binding Path=ActualWidth, ElementName=NotebooksPanel}"
@@ -509,21 +522,6 @@
                             DockPanel.Dock="Top"
                             Margin="15">
                     <DockPanel Height="50">
-                        <Button ToolTip="Back to Notebooks"
-                                Click="CloseFavoritesButton_Click"
-                                DockPanel.Dock="Right"
-                                Width="40"
-                                Height="40"
-                                Style="{DynamicResource CircleButtonWhite}">
-                            <Rectangle Width="15"
-                                       Height="15"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_arrow_left}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </Button>
 
                         <TextBlock Style="{StaticResource HugeText}"
                                    VerticalAlignment="Bottom"
