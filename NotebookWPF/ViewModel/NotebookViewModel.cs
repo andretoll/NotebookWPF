@@ -39,6 +39,8 @@ namespace NotebookWPF.ViewModel
 
         private bool selectedNoteIsFavorite;
 
+        private FileStream noteContent;
+
         #endregion
 
         #region Properties
@@ -99,6 +101,13 @@ namespace NotebookWPF.ViewModel
             {
                 selectedNote = value;
                 NotifyPropertyChanged();
+
+                if (selectedNote != null)
+                {
+                    FileStream fileStream = new FileStream(selectedNote.FileLocation, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                    NoteContent = fileStream;
+                    fileStream.Close();
+                }                
             }
         }
 
@@ -144,6 +153,16 @@ namespace NotebookWPF.ViewModel
                 NotifyPropertyChanged();
 
                 ToggleNoteFavorite(value);
+            }
+        }
+
+        public FileStream NoteContent
+        {
+            get { return noteContent; }
+            set
+            {
+                noteContent = value;
+                NotifyPropertyChanged();
             }
         }
 
@@ -276,6 +295,22 @@ namespace NotebookWPF.ViewModel
             set
             {
                 favoriteNotesCommand = value;
+            }
+        }
+
+        private ICommand saveNoteContentCommand;
+        public ICommand SaveNoteContentCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (saveNoteContentCommand == null)
+                    saveNoteContentCommand = new RelayCommand(p => { SaveNoteContent(); }, p => true);
+                return saveNoteContentCommand;
+            }
+            set
+            {
+                saveNoteContentCommand = value;
             }
         }
 
@@ -655,6 +690,19 @@ namespace NotebookWPF.ViewModel
                     FavoriteNotes.Remove(noteToRemove);
             }
 
+        }
+
+        /// <summary>
+        /// Save Note content
+        /// </summary>
+        /// <param name="fileStream"></param>
+        public void SaveNoteContent()
+        {
+            if (SelectedNote != null && NoteContent != null)
+            {
+                FileStream fileStream = new FileStream(SelectedNote.FileLocation, FileMode.Create);
+
+            }
         }
 
         #endregion

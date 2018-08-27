@@ -88,9 +88,11 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\DatabaseEngine.cs" />
     <Compile Include="Helpers\IDatabaseEngine.cs" />
+    <Compile Include="Helpers\RichTextBoxHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Model\Note.cs" />
     <Compile Include="Model\Notebook.cs" />
+    <Compile Include="Model\RichTextObject.cs" />
     <Compile Include="ValueConverters\BooleanToStringConverter.cs" />
     <Compile Include="ValueConverters\BooleanToVisibilityMultiConverter.cs" />
     <Compile Include="ValueConverters\NullToVisibilityConverter.cs" />
