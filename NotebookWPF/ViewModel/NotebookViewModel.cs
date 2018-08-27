@@ -10,8 +10,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace NotebookWPF.ViewModel
 {
@@ -38,6 +41,10 @@ namespace NotebookWPF.ViewModel
         private bool noteIsEditing;
 
         private bool selectedNoteIsFavorite;
+
+        private string noteContent;
+
+        private bool noteContentChanged;
 
         #endregion
 
@@ -99,6 +106,9 @@ namespace NotebookWPF.ViewModel
             {
                 selectedNote = value;
                 NotifyPropertyChanged();
+
+                GetNoteContent();
+                noteContentChanged = false;
             }
         }
 
@@ -144,6 +154,18 @@ namespace NotebookWPF.ViewModel
                 NotifyPropertyChanged();
 
                 ToggleNoteFavorite(value);
+            }
+        }
+
+        public string NoteContent
+        {
+            get { return noteContent; }
+            set
+            {
+                if (noteContent != null)
+                    noteContentChanged = true;
+                noteContent = value;
+                NotifyPropertyChanged();
             }
         }
 
@@ -276,6 +298,22 @@ namespace NotebookWPF.ViewModel
             set
             {
                 favoriteNotesCommand = value;
+            }
+        }
+
+        private ICommand saveNoteContentCommand;
+        public ICommand SaveNoteContentCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (saveNoteContentCommand == null)
+                    saveNoteContentCommand = new RelayCommand(p => { SaveNoteContent(); }, p => noteContentChanged);
+                return saveNoteContentCommand;
+            }
+            set
+            {
+                saveNoteContentCommand = value;
             }
         }
 
@@ -655,6 +693,34 @@ namespace NotebookWPF.ViewModel
                     FavoriteNotes.Remove(noteToRemove);
             }
 
+        }
+
+        /// <summary>
+        /// Get Note content from file
+        /// </summary>
+        public void GetNoteContent()
+        {
+            // Get Note content from file
+            NoteContent = File.ReadAllText(SelectedNote.FileLocation);
+        }
+
+        /// <summary>
+        /// Save Note content to file
+        /// </summary>
+        public void SaveNoteContent()
+        {
+            if (SelectedNote != null || NoteContent != null)
+            {
+                // Save Note
+                File.WriteAllText(SelectedNote.FileLocation, NoteContent);
+
+                // Update Note
+                SelectedNote.Updated = DateTime.Now;
+                dbEngine.Update(SelectedNote);
+
+                noteContentChanged = false;
+            }
+            else dialogCoordinator.ShowMessageAsync(this, "Error", "A Note has not been selected.");
         }
 
         #endregion

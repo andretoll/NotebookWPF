@@ -25,7 +25,7 @@
     </Style>
     
     <!--- Base Button Style -->
-    <Style BasedOn="{StaticResource SquareButtonStyle}" TargetType="Button" x:Key="BaseButton">
+    <Style BasedOn="{StaticResource AccentedSquareButtonStyle}" TargetType="Button" x:Key="BaseButton">
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="10"/>
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>

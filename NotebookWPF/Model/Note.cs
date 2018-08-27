@@ -15,6 +15,7 @@ namespace NotebookWPF.Model
 
         private string title;
         private bool isFavorite;
+        private DateTime updated;
 
         #endregion
 
@@ -38,7 +39,15 @@ namespace NotebookWPF.Model
 
         public DateTime Created { get; set; }
 
-        public DateTime Updated { get; set; }
+        public DateTime Updated
+        {
+            get { return updated; }
+            set
+            {
+                updated = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         public string FileLocation { get; set; }
 

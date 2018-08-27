@@ -75,12 +75,12 @@ namespace NotebookWPF
 
         private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            NoteTextEditor.Focus();
         }
 
         private void FavoriteNotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            NoteTextEditor.Focus();
         }        
 
         private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)

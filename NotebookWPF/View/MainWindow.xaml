@@ -8,6 +8,7 @@
     Dialog:DialogParticipation.Register="{Binding}"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:NotebookWPF.View.UserControls"
+    xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
     mc:Ignorable="d"
     ShowIconOnTitleBar="True"
     Icon="/Resources/notebook.ico"
@@ -625,7 +626,7 @@
                         </StackPanel>
                         <TextBlock Text="{Binding SelectedNote.Created, StringFormat={}Created: {0:yyyy/MM/dd HH:mm}}"
                                Style="{StaticResource TinyText}"/>
-                        <TextBlock Text="{Binding SelectedNote.Updated, StringFormat={}Updated: {0:yyyy/MM/dd HH:mm}}"
+                        <TextBlock Text="{Binding SelectedNote.Updated, StringFormat={}Edited: {0:yyyy/MM/dd HH:mm}}"
                                Style="{StaticResource TinyText}"/>
                     </StackPanel>
 
@@ -639,7 +640,11 @@
                         Orientation="Vertical">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
                            Opacity="0.5"/>
-            </StackPanel>            
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal"
+                        DockPanel.Dock="Top">
+            </StackPanel>
 
             <!--- Buttons -->
             <StackPanel Orientation="Horizontal"
@@ -649,7 +654,8 @@
 
                 <!--- Save Note Button -->
                 <Button ToolTip="Save Note"
-                        Style="{StaticResource LargeButton}">
+                        Style="{StaticResource LargeButton}"
+                        Command="{Binding SaveNoteContentCommand}">
                     <StackPanel Orientation="Horizontal">
                         <!--- Draw Icon -->
                         <Rectangle Width="20"
@@ -670,14 +676,26 @@
                     </StackPanel>
                 </Button>
 
-            </StackPanel>
+            </StackPanel>            
 
             <!--- Editor -->
-            <RichTextBox x:Name="NoteTextEditor"
-                         Padding="2"
-                         FontSize="12">
+            
+            <toolkit:RichTextBox Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 x:Name="NoteTextEditor"
+                                 Background="White"
+                                 Foreground="Black"
+                                 Padding="2"
+                                 FontSize="12"
+                                 Style="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}}">
+                <toolkit:RichTextBox.TextFormatter>
+                    <toolkit:RtfFormatter/>
+                </toolkit:RichTextBox.TextFormatter>
 
-            </RichTextBox>
+                <toolkit:RichTextBoxFormatBarManager.FormatBar>
+                    <toolkit:RichTextBoxFormatBar/>
+                </toolkit:RichTextBoxFormatBarManager.FormatBar>
+            </toolkit:RichTextBox>
+            
         </DockPanel>
 
     </DockPanel>
