@@ -120,7 +120,7 @@ namespace NotebookWPF.ViewModel
             set
             {
                 // If changes were made without saving
-                if (value != null && noteContentChanged)
+                if (noteContentChanged)
                 {
                     SaveNoteContentAsync();
                 }
