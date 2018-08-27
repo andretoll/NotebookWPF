@@ -36,15 +36,19 @@ namespace NotebookWPF.ViewModel
 
         private Note selectedNote;
 
+        private string noteContent;
+
+        private string clientMessage;
+
         private bool notebookIsEditing;
 
         private bool noteIsEditing;
 
         private bool selectedNoteIsFavorite;
 
-        private string noteContent;
-
         private bool noteContentChanged;
+
+        public bool clientMessageActive;
 
         #endregion
 
@@ -84,6 +88,17 @@ namespace NotebookWPF.ViewModel
             }
         }
 
+        public ObservableCollection<Notebook> AvailableNotebooks
+        {
+            get
+            {
+                ObservableCollection<Notebook> notebooksAvailable = new ObservableCollection<Notebook>(Notebooks);
+                notebooksAvailable.Remove(SelectedNotebook);
+                return notebooksAvailable;
+            }
+            private set {}
+        }
+
         public Notebook SelectedNotebook
         {
             get { return selectedNotebook; }
@@ -104,10 +119,22 @@ namespace NotebookWPF.ViewModel
             get { return selectedNote; }
             set
             {
-                selectedNote = value;
-                NotifyPropertyChanged();
+                // If changes were made without saving
+                if (value != null && noteContentChanged)
+                {
+                    SaveNoteContentAsync();
+                }
 
-                GetNoteContent();
+                selectedNote = value;
+                NotifyPropertyChanged();       
+
+                // Empty content
+                noteContent = null;
+
+                // If a note is selected, get its content
+                if (value != null)
+                    GetNoteContent();                
+
                 noteContentChanged = false;
             }
         }
@@ -119,6 +146,10 @@ namespace NotebookWPF.ViewModel
             {
                 notebookIsEditing = value;
                 NotifyPropertyChanged();
+
+                // Add client message
+                if (value)
+                    SetClientMessage("Editing Notebooks.");
             }
         }
 
@@ -129,21 +160,12 @@ namespace NotebookWPF.ViewModel
             {
                 noteIsEditing = value;
                 NotifyPropertyChanged();
-            }
-        }
 
-        public ObservableCollection<Notebook> AvailableNotebooks
-        {
-            get
-            {
-                ObservableCollection<Notebook> notebooksAvailable = new ObservableCollection<Notebook>(Notebooks);
-                notebooksAvailable.Remove(SelectedNotebook);
-                return notebooksAvailable;
+                // Add client message
+                if (value)
+                    SetClientMessage("Editing Notes.");
             }
-            set
-            {
-            }
-        }
+        }        
 
         public bool SelectedNoteIsFavorite
         {
@@ -162,9 +184,30 @@ namespace NotebookWPF.ViewModel
             get { return noteContent; }
             set
             {
-                if (noteContent != null)
+                if (noteContent != value && noteContent != null && value != null)
                     noteContentChanged = true;
+
                 noteContent = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string ClientMessage
+        {
+            get { return clientMessage; }
+            set
+            {
+                clientMessage = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public bool ClientMessageActive
+        {
+            get { return clientMessageActive; }
+            set
+            {
+                clientMessageActive = value;
                 NotifyPropertyChanged();
             }
         }
@@ -308,7 +351,7 @@ namespace NotebookWPF.ViewModel
             {
                 // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
                 if (saveNoteContentCommand == null)
-                    saveNoteContentCommand = new RelayCommand(p => { SaveNoteContent(); }, p => noteContentChanged);
+                    saveNoteContentCommand = new RelayCommand(p => { SaveNoteContentAsync(); }, p => noteContentChanged);
                 return saveNoteContentCommand;
             }
             set
@@ -421,7 +464,10 @@ namespace NotebookWPF.ViewModel
                 dbEngine.Insert(newNotebook);
 
                 Notebooks.Insert(0, newNotebook);
-            }
+
+                // Add message
+                SetClientMessage("Notebook added.");
+            }            
         }
 
         /// <summary>
@@ -495,6 +541,9 @@ namespace NotebookWPF.ViewModel
                 // Insert note into list
                 Notes.Insert(0, newNote);
                 SelectedNotebook.NoteCount++;
+
+                // Add message
+                SetClientMessage("Note added.");
             }
         }
 
@@ -536,6 +585,9 @@ namespace NotebookWPF.ViewModel
 
             // Refresh Favorite Notes
             GetFavoriteNotes();
+
+            // Add message
+            SetClientMessage("Notebook deleted.");
         }
 
         /// <summary>
@@ -575,6 +627,9 @@ namespace NotebookWPF.ViewModel
 
             // Delete notebook from database
             dbEngine.Delete(noteToRemove);
+
+            // Add message
+            SetClientMessage("Note deleted.");
         }
 
         /// <summary>
@@ -670,6 +725,9 @@ namespace NotebookWPF.ViewModel
             Notes.Remove(noteToMove);
             SelectedNotebook.NoteCount--;
             targetNotebook.NoteCount++;
+
+            // Add message
+            SetClientMessage("Note moved.");
         }
 
         /// <summary>
@@ -693,6 +751,15 @@ namespace NotebookWPF.ViewModel
                     FavoriteNotes.Remove(noteToRemove);
             }
 
+            // If Notes are populated, change note favorite value
+            if (Notes != null || Notes.Count == 0)
+            {
+                var note = Notes.Where(n => n.Id == SelectedNote.Id).FirstOrDefault();
+
+                if (note != null)
+                    note.IsFavorite = favorite;
+            }
+
         }
 
         /// <summary>
@@ -707,7 +774,7 @@ namespace NotebookWPF.ViewModel
         /// <summary>
         /// Save Note content to file
         /// </summary>
-        public void SaveNoteContent()
+        public async void SaveNoteContentAsync()
         {
             if (SelectedNote != null || NoteContent != null)
             {
@@ -719,8 +786,21 @@ namespace NotebookWPF.ViewModel
                 dbEngine.Update(SelectedNote);
 
                 noteContentChanged = false;
+
+                SetClientMessage("Changes Saved!");
             }
-            else dialogCoordinator.ShowMessageAsync(this, "Error", "A Note has not been selected.");
+            else await dialogCoordinator.ShowMessageAsync(this, "Error", "An error occured when saving the Note. Please try again.");
+        }
+
+        /// <summary>
+        /// Set a message in the client
+        /// </summary>
+        /// <param name="message"></param>
+        public void SetClientMessage(string message)
+        {
+            ClientMessageActive = false;
+            ClientMessage = message;
+            ClientMessageActive = true;
         }
 
         #endregion

@@ -150,18 +150,32 @@
                     Background="{StaticResource LightGrayColorBrush}"
                     Height="40">
 
-            <TextBlock Text="Edit mode activated."
-                       Style="{StaticResource LargeText}"
+            <!--- Client Message -->
+            <TextBlock Text="{Binding ClientMessage}"
                        Foreground="White"
-                       Name="Txt"
+                       HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Margin="15 0 0 0">
-                <TextBlock.Visibility>
-                    <MultiBinding Converter="{StaticResource booleanToVisibilityMultiConverter}">
-                        <Binding Path="NotebookIsEditing" />
-                        <Binding Path="NoteIsEditing" />
-                    </MultiBinding>
-                </TextBlock.Visibility>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource LargeText}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ClientMessageActive}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="(TextBlock.Opacity)"
+                                                From="1.0" To="0.0" Duration="0:0:4"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ClientMessageActive}" Value="False">
+                                <Setter Property="Opacity" Value="1"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
             </TextBlock>
 
         </StackPanel>
@@ -201,8 +215,8 @@
                              Width="50"
                              Height="50"
                              Style="{StaticResource CircleToggleButtonWhite}">
-                    <Rectangle Width="15"
-                               Height="15"
+                    <Rectangle Width="20"
+                               Height="20"
                                Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill"
@@ -224,8 +238,8 @@
                              Width="50"
                              Height="50"
                              Style="{StaticResource CircleToggleButtonWhite}">
-                    <Rectangle Width="15"
-                               Height="15"
+                    <Rectangle Width="20"
+                               Height="20"
                                Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
                         <Rectangle.OpacityMask>
                             <VisualBrush Stretch="Fill"
@@ -678,22 +692,39 @@
 
             </StackPanel>            
 
-            <!--- Editor -->
-            
+            <!--- Editor -->            
             <toolkit:RichTextBox Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                 x:Name="NoteTextEditor"
+                                 x:Name="NoteTextEditor"                                 
                                  Background="White"
                                  Foreground="Black"
                                  Padding="2"
                                  FontSize="12"
                                  Style="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}}">
+                <!--- TextFormatter -->
                 <toolkit:RichTextBox.TextFormatter>
                     <toolkit:RtfFormatter/>
                 </toolkit:RichTextBox.TextFormatter>
 
+                <!--- Format Bar Window -->
                 <toolkit:RichTextBoxFormatBarManager.FormatBar>
                     <toolkit:RichTextBoxFormatBar/>
                 </toolkit:RichTextBoxFormatBarManager.FormatBar>
+                
+                <!--- Custom ContextMenu -->
+                <toolkit:RichTextBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Cut" 
+                                  InputGestureText="Ctrl + X"
+                                  Command="Cut"/>
+                        <MenuItem Header="Copy" 
+                                  InputGestureText="Ctrl + C"
+                                  Command="Copy"/>
+                        <MenuItem Header="Paste" 
+                                  InputGestureText="Ctrl + V"
+                                  Command="Paste"/>
+                    </ContextMenu>
+                </toolkit:RichTextBox.ContextMenu>
+                
             </toolkit:RichTextBox>
             
         </DockPanel>

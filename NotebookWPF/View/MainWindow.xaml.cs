@@ -153,7 +153,6 @@ namespace NotebookWPF
                 ((Storyboard)sb).Begin(pnl);
         }
 
-
         #endregion        
     }
 }
