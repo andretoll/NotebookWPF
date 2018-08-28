@@ -55,12 +55,52 @@ namespace NotebookWPF
 
         #region Events
 
+        /// <summary>
+        /// On clicking SettingsButton, open FlyOut
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             // Open or close SettingsFlyout
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
         }
 
+        /// <summary>
+        /// On clicking BackToNotebooksButton, hide Notes panel and show Notebooks panel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)
+        {
+            NotebooksPanel.Visibility = Visibility.Visible;
+            NotesPanel.Visibility = Visibility.Collapsed;
+
+            NotebooksListBox.SelectedItem = null;
+            NotesListBox.SelectedItem = null;
+        }
+
+        /// <summary>
+        /// On clicking ShowHidePanelButton, 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ShowHidePanelButton_Checked(object sender, RoutedEventArgs e)
+        {
+            // Toggle show/hide panels
+            if ((sender as ToggleButton).IsChecked ?? false)
+            {
+                ShowHideMenu("sbHideLeftMenu", MainPanel);
+            }
+            else ShowHideMenu("sbShowLeftMenu", MainPanel);
+
+        }
+
+        /// <summary>
+        /// On selecting Notebook, close or open NotesPanel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NotebooksListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if ((sender as ListBox).SelectedItems.Count > 0)
@@ -73,42 +113,31 @@ namespace NotebookWPF
             }
         }
 
+        /// <summary>
+        /// On selecting Note, focus TextEditor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             NoteTextEditor.Focus();
         }
 
+        /// <summary>
+        /// On selecting Favorite Note, focus TextEditor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoriteNotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             NoteTextEditor.Focus();
-        }        
+        }           
 
-        private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)
-        {
-            NotebooksPanel.Visibility = Visibility.Visible;
-            NotesPanel.Visibility = Visibility.Collapsed;
-
-            NotebooksListBox.SelectedItem = null;
-            NotesListBox.SelectedItem = null;
-        }
-
-        private void ListViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            // Prevent right-click selection
-            e.Handled = true;
-        }
-
-        private void ShowHidePanelButton_Checked(object sender, RoutedEventArgs e)
-        {
-            // Toggle show/hide panels
-            if ((sender as ToggleButton).IsChecked ?? false)
-            {
-                ShowHideMenu("sbHideLeftMenu", MainPanel);
-            }
-            else ShowHideMenu("sbShowLeftMenu", MainPanel);
-
-        }
-
+        /// <summary>
+        /// On checking HomeRadioButton, show all Notebooks
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HomeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if ((sender as RadioButton).IsChecked ?? true)
@@ -122,6 +151,11 @@ namespace NotebookWPF
             }
         }
 
+        /// <summary>
+        /// On checking FavoriteRadioButton, show favorite Notes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FavoritesRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if ((sender as RadioButton).IsChecked ?? true)
