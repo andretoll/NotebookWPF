@@ -126,6 +126,8 @@ namespace NotebookWPF
         {
             if ((sender as RadioButton).IsChecked ?? true)
             {
+                NotebooksListBox.SelectedItem = null;
+                NotesPanel.Visibility = Visibility.Collapsed;
                 FavoritePanel.Visibility = Visibility.Visible;
                 ShowHidePanelButton.IsChecked = false;
 
@@ -153,6 +155,7 @@ namespace NotebookWPF
             else
             {
                 FavoritePanel.Visibility = Visibility.Collapsed;
+                FavoriteNotesListBox.SelectedItem = null;
             }
         }
 
