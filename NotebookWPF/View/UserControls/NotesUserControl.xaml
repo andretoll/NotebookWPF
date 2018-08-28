@@ -86,7 +86,7 @@
                     
                     <!--- Note Name -->
                     <StackPanel Orientation="Horizontal"
-                                MaxWidth="120">
+                                MaxWidth="130">
                         
                         <!--- Text -->
                         <TextBlock Text="{Binding Title, Mode=OneWay}"

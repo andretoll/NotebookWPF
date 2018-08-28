@@ -169,7 +169,17 @@ namespace NotebookWPF.ViewModel
 
         public bool SelectedNoteIsFavorite
         {
-            get { return SelectedNote.IsFavorite; }
+            get
+            {
+               try
+                {
+                    return selectedNote.IsFavorite;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
             set
             {
                 selectedNoteIsFavorite = value;
@@ -328,22 +338,6 @@ namespace NotebookWPF.ViewModel
             }
         }
 
-        private ICommand favoriteNotesCommand;
-        public ICommand FavoriteNotesCommand
-        {
-            get
-            {
-                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
-                if (favoriteNotesCommand == null)
-                    favoriteNotesCommand = new RelayCommand(p => { GetFavoriteNotes(); }, p => true);
-                return favoriteNotesCommand;
-            }
-            set
-            {
-                favoriteNotesCommand = value;
-            }
-        }
-
         private ICommand saveNoteContentCommand;
         public ICommand SaveNoteContentCommand
         {
@@ -357,6 +351,22 @@ namespace NotebookWPF.ViewModel
             set
             {
                 saveNoteContentCommand = value;
+            }
+        }
+
+        private ICommand discardChangesCommand;
+        public ICommand DiscardChangesCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (discardChangesCommand == null)
+                    discardChangesCommand = new RelayCommand(p => { DiscardChangesAsync(); }, p => noteContentChanged);
+                return discardChangesCommand;
+            }
+            set
+            {
+                discardChangesCommand = value;
             }
         }
 
@@ -739,6 +749,15 @@ namespace NotebookWPF.ViewModel
             SelectedNote.IsFavorite = favorite;
             dbEngine.Update(SelectedNote);
 
+            // If Notes are populated, change note favorite value
+            if (Notes != null || Notes.Count != 0)
+            {
+                var note = Notes.Where(n => n.Id == SelectedNote.Id).FirstOrDefault();
+
+                if (note != null)
+                    note.IsFavorite = favorite;
+            }
+
             if (favorite)
                 FavoriteNotes.Add(SelectedNote);
             else
@@ -749,17 +768,7 @@ namespace NotebookWPF.ViewModel
                 // Remove note from favorites
                 if (noteToRemove != null)
                     FavoriteNotes.Remove(noteToRemove);
-            }
-
-            // If Notes are populated, change note favorite value
-            if (Notes != null || Notes.Count == 0)
-            {
-                var note = Notes.Where(n => n.Id == SelectedNote.Id).FirstOrDefault();
-
-                if (note != null)
-                    note.IsFavorite = favorite;
-            }
-
+            }            
         }
 
         /// <summary>
@@ -776,7 +785,7 @@ namespace NotebookWPF.ViewModel
         /// </summary>
         public async void SaveNoteContentAsync()
         {
-            if (SelectedNote != null || NoteContent != null)
+            if (SelectedNote != null && NoteContent != null)
             {
                 // Save Note
                 File.WriteAllText(SelectedNote.FileLocation, NoteContent);
@@ -788,6 +797,26 @@ namespace NotebookWPF.ViewModel
                 noteContentChanged = false;
 
                 SetClientMessage("Changes Saved!");
+            }
+            else await dialogCoordinator.ShowMessageAsync(this, "Error", "An error occured when saving the Note. Please try again.");
+        }
+
+        /// <summary>
+        /// Discard changes made to Note content
+        /// </summary>
+        public async void DiscardChangesAsync()
+        {
+            if (SelectedNote != null && NoteContent != null)
+            {
+                var result = await dialogCoordinator.ShowMessageAsync(this, "Discard Changes", "Would you like to discard all changes made to this Note?", MessageDialogStyle.AffirmativeAndNegative);
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    GetNoteContent();
+                    noteContentChanged = false;
+
+                    SetClientMessage("Changes Discarded");
+                }                
             }
             else await dialogCoordinator.ShowMessageAsync(this, "Error", "An error occured when saving the Note. Please try again.");
         }

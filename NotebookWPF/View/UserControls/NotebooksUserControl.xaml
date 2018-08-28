@@ -26,11 +26,10 @@
 
             <!--- Information -->
             <StackPanel Orientation="Vertical"
-                        MaxWidth="120"
                         DockPanel.Dock="Left">
                 
                 <!--- Notebook Name -->
-                <StackPanel Height="30" MaxWidth="110">
+                <StackPanel Height="30" MaxWidth="130">
                     
                     <!--- Text -->
                     <TextBlock x:Name="NotebookNameTextBlock"

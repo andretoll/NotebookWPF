@@ -128,6 +128,27 @@ namespace NotebookWPF
             {
                 FavoritePanel.Visibility = Visibility.Visible;
                 ShowHidePanelButton.IsChecked = false;
+
+                // If selected note from NotesListBox can be found in FavoriteNotesListBox, select it
+                if (NotesListBox.SelectedItem != null)
+                {
+                    var sourceNote = NotesListBox.SelectedItem as Note;
+                    int targetIndex = -1;
+
+                    foreach (var item in FavoriteNotesListBox.Items)
+                    {
+                        if ((item as Note).Id == sourceNote.Id)
+                        {
+                            FavoriteNotesListBox.SelectedItem = item;
+                            targetIndex = FavoriteNotesListBox.Items.IndexOf(item);
+                            FavoriteNotesListBox.SelectedIndex = targetIndex;
+                            return;
+                        }
+                    }
+                }
+
+                // Deselect any selected item from NotesListBox
+                NotesListBox.SelectedItem = null;
             }
             else
             {

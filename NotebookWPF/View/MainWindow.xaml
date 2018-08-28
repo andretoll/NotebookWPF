@@ -15,14 +15,14 @@
     TitleCaps="False"
     WindowTitleBrush="{StaticResource DarkGrayColorBrush}"
     MinHeight="450"
-    MinWidth="800"
+    MinWidth="920"
     BorderThickness="0"
     GlowBrush="Black"
     Title="Simple Notes" Height="600" Width="1200">
 
     <!--- Window Local Resources -->
     <Window.Resources>
-        
+
         <!--- ListBoxItem -->
         <Style x:Key="CustomMetroListBoxItem"
                BasedOn="{StaticResource MetroListBoxItem}"
@@ -82,7 +82,7 @@
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
-        
+
     </Window.Resources>
 
     <!--- Icon Template -->
@@ -142,6 +142,7 @@
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
 
+    <!--- Window -->
     <DockPanel LastChildFill="True">
 
         <!--- Bottom Panel -->
@@ -246,7 +247,7 @@
                                          Visual="{DynamicResource appbar_star}"/>
                         </Rectangle.OpacityMask>
                     </Rectangle>
-                </RadioButton>                              
+                </RadioButton>
 
             </StackPanel>
         </Border>
@@ -257,8 +258,9 @@
                    Background="{StaticResource DarkGrayColorBrush}"
                    Panel.ZIndex="2">
 
+            <!--- Notebooks and Notes -->
             <DockPanel Name="HomePanel">
-                
+
                 <!--- Notebooks -->
                 <DockPanel x:Name="NotebooksPanel">
 
@@ -268,10 +270,10 @@
                                 Margin="15">
 
                         <DockPanel Height="50">
-                            <TextBlock Style="{StaticResource HugeText}"
+                            <TextBlock Style="{StaticResource HugeThinText}"
                                        VerticalAlignment="Bottom"
                                        Foreground="White"
-                                       Text="Notebooks"/>
+                                       Text="Notebooks" TextDecorations="{x:Null}"/>
                         </DockPanel>
 
                         <!--- Buttons -->
@@ -374,16 +376,8 @@
                             </TextBlock.Style>
                         </TextBlock>
                     </StackPanel>
-                    
-                </DockPanel>
 
-                <!--- Separator -->
-                <!--<StackPanel Margin="0" 
-                            Orientation="Horizontal"
-                            Visibility="{Binding Path=Visibility, ElementName=NotebooksPanel}">
-                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
-                       Opacity="0.5"/>
-                </StackPanel>-->
+                </DockPanel>
 
                 <!--- Notes -->
                 <DockPanel MinWidth="{Binding Path=ActualWidth, ElementName=NotebooksPanel}"
@@ -391,14 +385,15 @@
                            Background="{StaticResource DarkGrayColorBrush}"
                            Name="NotesPanel"
                            Visibility="{Binding 
-                        SelectedNotebook, 
-                        Converter={StaticResource nullToVisibilityConverter}}">
+                            SelectedNotebook, 
+                            Converter={StaticResource nullToVisibilityConverter}}">
 
+                    <!--- Separator -->
                     <StackPanel Margin="0" 
-                            Orientation="Horizontal"
-                            Visibility="{Binding Path=Visibility, ElementName=NotebooksPanel}">
+                                Orientation="Horizontal"
+                                Visibility="{Binding Path=Visibility, ElementName=NotebooksPanel}">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" 
-                       Opacity="0.5"/>
+                                   Opacity="0.5"/>
                     </StackPanel>
 
                     <!--- Header -->
@@ -422,7 +417,7 @@
                                 </Rectangle>
                             </Button>
 
-                            <TextBlock Style="{StaticResource HugeText}"
+                            <TextBlock Style="{StaticResource HugeThinText}"
                                        VerticalAlignment="Bottom"
                                        Foreground="White"
                                        TextTrimming="WordEllipsis"
@@ -533,8 +528,8 @@
                     </StackPanel>
 
                 </DockPanel>
-            
-            </DockPanel>            
+
+            </DockPanel>
 
             <!--- Favorite Notes -->
             <DockPanel MinWidth="{Binding Path=ActualWidth, ElementName=NotebooksPanel}"
@@ -549,7 +544,7 @@
                             Margin="15">
                     <DockPanel Height="50">
 
-                        <TextBlock Style="{StaticResource HugeText}"
+                        <TextBlock Style="{StaticResource HugeThinText}"
                                    VerticalAlignment="Bottom"
                                        Foreground="White"
                                        TextTrimming="WordEllipsis"
@@ -609,124 +604,193 @@
                         </TextBlock.Style>
                     </TextBlock>
                 </StackPanel>
-                
+
             </DockPanel>
 
         </DockPanel>
 
         <!--- Text Editor -->
         <DockPanel LastChildFill="True"
-                   Margin="10"
-                   Visibility="{Binding SelectedNote, Converter={StaticResource nullToVisibilityConverter}}">
+                   Margin="10">
 
-            <!--- Header -->
-            <StackPanel HorizontalAlignment="Stretch"
+            <!--- Text Editor Content -->
+            <DockPanel Visibility="{Binding SelectedNote, Converter={StaticResource nullToVisibilityConverter}}">
+                <!--- Header -->
+                <StackPanel HorizontalAlignment="Stretch"
                         DockPanel.Dock="Top"
                         VerticalAlignment="Top">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <!--- Note Information -->
-                    <StackPanel Orientation="Vertical"
-                                Grid.Column="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding SelectedNotebook.Name, StringFormat={}{0} /}"
-                                       Style="{StaticResource HugeText}"
-                                       Opacity="0.3"/>
-                            <TextBlock Text="{Binding SelectedNote.Title, StringFormat={} {0}}"
-                                       Style="{StaticResource HugeText}"/>
+                        <!--- Note Information -->
+                        <StackPanel Orientation="Vertical"
+                                    Grid.Column="0">
+
+                            <!--- Notebook -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 0 0 10">
+                                <Rectangle Width="25"
+                                           Margin="0 -5 10 0"
+                                           VerticalAlignment="Center"
+                                           Height="25"
+                                           Opacity="0.5"
+                                           Fill="{DynamicResource TextBrush}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill"
+                                                        Visual="{StaticResource appbar_book}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                                <TextBlock Text="{Binding SelectedNotebook.Name}"
+                                       ToolTip="{Binding SelectedNotebook.Name}"
+                                       MaxWidth="{Binding Path=Width, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}"
+                                       TextTrimming="CharacterEllipsis"
+                                       Style="{StaticResource HugeThinText}"
+                                       Opacity="0.5"/>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding SelectedNote.Title}"
+                                       ToolTip="{Binding SelectedNote.Title}"                                       
+                                       MaxWidth="{Binding Path=Width, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}"
+                                       TextTrimming="CharacterEllipsis"
+                                       Style="{StaticResource LargeText}"/>
+                            <TextBlock Text="{Binding SelectedNote.Created, StringFormat={}Created: {0:yyyy/MM/dd HH:mm}}"
+                                       Style="{StaticResource TinyText}"/>
+                            <TextBlock Text="{Binding SelectedNote.Updated, StringFormat={}Edited: {0:yyyy/MM/dd HH:mm}}"
+                                       Style="{StaticResource TinyText}"/>
                         </StackPanel>
-                        <TextBlock Text="{Binding SelectedNote.Created, StringFormat={}Created: {0:yyyy/MM/dd HH:mm}}"
-                               Style="{StaticResource TinyText}"/>
-                        <TextBlock Text="{Binding SelectedNote.Updated, StringFormat={}Edited: {0:yyyy/MM/dd HH:mm}}"
-                               Style="{StaticResource TinyText}"/>
-                    </StackPanel>
 
-                </Grid>
-                
-            </StackPanel>
+                    </Grid>
 
-            <!--- Separator -->
-            <StackPanel Margin="0 10 0 20" 
+                </StackPanel>
+
+                <!--- Separator -->
+                <StackPanel Margin="0 5 0 10" 
                         DockPanel.Dock="Top"
                         Orientation="Vertical">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
                            Opacity="0.5"/>
-            </StackPanel>
+                </StackPanel>
 
-            <StackPanel Orientation="Horizontal"
+                <StackPanel Orientation="Horizontal"
                         DockPanel.Dock="Top">
-            </StackPanel>
+                </StackPanel>
 
-            <!--- Buttons -->
-            <StackPanel Orientation="Horizontal"
+                <!--- Buttons -->
+                <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Margin="0 10 0 0"
                         DockPanel.Dock="Bottom">
 
-                <!--- Save Note Button -->
-                <Button ToolTip="Save Note"
+                    <!--- Save Note Button -->
+                    <Button ToolTip="Save Note"
                         Style="{StaticResource LargeButton}"
                         Command="{Binding SaveNoteContentCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <!--- Draw Icon -->
-                        <Rectangle Width="20"
+                        <StackPanel Orientation="Horizontal">
+                            <!--- Draw Icon -->
+                            <Rectangle Width="20"
                                                Height="20"
                                                Fill="{Binding 
                                                 RelativeSource={RelativeSource 
                                                 AncestorType=Button}, 
                                                 Path=Foreground}">
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Stretch="Fill"
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill"
                                                         Visual="{StaticResource appbar_save}"/>
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                        <!--- Button text -->
-                        <TextBlock Margin="4 0 0 0"
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <!--- Button text -->
+                            <TextBlock Margin="4 0 0 0"
                                                VerticalAlignment="Center"
                                                Text="Save Note"/>
-                    </StackPanel>
-                </Button>
+                        </StackPanel>
+                    </Button>
 
-            </StackPanel>            
+                    <!--- Discard Changes Button -->
+                    <Button ToolTip="Discard changes"
+                            Margin="15 0 0 0"
+                        Style="{StaticResource LargeButton}"
+                        Command="{Binding DiscardChangesCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <!--- Draw Icon -->
+                            <Rectangle Width="20"
+                                               Height="20"
+                                               Fill="{Binding 
+                                                RelativeSource={RelativeSource 
+                                                AncestorType=Button}, 
+                                                Path=Foreground}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill"
+                                                        Visual="{StaticResource appbar_redo}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                            <!--- Button text -->
+                            <TextBlock Margin="4 0 0 0"
+                                               VerticalAlignment="Center"
+                                               Text="Discard Changes"/>
+                        </StackPanel>
+                    </Button>
 
-            <!--- Editor -->            
-            <toolkit:RichTextBox Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                </StackPanel>
+
+                <!--- Editor -->
+                <toolkit:RichTextBox Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  x:Name="NoteTextEditor"                                 
                                  Background="White"
                                  Foreground="Black"
                                  Padding="2"
                                  FontSize="12"
                                  Style="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}}">
-                <!--- TextFormatter -->
-                <toolkit:RichTextBox.TextFormatter>
-                    <toolkit:RtfFormatter/>
-                </toolkit:RichTextBox.TextFormatter>
+                    <!--- TextFormatter -->
+                    <toolkit:RichTextBox.TextFormatter>
+                        <toolkit:RtfFormatter/>
+                    </toolkit:RichTextBox.TextFormatter>
 
-                <!--- Format Bar Window -->
-                <toolkit:RichTextBoxFormatBarManager.FormatBar>
-                    <toolkit:RichTextBoxFormatBar/>
-                </toolkit:RichTextBoxFormatBarManager.FormatBar>
-                
-                <!--- Custom ContextMenu -->
-                <toolkit:RichTextBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Cut" 
+                    <!--- Format Bar Window -->
+                    <toolkit:RichTextBoxFormatBarManager.FormatBar>
+                        <toolkit:RichTextBoxFormatBar/>
+                    </toolkit:RichTextBoxFormatBarManager.FormatBar>
+
+                    <!--- Custom ContextMenu -->
+                    <toolkit:RichTextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Cut" 
                                   InputGestureText="Ctrl + X"
                                   Command="Cut"/>
-                        <MenuItem Header="Copy" 
+                            <MenuItem Header="Copy" 
                                   InputGestureText="Ctrl + C"
                                   Command="Copy"/>
-                        <MenuItem Header="Paste" 
+                            <MenuItem Header="Paste" 
                                   InputGestureText="Ctrl + V"
                                   Command="Paste"/>
-                    </ContextMenu>
-                </toolkit:RichTextBox.ContextMenu>
-                
-            </toolkit:RichTextBox>
-            
+                        </ContextMenu>
+                    </toolkit:RichTextBox.ContextMenu>
+
+                </toolkit:RichTextBox>
+            </DockPanel>
+
+            <!--- If no note is selected -->
+            <StackPanel Visibility="{Binding SelectedNote, Converter={StaticResource reversedNullToVisibilityConverter}}" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Opacity="0.5">
+
+                <Rectangle Width="150"
+                           Height="150"
+                           Fill="{DynamicResource TextBrush}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill"
+                                     Visual="{StaticResource appbar_paper}"/>
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+
+                <TextBlock Text="Select a Note to begin."
+                           Style="{StaticResource HugeText}"
+                           Foreground="{DynamicResource TextBrush}"
+                           Margin="0 20 0 0"/>
+            </StackPanel>
+
         </DockPanel>
 
     </DockPanel>

@@ -111,6 +111,7 @@
     <Compile Include="Model\Notebook.cs" />
     <Compile Include="ValueConverters\BooleanToStringConverter.cs" />
     <Compile Include="ValueConverters\BooleanToVisibilityMultiConverter.cs" />
+    <Compile Include="ValueConverters\ReversedNullToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\NullToVisibilityConverter.cs" />
     <Compile Include="ValueConverters\ReversedBooleanToVisibilityConverter.cs" />
     <Compile Include="ViewModel\NotebookViewModel.cs" />
@@ -201,7 +202,6 @@
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\notebook.ico" />
   </ItemGroup>

@@ -13,8 +13,7 @@
 
     <!--- Font Families -->
     <FontFamily x:Key="DefaultFont">Lato</FontFamily>
-    <FontFamily x:Key="FancyFont">Lucida Calligraphy</FontFamily>   
-    
+    <FontFamily x:Key="LightFont">Segoe UI Light</FontFamily>    
     
     <!---!!! BASE STYLES !!!-->
     
@@ -39,8 +38,14 @@
     
     <!--- Huge TextBlock -->
     <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="HugeText">
-        <Setter Property="FontSize" Value="24"/>
-        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    </Style>
+
+    <!--- Huge Thin TextBlock -->
+    <Style BasedOn="{StaticResource BaseText}" TargetType="TextBlock" x:Key="HugeThinText">
+        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="FontFamily" Value="{StaticResource LightFont}"/>
     </Style>
 
     <!--- Large TextBlock -->
@@ -218,6 +223,7 @@
     <!---!!! Value Converters !!!-->
     <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
     <valueconverters:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
+    <valueconverters:ReversedNullToVisibilityConverter x:Key="reversedNullToVisibilityConverter"/>
     <valueconverters:ReversedBooleanToVisibilityConverter x:Key="reversedBooleanToVisibilityConverter"/>
     <valueconverters:BooleanToVisibilityMultiConverter x:Key="booleanToVisibilityMultiConverter"/>
     <valueconverters:BooleanToStringConverter x:Key="booleanToStringConverter"/>

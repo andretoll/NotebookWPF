@@ -25,18 +25,6 @@
                 <MenuItem Header="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToStringConverter}}"
                           IsCheckable="True"
                           IsChecked="{Binding SelectedNoteIsFavorite}">
-                    <MenuItem.Icon>
-                        <Rectangle Width="22" 
-                                   Height="22"
-                                   Visibility="{Binding SelectedNote.IsFavorite, Converter={StaticResource booleanToVisibilityConverter}}">
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="Gold"/>
-                            </Rectangle.Fill>
-                            <Rectangle.OpacityMask>
-                                <VisualBrush Visual="{DynamicResource appbar_star}"/>
-                            </Rectangle.OpacityMask>
-                        </Rectangle>
-                    </MenuItem.Icon>
                 </MenuItem>
 
             </ContextMenu>
@@ -66,7 +54,7 @@
 
                     <!--- Name Container -->
                     <StackPanel Orientation="Horizontal"
-                                MaxWidth="120">
+                                MaxWidth="130">
                         
                         <!--- Text -->
                         <TextBlock Text="{Binding Title, Mode=OneWay}"
