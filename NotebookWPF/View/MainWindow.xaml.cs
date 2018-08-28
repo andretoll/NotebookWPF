@@ -127,7 +127,10 @@ namespace NotebookWPF
             if ((sender as RadioButton).IsChecked ?? true)
             {
                 NotebooksListBox.SelectedItem = null;
-                NotesPanel.Visibility = Visibility.Collapsed;
+
+                if (SettingsHelper.sideBySidePanels)
+                    NotesPanel.Visibility = Visibility.Collapsed;
+
                 FavoritePanel.Visibility = Visibility.Visible;
                 ShowHidePanelButton.IsChecked = false;
 
