@@ -203,11 +203,37 @@
         </Setter>
     </Style>
     
-    
-    
-    
+    <!--- Standard ToggleButton -->
+    <Style BasedOn="{StaticResource MetroToggleButton}" TargetType="ToggleButton" x:Key="SquareToggleButton">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="MinWidth" Value="30"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="BorderThickness" Value="1"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource DarkGrayColorBrush}"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{DynamicResource AccentBaseColorBrush}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
 
-    <!---!!! Labels !!!-->
+
+
+
+
+        <!---!!! Labels !!!-->
 
     <!--- Label -->
     <Style TargetType="Label" x:Key="LabelStyle">

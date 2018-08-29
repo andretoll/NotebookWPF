@@ -650,13 +650,16 @@
                                        Opacity="0.5"/>
                             </StackPanel>
 
+                            <!--- Note Title-->
                             <TextBlock Text="{Binding SelectedNote.Title}"
                                        ToolTip="{Binding SelectedNote.Title}"                                       
                                        MaxWidth="{Binding Path=Width, RelativeSource={RelativeSource AncestorType={x:Type StackPanel}}}"
                                        TextTrimming="CharacterEllipsis"
                                        Style="{StaticResource LargeText}"/>
+                            <!--- Created -->
                             <TextBlock Text="{Binding SelectedNote.Created, StringFormat={}Created: {0:yyyy/MM/dd HH:mm}}"
                                        Style="{StaticResource TinyText}"/>
+                            <!--- Edited -->
                             <TextBlock Text="{Binding SelectedNote.Updated, StringFormat={}Edited: {0:yyyy/MM/dd HH:mm}}"
                                        Style="{StaticResource TinyText}"/>
                         </StackPanel>
@@ -673,8 +676,36 @@
                            Opacity="0.5"/>
                 </StackPanel>
 
+                <!--- Editor Toolbar -->
                 <StackPanel Orientation="Horizontal"
-                        DockPanel.Dock="Top">
+                            DockPanel.Dock="Top"
+                            Margin="0 5 0 10">
+
+                    <!--- Font Families -->
+                    <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
+                              Width="150"
+                              SelectionChanged="FontFamilyComboBox_SelectionChanged"
+                              x:Name="FontFamilyComboBox"/>
+
+                    <!--- Font Sizes -->
+                    <ComboBox x:Name="FontSizeComboBox"
+                              SelectionChanged="FontSizeComboBox_SelectionChanged"/>
+
+                    <!--- Bold/Italic -->
+                    <ToggleButton x:Name="BoldToggleButton"
+                                  Click="BoldToggleButton_Click"
+                                  Margin="10 0 0 0"
+                                  Style="{StaticResource SquareToggleButton}">
+                        <TextBlock Text="B"
+                                   FontWeight="Bold"/>
+                    </ToggleButton>
+                    <ToggleButton x:Name="ItalicToggleButton"
+                                  Click="ItalicToggleButton_Click"
+                                  Margin="10 0 0 0"
+                                  Style="{StaticResource SquareToggleButton}">
+                        <TextBlock Text="I"
+                                   FontStyle="Italic"/>
+                    </ToggleButton>
                 </StackPanel>
 
                 <!--- Buttons -->
@@ -736,12 +767,13 @@
 
                 <!--- Editor -->
                 <toolkit:RichTextBox Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                 x:Name="NoteTextEditor"                                 
-                                 Background="White"
-                                 Foreground="Black"
-                                 Padding="2"
-                                 FontSize="12"
-                                 Style="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}}">
+                                     x:Name="NoteTextEditor"
+                                     SelectionChanged="NoteTextEditor_SelectionChanged"
+                                     Background="White"
+                                     Foreground="Black"
+                                     Padding="2"
+                                     FontSize="12"
+                                     Style="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}}">
                     <!--- TextFormatter -->
                     <toolkit:RichTextBox.TextFormatter>
                         <toolkit:RtfFormatter/>
