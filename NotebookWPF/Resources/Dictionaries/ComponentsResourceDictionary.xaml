@@ -216,9 +216,6 @@
             <Trigger Property="IsChecked" Value="False">
                 <Setter Property="BorderThickness" Value="1"/>
             </Trigger>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource DarkGrayColorBrush}"/>
-            </Trigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsChecked" Value="True"/>

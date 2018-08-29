@@ -123,7 +123,7 @@ namespace NotebookWPF
         private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (NotesListBox.SelectedItem != null)
-            {                
+            {
                 NoteTextEditor.Focus();
 
                 UpdateToolbarValues();
@@ -143,7 +143,7 @@ namespace NotebookWPF
 
                 UpdateToolbarValues();
             }
-        }           
+        }
 
         /// <summary>
         /// On checking HomeRadioButton, show all Notebooks
@@ -227,9 +227,10 @@ namespace NotebookWPF
         /// <param name="e"></param>
         private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var fontFamily = (sender as ComboBox).SelectedItem;
-
-            NoteTextEditor.Selection.ApplyPropertyValue(FontFamilyProperty, fontFamily);
+            if (FontFamilyComboBox.SelectedItem != null)
+            {
+                NoteTextEditor.Selection.ApplyPropertyValue(FontFamilyProperty, (sender as ComboBox).SelectedItem);
+            }
 
             NoteTextEditor.Focus();
         }
@@ -241,15 +242,16 @@ namespace NotebookWPF
         /// <param name="e"></param>
         private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var fontSize = (sender as ComboBox).SelectedItem;
-
-            NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, fontSize);
+            if (FontSizeComboBox.SelectedItem != null)
+            {
+                NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, (sender as ComboBox).SelectedItem);
+            }
 
             NoteTextEditor.Focus();
         }
 
         /// <summary>
-        /// On changing bold text
+        /// On toggling bold text
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -268,7 +270,7 @@ namespace NotebookWPF
         }
 
         /// <summary>
-        /// On chaning italic text
+        /// On toggling italic text
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -284,6 +286,43 @@ namespace NotebookWPF
             }
 
             NoteTextEditor.Focus();
+        }
+
+        /// <summary>
+        /// On toggling underlined text
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UnderlineToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as ToggleButton).IsChecked ?? true)
+            {
+                NoteTextEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
+            }
+            else
+            {
+                TextDecorationCollection textDecorations;
+                (NoteTextEditor.Selection.GetPropertyValue(Inline.TextDecorationsProperty) as TextDecorationCollection).TryRemove(TextDecorations.Underline, out textDecorations);
+                NoteTextEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, textDecorations);
+            }
+
+            NoteTextEditor.Focus();
+        }
+
+        /// <summary>
+        /// On switching between alignments
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AlignRadioButtonChecked(object sender, RoutedEventArgs e)
+        {
+            NoteTextEditor.Focus();
+            if (LeftAlignRadioButton.IsChecked ?? true)
+                NoteTextEditor.Selection.ApplyPropertyValue(Paragraph.TextAlignmentProperty, TextAlignment.Left);
+            else if (CenterAlignRadioButton.IsChecked ?? true)
+                NoteTextEditor.Selection.ApplyPropertyValue(Paragraph.TextAlignmentProperty, TextAlignment.Center);
+            else if (RightAlignRadioButton.IsChecked ?? true)
+                NoteTextEditor.Selection.ApplyPropertyValue(Paragraph.TextAlignmentProperty, TextAlignment.Right);
         }
 
         #endregion
@@ -311,6 +350,9 @@ namespace NotebookWPF
         /// </summary>
         private void InitiateToolbarValues()
         {
+            #region Font Sizes
+
+            // Font Sizes
             List<double> fontSizes = new List<double>();
             fontSizes.Add(3);
             fontSizes.Add(4);
@@ -366,6 +408,80 @@ namespace NotebookWPF
             fontSizes.Add(144);
 
             FontSizeComboBox.ItemsSource = fontSizes;
+
+            #endregion
+
+            #region Font Families
+
+            var fontFamilies = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
+            FontFamilyComboBox.ItemsSource = fontFamilies;
+
+            #endregion
+
+            #region Alignment
+
+            LeftAlignRadioButton.IsChecked = true;
+
+            #endregion
+        }
+
+        /// <summary>
+        /// Check if selected text is underlined
+        /// </summary>
+        /// <param name="textSelection"></param>
+        /// <returns></returns>
+        private bool CheckUnderLinedText(TextSelection textSelection)
+        {
+            var value = GetPropertyValue(textSelection, Paragraph.TextDecorationsProperty);
+
+            int propCount;
+
+            if (int.TryParse((value as TextDecorationCollection).Count.ToString(), out propCount))
+            {
+                if (propCount > 0)
+                    return true;
+            }           
+
+            return false;
+        }
+
+        /// <summary>
+        /// Get formatting property value
+        /// </summary>
+        /// <param name="textRange"></param>
+        /// <param name="formattingProperty"></param>
+        /// <returns></returns>
+        private Object GetPropertyValue(TextRange textRange, DependencyProperty formattingProperty)
+        {
+            Object value = null;
+
+            var pointer = textRange.Start;
+
+            if (pointer is TextPointer)
+
+            {
+
+                Boolean needsContinue = true;
+
+                DependencyObject element = ((TextPointer)pointer).Parent as TextElement;
+
+                while (needsContinue && (element is Inline || element is Paragraph || element is TextBlock))
+
+                {
+
+                    value = element.GetValue(formattingProperty);
+
+                    System.Collections.IEnumerable seq = value as System.Collections.IEnumerable;
+
+                    needsContinue = (seq == null) ? value == null : seq.Cast<Object>().Count() == 0;
+
+                    element = element is TextElement ? ((TextElement)element).Parent : null;
+
+                }
+
+            }
+
+            return value;
         }
 
         /// <summary>
@@ -380,37 +496,39 @@ namespace NotebookWPF
                 FontFamilyComboBox.SelectedItem = fontFamily;
 
                 // Set FontSize
-                var fontSize = NoteTextEditor.Selection.GetPropertyValue(TextElement.FontSizeProperty);
-                foreach (var item in FontSizeComboBox.Items)
-                {
-                    if ((double)item == (double)fontSize)
-                    {
-                        FontSizeComboBox.SelectedItem = item;
-                        break;
-                    }
-
-                    FontSizeComboBox.SelectedIndex = 15;
-                }
+                FontSizeComboBox.Text = (NoteTextEditor.Selection.GetPropertyValue(Inline.FontSizeProperty)).ToString();
 
                 // Set Bold
-                var isBold = NoteTextEditor.Selection.GetPropertyValue(FontWeightProperty);
-                if ((FontWeight)isBold == FontWeights.Bold)
-                {
-                    BoldToggleButton.IsChecked = true;
-                }
-                else BoldToggleButton.IsChecked = false;
+                var selectedWeight = NoteTextEditor.Selection.GetPropertyValue(Inline.FontWeightProperty);
+                BoldToggleButton.IsChecked = (selectedWeight != DependencyProperty.UnsetValue) && (selectedWeight.Equals(FontWeights.Bold));
 
                 // Set Italic
-                var isItalic = NoteTextEditor.Selection.GetPropertyValue(FontStyleProperty);
-                if ((FontStyle)isItalic == FontStyles.Italic)
+                var selectedStyle = NoteTextEditor.Selection.GetPropertyValue(Inline.FontStyleProperty);
+                ItalicToggleButton.IsChecked = (selectedStyle != DependencyProperty.UnsetValue) && (selectedStyle.Equals(FontStyles.Italic));
+
+                // Set Underline
+                UnderlineToggleButton.IsChecked = CheckUnderLinedText(NoteTextEditor.Selection);             
+
+                // Set Alignment
+                var selectedAlignment = NoteTextEditor.Selection.GetPropertyValue(Paragraph.TextAlignmentProperty);
+                switch (selectedAlignment)
                 {
-                    ItalicToggleButton.IsChecked = true;
+                    case TextAlignment.Left:
+                        LeftAlignRadioButton.IsChecked = true;
+                        break;
+                    case TextAlignment.Center:
+                        CenterAlignRadioButton.IsChecked = true;
+                        break;
+                    case TextAlignment.Right:
+                        RightAlignRadioButton.IsChecked = true;
+                        break;
+                    default:
+                        break;
                 }
-                else ItalicToggleButton.IsChecked = false;
             }
             catch { }
         }
 
-        #endregion        
+        #endregion
     }
 }
