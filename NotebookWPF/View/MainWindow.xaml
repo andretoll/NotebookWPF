@@ -12,6 +12,7 @@
     mc:Ignorable="d"
     ShowIconOnTitleBar="True"
     Icon="/Resources/notebook.ico"
+    Closing="MetroWindow_Closing"
     TitleCaps="False"
     WindowTitleBrush="{StaticResource DarkGrayColorBrush}"
     MinHeight="450"
@@ -131,9 +132,9 @@
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <Controls:Flyout Header="Settings"
+                             IsOpenChanged="SettingsFlyout_IsOpenChanged"
                              x:Name="SettingsFlyout"
-                             Position="Left" 
-                             Width="400">
+                             Position="Left">
 
                 <!-- Flyout Content -->
                 <uc:SettingsUserControl/>
@@ -857,6 +858,7 @@
                 <!--- Editor -->
                 <toolkit:RichTextBox Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                      x:Name="NoteTextEditor"
+                                     TextChanged="NoteTextEditor_TextChanged"
                                      SelectionChanged="NoteTextEditor_SelectionChanged"
                                      Background="White"
                                      Foreground="Black"

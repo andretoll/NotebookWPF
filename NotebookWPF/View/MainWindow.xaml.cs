@@ -218,6 +218,45 @@ namespace NotebookWPF
             UpdateToolbarValues();
         }
 
+        /// <summary>
+        /// On Note text editor text changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NoteTextEditor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateToolbarValues();
+        }
+
+        /// <summary>
+        /// On Flyout open state change
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SettingsFlyout_IsOpenChanged(object sender, RoutedEventArgs e)
+        {
+            // If SettingsFlyout was closed
+            if (SettingsFlyout.IsOpen == false)
+            {
+                NotebooksListBox.SelectedItem = null;
+                NotesListBox.SelectedItem = null;
+                NotesPanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        /// On window close
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (_notebookViewModel.noteContentChanged)
+            {
+                _notebookViewModel.SaveNoteContentAsync();
+            }
+        }
+
         #region Text Editor Events
 
         /// <summary>
@@ -529,6 +568,6 @@ namespace NotebookWPF
             catch { }
         }
 
-        #endregion
+        #endregion        
     }
 }

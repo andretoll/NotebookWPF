@@ -46,7 +46,11 @@ namespace NotebookWPF.ViewModel
 
         private bool selectedNoteIsFavorite;
 
-        private bool noteContentChanged;
+        #endregion
+
+        #region Public Members
+
+        public bool noteContentChanged;
 
         public bool clientMessageActive;
 
@@ -593,6 +597,12 @@ namespace NotebookWPF.ViewModel
                 }
             }
 
+            if (SelectedNote != null)
+            {
+                if (SelectedNote.NotebookId == notebookToRemove.Id)
+                    SelectedNote = null;
+            }
+
             // Refresh Favorite Notes
             GetFavoriteNotes();
 
@@ -777,6 +787,13 @@ namespace NotebookWPF.ViewModel
         public void GetNoteContent()
         {
             // Get Note content from file
+            if (!File.Exists(SelectedNote.FileLocation))
+            {
+                dialogCoordinator.ShowMessageAsync(this, "File not found.", "The file could not be found. It may have been deleted or moved. \n\nSaving the Note will create a new file.");
+
+                return;
+            }
+
             NoteContent = File.ReadAllText(SelectedNote.FileLocation);
         }
 
