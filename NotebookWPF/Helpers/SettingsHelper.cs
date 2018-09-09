@@ -32,7 +32,6 @@ namespace NotebookWPF.Helpers
 
         // Writable public Settings
         public static string noteDirectory;
-        public static bool sideBySidePanels;
 
         #endregion
 
@@ -89,7 +88,6 @@ namespace NotebookWPF.Helpers
 
                 // Get application settings from file
                 noteDirectory = doc.Root.Elements("noteDirectory").FirstOrDefault().Attribute("path").Value;     
-                sideBySidePanels = bool.Parse(doc.Root.Elements("sideBySidePanels").FirstOrDefault().Attribute("enabled").Value);
             }
             catch
             {
@@ -138,9 +136,7 @@ namespace NotebookWPF.Helpers
                 new XElement("accent",
                     new XAttribute("color", defaultAccent)),
                 new XElement("noteDirectory",
-                    new XAttribute("path", noteDefaultDirectory)),
-                new XElement("sideBySidePanels",
-                    new XAttribute("enabled", "true"))));
+                    new XAttribute("path", noteDefaultDirectory))));
 
             xdoc.Save(filePath);
         }

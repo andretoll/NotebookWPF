@@ -342,6 +342,22 @@ namespace NotebookWPF.ViewModel
             }
         }
 
+        private ICommand copyNoteCommand;
+        public ICommand CopyNoteCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (copyNoteCommand == null)
+                    copyNoteCommand = new RelayCommand(async p => { await CopyNoteAsync(); }, p => true);
+                return copyNoteCommand;
+            }
+            set
+            {
+                copyNoteCommand = value;
+            }
+        }
+
         private ICommand saveNoteContentCommand;
         public ICommand SaveNoteContentCommand
         {
@@ -371,6 +387,22 @@ namespace NotebookWPF.ViewModel
             set
             {
                 discardChangesCommand = value;
+            }
+        }
+
+        private ICommand importFromFileCommand;
+        public ICommand ImportFromFileCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (importFromFileCommand == null)
+                    importFromFileCommand = new RelayCommand(async p => { await ImportFromFileAsync(); }, p => true);
+                return importFromFileCommand;
+            }
+            set
+            {
+                importFromFileCommand = value;
             }
         }
 
@@ -571,8 +603,15 @@ namespace NotebookWPF.ViewModel
             if (!int.TryParse(notebookId.ToString(), out id))
                 return;
 
-            // Delete notebook from list
             Notebook notebookToRemove = Notebooks.Where(n => n.Id == id).FirstOrDefault();
+
+            if (SelectedNotebook != null)
+            {
+                if (SelectedNotebook.Id == notebookToRemove.Id)
+                    SelectedNotebook = null;
+            }
+
+            // Delete notebook from list            
             if (notebookToRemove != null)
                 Notebooks.Remove(notebookToRemove);
 
@@ -601,7 +640,7 @@ namespace NotebookWPF.ViewModel
             {
                 if (SelectedNote.NotebookId == notebookToRemove.Id)
                     SelectedNote = null;
-            }
+            }            
 
             // Refresh Favorite Notes
             GetFavoriteNotes();
@@ -753,6 +792,65 @@ namespace NotebookWPF.ViewModel
         }
 
         /// <summary>
+        /// Copy Note into the same Notebook
+        /// </summary>
+        /// <param name="noteId"></param>
+        public async Task CopyNoteAsync()
+        {
+            // If no Notebook or Note is selected, show error and return
+            if (SelectedNote == null || SelectedNotebook == null)
+            {
+                await dialogCoordinator.ShowMessageAsync(this, "Error", "The Note could not be copied.\n\nPlease restart the application if the pro");
+
+                return;
+            }
+
+            // Create new Note
+            Note newNote = new Note()
+            {
+                NotebookId = SelectedNotebook.Id,
+                Created = DateTime.Now,
+                Updated = DateTime.Now
+            };
+
+            // Add different title if necessary
+            string newNoteTitle = SelectedNote.Title;
+            int i = 1;
+            while (dbEngine.NoteTitleExists(newNoteTitle, 0))
+            {                
+                newNoteTitle = SelectedNote.Title + $"({i})";
+                i++;
+            }
+            newNote.Title = newNoteTitle;
+
+            // Create file and save file location
+            string fileName = string.Concat(newNote.Title, ".rtf");
+            string filePath = Path.Combine(SettingsHelper.noteDirectory, fileName);
+            try
+            {
+                File.Copy(SelectedNote.FileLocation, filePath);
+            }
+            catch (Exception ex)
+            {
+                // If adding fails, show error message and return
+                await dialogCoordinator.ShowMessageAsync(this, "Error", ex.Message);
+                return;
+            }
+
+            newNote.FileLocation = filePath;
+
+            // Insert Note to database
+            dbEngine.Insert(newNote);
+
+            // Insert note into list
+            Notes.Insert(0, newNote);
+            SelectedNotebook.NoteCount++;
+
+            // Add message
+            SetClientMessage("Note copied.");
+        }
+
+        /// <summary>
         /// Make Note Favorite
         /// </summary>
         /// <param name="noteId"></param>
@@ -796,8 +894,8 @@ namespace NotebookWPF.ViewModel
             // Get Note content from file
             if (!File.Exists(SelectedNote.FileLocation))
             {
-                dialogCoordinator.ShowMessageAsync(this, "File not found.", "The file could not be found. It may have been deleted or moved. \n\nSaving the Note will create a new file.");
-
+                dialogCoordinator.ShowMessageAsync(this, "File not found.", "The file could not be found. It may have been deleted or moved.");
+                DeleteNote(SelectedNote.Id);
                 return;
             }
 
@@ -854,6 +952,74 @@ namespace NotebookWPF.ViewModel
             ClientMessageActive = false;
             ClientMessage = message;
             ClientMessageActive = true;
+        }
+
+        /// <summary>
+        /// Import a file and add it to the Notebook
+        /// </summary>
+        public async Task ImportFromFileAsync()
+        {
+            // If no Notebook is selected, show error message and return
+            if (SelectedNotebook == null)
+            {
+                await dialogCoordinator.ShowMessageAsync(this, "Error", "Please select a Notebook and try again.");
+                return;
+            }
+
+            // Open file dialog
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.DefaultExt = ".rtf";
+            openFileDialog.Filter = "Rich Text Format Files (*.rtf)|*.rtf";
+
+            var result = openFileDialog.ShowDialog();
+
+            // If a file was selected
+            if (result == true)
+            {
+                // Validate extension
+                if (Path.GetExtension(openFileDialog.FileName) != ".rtf")
+                    return;
+
+                // Create Note object
+                Note newNote = new Note()
+                {
+                    NotebookId = SelectedNotebook.Id,
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now
+                };
+                string importedFileName = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+                string newNoteTitle = importedFileName;
+                int i = 1;
+                while (dbEngine.NoteTitleExists(newNoteTitle, 0))
+                {
+                    newNoteTitle = importedFileName + $"({i})";
+                    i++;
+                }
+                newNote.Title = newNoteTitle;
+                newNote.FileLocation = Path.Combine(SettingsHelper.noteDirectory, newNoteTitle + ".rtf");
+
+                // Copy imported file to Notes directory
+                try
+                {
+                    File.Copy(openFileDialog.FileName, newNote.FileLocation);
+                }
+                catch (Exception ex)
+                {
+                    // If adding fails, show error message and return
+                    await dialogCoordinator.ShowMessageAsync(this, "Error", ex.Message);
+                    return;
+                }
+
+                // Add Note to db
+                dbEngine.Insert(newNote);
+
+                // Insert note into list
+                Notes.Insert(0, newNote);
+                SelectedNotebook.NoteCount++;
+
+                // Add message
+                SetClientMessage("Import successful.");
+            }            
         }
 
         #endregion

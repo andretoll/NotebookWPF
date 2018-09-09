@@ -30,7 +30,7 @@
                 </MenuItem>
 
                 <!--- Move to another Notebook -->
-                <MenuItem Header="Move to" 
+                <MenuItem Header="Move to"
                           ItemsSource="{Binding AvailableNotebooks}">
                     <MenuItem.Style>
                         <Style TargetType="MenuItem" BasedOn="{StaticResource MetroMenuItem}">
@@ -44,6 +44,9 @@
                     <MenuItem.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"
+                                       ToolTip="{Binding Name}"
+                                       TextTrimming="CharacterEllipsis"
+                                       MaxWidth="250"
                                        Padding="5"/>
                         </DataTemplate>
                     </MenuItem.ItemTemplate>
@@ -53,6 +56,11 @@
                             <Setter Property="CommandParameter" Value="{Binding Id}"/>
                         </Style>
                     </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                
+                <!--- Copy Note -->
+                <MenuItem Header="Copy"
+                          Command="{Binding CopyNoteCommand}">                    
                 </MenuItem>
                 
                 <!--- Delete note -->
@@ -86,12 +94,12 @@
                     
                     <!--- Note Name -->
                     <StackPanel Orientation="Horizontal"
-                                MaxWidth="160">
+                                MaxWidth="140">
                         
                         <!--- Text -->
                         <TextBlock Text="{Binding Title, Mode=OneWay}"
                                    Margin="5 7 0 0"
-                                   MaxWidth="110"
+                                   MaxWidth="130"
                                    TextTrimming="CharacterEllipsis"
                                    Style="{StaticResource LargeText}"
                                    Visibility="{Binding 
@@ -105,7 +113,7 @@
                         <!--- Text Box -->
                         <TextBox Text="{Binding Title, Mode=TwoWay}"
                                  Height="30"
-                                 MaxWidth="120"
+                                 MaxWidth="130"
                                  FontSize="15"
                                  Visibility="{Binding 
                                     RelativeSource={RelativeSource 

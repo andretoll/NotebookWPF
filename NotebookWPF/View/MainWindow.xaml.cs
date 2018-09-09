@@ -75,9 +75,6 @@ namespace NotebookWPF
         /// <param name="e"></param>
         private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)
         {
-            NotebooksPanel.Visibility = Visibility.Visible;
-            NotesPanel.Visibility = Visibility.Collapsed;
-
             NotebooksListBox.SelectedItem = null;
             NotesListBox.SelectedItem = null;
         }
@@ -96,23 +93,6 @@ namespace NotebookWPF
             }
             else ShowHideMenu("sbShowLeftMenu", MainPanel);
 
-        }
-
-        /// <summary>
-        /// On selecting Notebook, close or open NotesPanel
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NotebooksListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if ((sender as ListBox).SelectedItems.Count > 0)
-            {
-                // Check settings for side-by-side panels
-                if (!SettingsHelper.sideBySidePanels)
-                    NotebooksPanel.Visibility = Visibility.Collapsed;
-
-                NotesPanel.Visibility = Visibility.Visible;
-            }
         }
 
         /// <summary>
@@ -173,8 +153,6 @@ namespace NotebookWPF
         {
             if ((sender as RadioButton).IsChecked ?? true)
             {
-                if (SettingsHelper.sideBySidePanels)
-                    NotesPanel.Visibility = Visibility.Collapsed;
 
                 FavoritePanel.Visibility = Visibility.Visible;
                 ShowHidePanelButton.IsChecked = false;
@@ -204,12 +182,6 @@ namespace NotebookWPF
             {
                 FavoritePanel.Visibility = Visibility.Collapsed;
                 FavoriteNotesListBox.SelectedItem = null;
-
-                if (!SettingsHelper.sideBySidePanels)
-                {
-                    NotesPanel.Visibility = Visibility.Collapsed;
-                    NotebooksPanel.Visibility = Visibility.Visible;
-                }
             }
         }
 
@@ -240,7 +212,7 @@ namespace NotebookWPF
         /// <param name="e"></param>
         private void SettingsFlyout_IsOpenChanged(object sender, RoutedEventArgs e)
         {
-            // If SettingsFlyout was closed
+            // When closing, reset application layout
             if (SettingsFlyout.IsOpen == false)
             {
                 if (NotesPanel.Visibility == Visibility.Visible)
@@ -250,8 +222,7 @@ namespace NotebookWPF
                 NotesListBox.SelectedItem = null;
                 FavoriteNotesListBox.SelectedItem = null;
 
-                if (!SettingsHelper.sideBySidePanels)
-                    NotebooksPanel.Visibility = Visibility.Visible;
+                NotebooksPanel.Visibility = Visibility.Visible;
             }
         }
 

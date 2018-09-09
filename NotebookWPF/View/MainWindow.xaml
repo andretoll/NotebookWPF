@@ -235,14 +235,16 @@
             <DockPanel Name="HomePanel">
 
                 <!--- Notebooks -->
-                <DockPanel x:Name="NotebooksPanel">
+                <DockPanel x:Name="NotebooksPanel"
+                           MinWidth="240">
 
                     <!--- Header -->
                     <StackPanel Orientation="Vertical"
                                 DockPanel.Dock="Top"
                                 Margin="10">
 
-                        <DockPanel Height="50">
+                        <DockPanel Height="50"
+                                   Margin="0 0 0 10">
                             <TextBlock Style="{StaticResource HugeThinText}"
                                        VerticalAlignment="Bottom"
                                        Foreground="White"
@@ -250,36 +252,12 @@
                         </DockPanel>
 
                         <!--- Buttons -->
-                        <StackPanel Orientation="Horizontal"
-                                    Height="50">
-
-                            <!--- Button to add new Notebook -->
-                            <Button ToolTip="New notebook"
-                                    Command="{Binding NewNotebookCommand}"
-                                    Margin="0 0 20 0"
-                                    Style="{StaticResource LargeButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <!--- Draw Icon -->
-                                    <Rectangle Width="20"
-                                               Height="20"
-                                               Fill="{Binding 
-                                                RelativeSource={RelativeSource 
-                                                AncestorType=Button}, 
-                                                Path=Foreground}">
-                                        <Rectangle.OpacityMask>
-                                            <VisualBrush Stretch="Fill"
-                                                        Visual="{StaticResource appbar_book}"/>
-                                        </Rectangle.OpacityMask>
-                                    </Rectangle>
-                                    <!--- Button text -->
-                                    <TextBlock Margin="4 0 0 0"
-                                               VerticalAlignment="Center"
-                                               Text="NEW NOTEBOOK"/>
-                                </StackPanel>
-                            </Button>
+                        <DockPanel Height="50"
+                                   Margin="0 0 0 10">
 
                             <!--- Button to toggle edit mode -->
                             <ToggleButton ToolTip="Edit Notebooks"
+                                          DockPanel.Dock="Right"
                                           Width="40"
                                           Height="40"
                                           IsChecked="{Binding NotebookIsEditing}"
@@ -293,7 +271,38 @@
                                 </Rectangle>
                             </ToggleButton>
 
-                        </StackPanel>
+                            <!--- Button to add new Notebook -->
+                            <StackPanel Orientation="Horizontal">
+                                <Button ToolTip="New notebook"
+                                        DockPanel.Dock="Left"
+                                        Command="{Binding NewNotebookCommand}"
+                                        Style="{StaticResource LargeButton}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <!--- Draw Icon -->
+                                        <Rectangle Width="15"
+                                                   Height="15"
+                                                   Fill="{Binding 
+                                                    RelativeSource={RelativeSource 
+                                                    AncestorType=Button}, 
+                                                    Path=Foreground}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Stretch="Fill"
+                                                             Visual="{StaticResource appbar_add}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <!--- Button text -->
+                                        <TextBlock Margin="4 0 0 0"
+                                                   VerticalAlignment="Center"
+                                                   Text="NEW NOTEBOOK"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+
+                            
+
+                            
+
+                        </DockPanel>
 
                     </StackPanel>
 
@@ -307,7 +316,6 @@
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
                              ScrollViewer.CanContentScroll="False" 
                              ItemContainerStyle="{StaticResource CustomMetroListBoxItem}"
-                             SelectionChanged="NotebooksListBox_SelectionChanged"
                              SelectedItem="{Binding 
                                             SelectedNotebook, 
                                             Mode=TwoWay, 
@@ -353,8 +361,8 @@
                 </DockPanel>
 
                 <!--- Notes -->
-                <DockPanel MinWidth="{Binding Path=ActualWidth, ElementName=NotebooksPanel}"
-                           DockPanel.Dock="Left"
+                <DockPanel DockPanel.Dock="Left"
+                           Width="260"
                            Background="{StaticResource DarkGrayColorBrush}"
                            Name="NotesPanel"
                            Visibility="{Binding 
@@ -372,7 +380,8 @@
                     <StackPanel Orientation="Vertical"
                                 DockPanel.Dock="Top"
                                 Margin="10">
-                        <DockPanel Height="50">
+                        <DockPanel Height="50"
+                                   Margin="0 0 0 10">
                             <Button ToolTip="Back to Notebooks"
                                     Click="BackToNotebooksButton_Click"
                                     DockPanel.Dock="Right"
@@ -399,36 +408,12 @@
 
 
                         <!--- Buttons -->
-                        <StackPanel Orientation="Horizontal"
-                                    Height="50">
-
-                            <!--- Button to add new Note -->
-                            <Button ToolTip="New note"
-                                    Command="{Binding NewNoteCommand}"
-                                    Margin="0 0 20 0"
-                                    Style="{StaticResource LargeButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <!--- Draw Icon -->
-                                    <Rectangle Width="20"
-                                               Height="20"
-                                               Fill="{Binding 
-                                                RelativeSource={RelativeSource 
-                                                AncestorType=Button}, 
-                                                Path=Foreground}">
-                                        <Rectangle.OpacityMask>
-                                            <VisualBrush Stretch="Fill"
-                                                         Visual="{StaticResource appbar_paper}"/>
-                                        </Rectangle.OpacityMask>
-                                    </Rectangle>
-                                    <!--- Button text -->
-                                    <TextBlock Margin="4 0 0 0"
-                                               VerticalAlignment="Center"
-                                               Text="NEW NOTE"/>
-                                </StackPanel>
-                            </Button>
+                        <DockPanel Height="50"
+                                   Margin="0 0 0 10">
 
                             <!--- Button to toggle edit mode -->
                             <ToggleButton ToolTip="Edit Notes"
+                                          DockPanel.Dock="Right"
                                           Width="40"
                                           Height="40"
                                           IsChecked="{Binding NoteIsEditing}"
@@ -443,7 +428,33 @@
                                 </Rectangle>
                             </ToggleButton>
 
-                        </StackPanel>
+                            <!--- Button to add new Note -->
+                            <StackPanel Orientation="Horizontal">
+                                <Button ToolTip="New note"
+                                        Command="{Binding NewNoteCommand}"
+                                        Style="{StaticResource LargeButton}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <!--- Draw Icon -->
+                                        <Rectangle Width="15"
+                                                   Height="15"
+                                                   Fill="{Binding 
+                                                RelativeSource={RelativeSource 
+                                                AncestorType=Button}, 
+                                                Path=Foreground}">
+                                            <Rectangle.OpacityMask>
+                                                <VisualBrush Stretch="Fill"
+                                                            Visual="{StaticResource appbar_add}"/>
+                                            </Rectangle.OpacityMask>
+                                        </Rectangle>
+                                        <!--- Button text -->
+                                        <TextBlock Margin="4 0 0 0"
+                                                   VerticalAlignment="Center"
+                                                   Text="NEW NOTE"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>                                        
+
+                        </DockPanel>
 
                     </StackPanel>
 
@@ -513,7 +524,7 @@
                 <!--- Header -->
                 <StackPanel Orientation="Vertical"
                             DockPanel.Dock="Top"
-                            Margin="15">
+                            Margin="10">
                     <DockPanel Height="50">
 
                         <TextBlock Style="{StaticResource HugeThinText}"
@@ -528,7 +539,7 @@
                 <!--- List of Favorite Notes -->
                 <ListBox ItemsSource="{Binding FavoriteNotes, Mode=TwoWay}"
                          Name="FavoriteNotesListBox"                         
-                         Margin="15 0 0 15"
+                         Margin="10 0 0 15"
                          BorderThickness="0"
                          Background="{DynamicResource DarkGrayColorBrush}"
                          VerticalContentAlignment="Top"
@@ -907,7 +918,7 @@
             <StackPanel Visibility="{Binding SelectedNote, Converter={StaticResource reversedNullToVisibilityConverter}}" 
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
-                        Opacity="0.5">
+                        Opacity="0.3">
 
                 <Rectangle Width="150"
                            Height="150"

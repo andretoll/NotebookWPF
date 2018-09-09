@@ -52,15 +52,6 @@
                         </Button>
                     </StackPanel>
 
-                    <!--- Side by Side Panels -->
-                    <Label Content="Side-by-side Panels"
-                           Style="{StaticResource LabelStyle}"/>
-                    <StackPanel Width="100"
-                                HorizontalAlignment="Left">
-                        <controls:ToggleSwitch Margin="5 0 0 0"
-                                               IsChecked="{Binding SideBySidePanels}"/>
-                    </StackPanel>
-
                 </StackPanel>
             </TabItem>
             

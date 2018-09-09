@@ -18,7 +18,7 @@ namespace NotebookWPF.Helpers
         #region Public Members
 
         // Path to the database file
-        public static string dbFileLocation = Path.Combine(Environment.CurrentDirectory, "notebookDb.db");
+        private static readonly string dbFileLocation = Path.Combine(Environment.CurrentDirectory, "notebookDb.db");
 
         #endregion
 

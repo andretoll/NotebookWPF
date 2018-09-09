@@ -8,14 +8,21 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <!--- ListBoxItem Wrapper-->
-    <DockPanel Width="220"
+    <DockPanel Width="200"
                ToolTip="{Binding Name}"                   
                Margin="5 5 0 0"
-               Background="Transparent">
+               Background="Transparent"
+               Tag="{Binding 
+                        RelativeSource={RelativeSource 
+                        Mode=FindAncestor, 
+                        AncestorType={x:Type ListBox}}, 
+                        Path=DataContext}">
 
         <!--- ListBoxItem menu -->
         <DockPanel.ContextMenu>
-            <ContextMenu>
+            <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                <MenuItem Header="Import from file..."
+                          Command="{Binding ImportFromFileCommand}"/>
                 <MenuItem Header="Delete"
                           Click="DeleteNotebookButton_Click"/>
             </ContextMenu>
@@ -29,7 +36,7 @@
                         DockPanel.Dock="Left">
                 
                 <!--- Notebook Name -->
-                <StackPanel Height="30" MaxWidth="160">
+                <StackPanel Height="30" MaxWidth="140">
                     
                     <!--- Text -->
                     <TextBlock x:Name="NotebookNameTextBlock"

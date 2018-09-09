@@ -53,13 +53,12 @@
                     </Rectangle>
 
                     <!--- Name Container -->
-                    <StackPanel Orientation="Horizontal"
-                                MaxWidth="130">
+                    <StackPanel Orientation="Horizontal">
                         
                         <!--- Text -->
                         <TextBlock Text="{Binding Title, Mode=OneWay}"
                                    Margin="5 5 0 0"
-                                   MaxWidth="110"
+                                   MaxWidth="160"
                                    TextTrimming="CharacterEllipsis"
                                    Style="{StaticResource LargeText}"
                                    Visibility="{Binding 
