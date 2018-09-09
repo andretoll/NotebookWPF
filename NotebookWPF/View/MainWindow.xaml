@@ -240,7 +240,7 @@
                     <!--- Header -->
                     <StackPanel Orientation="Vertical"
                                 DockPanel.Dock="Top"
-                                Margin="15">
+                                Margin="10">
 
                         <DockPanel Height="50">
                             <TextBlock Style="{StaticResource HugeThinText}"
@@ -300,7 +300,7 @@
                     <!--- List of Notebooks -->
                     <ListBox ItemsSource="{Binding Notebooks, Mode=TwoWay}"
                              Name="NotebooksListBox"
-                             Margin="15 0 15 15"
+                             Margin="10 0 15 15"
                              Background="{DynamicResource DarkGrayColorBrush}"
                              BorderThickness="0"
                              VerticalContentAlignment="Top"
@@ -371,7 +371,7 @@
                     <!--- Header -->
                     <StackPanel Orientation="Vertical"
                                 DockPanel.Dock="Top"
-                                Margin="15">
+                                Margin="10">
                         <DockPanel Height="50">
                             <Button ToolTip="Back to Notebooks"
                                     Click="BackToNotebooksButton_Click"
@@ -450,7 +450,7 @@
                     <!--- List of Notes -->
                     <ListBox ItemsSource="{Binding Notes, Mode=TwoWay}"
                              Name="NotesListBox"                         
-                             Margin="15 0 0 15"
+                             Margin="10 0 0 15"
                              BorderThickness="0"
                              Background="{DynamicResource DarkGrayColorBrush}"
                              VerticalContentAlignment="Top"
@@ -618,9 +618,7 @@
                     <TextBlock Text="{Binding ClientMessage}"
                                Style="{StaticResource LargeText}"
                                Foreground="{DynamicResource WindowBackgroundBrush}"
-                               Padding="10 10 10 0"
-                               Canvas.Top="25"
-                               Canvas.Right="25">
+                               Padding="10 10 10 0">
                     </TextBlock>
                 </Border>
             </Canvas>

@@ -249,6 +249,9 @@ namespace NotebookWPF
                 NotebooksListBox.SelectedItem = null;
                 NotesListBox.SelectedItem = null;
                 FavoriteNotesListBox.SelectedItem = null;
+
+                if (!SettingsHelper.sideBySidePanels)
+                    NotebooksPanel.Visibility = Visibility.Visible;
             }
         }
 

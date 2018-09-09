@@ -9,7 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <!--- ListBoxItem Wrapper-->
-    <DockPanel Width="200"
+    <DockPanel Width="220"
                ToolTip="{Binding Title}"
                Margin="5 5 0 0"               
                Background="Transparent"
@@ -86,7 +86,7 @@
                     
                     <!--- Note Name -->
                     <StackPanel Orientation="Horizontal"
-                                MaxWidth="130">
+                                MaxWidth="160">
                         
                         <!--- Text -->
                         <TextBlock Text="{Binding Title, Mode=OneWay}"
