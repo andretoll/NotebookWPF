@@ -206,23 +206,15 @@ namespace NotebookWPF
         }
 
         /// <summary>
-        /// On Flyout open state change
+        /// On text editor key down
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SettingsFlyout_IsOpenChanged(object sender, RoutedEventArgs e)
+        private void NoteTextEditor_KeyDown(object sender, KeyEventArgs e)
         {
-            // When closing, reset application layout
-            if (SettingsFlyout.IsOpen == false)
+            if (e.Key == Key.S && (Keyboard.Modifiers == ModifierKeys.Control) && _notebookViewModel.noteContentChanged)
             {
-                if (NotesPanel.Visibility == Visibility.Visible)
-                    NotesPanel.Visibility = Visibility.Collapsed;
-
-                NotebooksListBox.SelectedItem = null;
-                NotesListBox.SelectedItem = null;
-                FavoriteNotesListBox.SelectedItem = null;
-
-                NotebooksPanel.Visibility = Visibility.Visible;
+                _notebookViewModel.SaveNoteContentAsync();
             }
         }
 

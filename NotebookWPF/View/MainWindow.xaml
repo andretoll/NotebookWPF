@@ -132,7 +132,6 @@
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <Controls:Flyout Header="Settings"
-                             IsOpenChanged="SettingsFlyout_IsOpenChanged"
                              x:Name="SettingsFlyout"
                              Position="Left">
 
@@ -826,9 +825,10 @@
                         DockPanel.Dock="Bottom">
 
                     <!--- Save Note Button -->
-                    <Button ToolTip="Save Note"
-                        Style="{StaticResource LargeButton}"
-                        Command="{Binding SaveNoteContentCommand}">
+                    <Button ToolTip="Save Note (CTRL + S)"
+                            x:Name="SaveNoteContentButton"
+                            Style="{StaticResource LargeButton}"
+                            Command="{Binding SaveNoteContentCommand}">
                         <StackPanel Orientation="Horizontal">
                             <!--- Draw Icon -->
                             <Rectangle Width="20"
@@ -880,6 +880,7 @@
                 <toolkit:RichTextBox Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                      x:Name="NoteTextEditor"
                                      TextChanged="NoteTextEditor_TextChanged"
+                                     KeyDown="NoteTextEditor_KeyDown"
                                      SelectionChanged="NoteTextEditor_SelectionChanged"
                                      Background="White"
                                      Foreground="Black"

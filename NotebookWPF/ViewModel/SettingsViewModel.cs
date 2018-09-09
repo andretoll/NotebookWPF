@@ -1,10 +1,13 @@
-﻿using NotebookWPF.Helpers;
+﻿using MahApps.Metro.Controls.Dialogs;
+using NotebookWPF.Commands;
+using NotebookWPF.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace NotebookWPF.ViewModel
 {
@@ -14,6 +17,8 @@ namespace NotebookWPF.ViewModel
     public class SettingsViewModel : BaseViewModel
     {
         #region Private Members
+
+        private IDialogCoordinator dialogCoordinator;
 
         private string selectedAccent;
 
@@ -76,9 +81,29 @@ namespace NotebookWPF.ViewModel
 
         #endregion
 
+        #region Commands
+
+        private ICommand defaultSettingsCommand;
+        public ICommand DefaultSettingsCommand
+        {
+            get
+            {
+                // Create new RelayCommand and pass method to be executed and a boolean value whether or not to execute
+                if (defaultSettingsCommand == null)
+                    defaultSettingsCommand = new RelayCommand(async p => { await ApplyDefaultSettingsAsync(); }, p => true);
+                return defaultSettingsCommand;
+            }
+            set
+            {
+                defaultSettingsCommand = value;
+            }
+        }
+
+        #endregion
+
         #region Constructor
 
-        public SettingsViewModel()
+        public SettingsViewModel(IDialogCoordinator instance)
         {
             // Load all available themes and accents
             Themes = new ObservableCollection<string>(SettingsHelper.GetAllThemes());
@@ -86,8 +111,33 @@ namespace NotebookWPF.ViewModel
 
             // Load Application settings
             noteDirectory = SettingsHelper.noteDirectory;
+
+            // Initiate dialogcoordinator
+            dialogCoordinator = instance;
         }
 
-        #endregion        
+        #endregion
+
+        #region Helper Methods
+
+        /// <summary>
+        /// Apply default settings
+        /// </summary>
+        /// <returns></returns>
+        private async Task ApplyDefaultSettingsAsync()
+        {
+            var result = await dialogCoordinator.ShowMessageAsync(this, "Revert to default settings?", "Are you sure you want to revert to default settings?\n\nThis action is irreversible.", MessageDialogStyle.AffirmativeAndNegative);
+
+            if (result == MessageDialogResult.Affirmative)
+                SettingsHelper.RepairSettings();
+            else return;
+
+            // Get new settings
+            SelectedTheme = SettingsHelper.GetCurrentTheme();
+            SelectedAccent = SettingsHelper.GetCurrentAccent();
+            NoteDirectory = SettingsHelper.noteDirectory;
+        }
+
+        #endregion
     }
 }

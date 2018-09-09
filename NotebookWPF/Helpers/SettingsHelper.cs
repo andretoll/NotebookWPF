@@ -144,7 +144,7 @@ namespace NotebookWPF.Helpers
         /// <summary>
         /// Recreate settings file with default values
         /// </summary>
-        private static void RepairSettings()
+        public static void RepairSettings()
         {
             // Delete file
             File.Delete(filePath);

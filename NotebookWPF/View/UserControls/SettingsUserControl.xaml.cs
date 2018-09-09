@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using MahApps.Metro.Controls.Dialogs;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using NotebookWPF.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace NotebookWPF.View.UserControls
         public SettingsUserControl()
         {
             InitializeComponent();
-            this.DataContext = new SettingsViewModel();
+            this.DataContext = new SettingsViewModel(DialogCoordinator.Instance);
         }
 
         private void BrowseNoteDirectory_Click(object sender, RoutedEventArgs e)
