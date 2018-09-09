@@ -160,6 +160,7 @@ namespace NotebookWPF
             else
             {
                 HomePanel.Visibility = Visibility.Collapsed;
+                NotebooksListBox.SelectedItem = null;
             }
         }
 
@@ -172,8 +173,6 @@ namespace NotebookWPF
         {
             if ((sender as RadioButton).IsChecked ?? true)
             {
-                NotebooksListBox.SelectedItem = null;
-
                 if (SettingsHelper.sideBySidePanels)
                     NotesPanel.Visibility = Visibility.Collapsed;
 
@@ -205,6 +204,12 @@ namespace NotebookWPF
             {
                 FavoritePanel.Visibility = Visibility.Collapsed;
                 FavoriteNotesListBox.SelectedItem = null;
+
+                if (!SettingsHelper.sideBySidePanels)
+                {
+                    NotesPanel.Visibility = Visibility.Collapsed;
+                    NotebooksPanel.Visibility = Visibility.Visible;
+                }
             }
         }
 
@@ -238,9 +243,12 @@ namespace NotebookWPF
             // If SettingsFlyout was closed
             if (SettingsFlyout.IsOpen == false)
             {
+                if (NotesPanel.Visibility == Visibility.Visible)
+                    NotesPanel.Visibility = Visibility.Collapsed;
+
                 NotebooksListBox.SelectedItem = null;
                 NotesListBox.SelectedItem = null;
-                NotesPanel.Visibility = Visibility.Collapsed;
+                FavoriteNotesListBox.SelectedItem = null;
             }
         }
 

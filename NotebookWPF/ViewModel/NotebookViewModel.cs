@@ -642,8 +642,10 @@ namespace NotebookWPF.ViewModel
                 SelectedNotebook.NoteCount--;
             }
 
-            if (noteToRemove.IsFavorite)
-                FavoriteNotes.Remove(noteToRemove);
+            // Remove from favorites, if possible
+            Note noteToRemoveFromFavorites = favoriteNotes.Where(f => f.Id == noteToRemove.Id).FirstOrDefault();
+            if (noteToRemoveFromFavorites != null)
+                FavoriteNotes.Remove(noteToRemoveFromFavorites);
 
             // Delete notebook from database
             dbEngine.Delete(noteToRemove);

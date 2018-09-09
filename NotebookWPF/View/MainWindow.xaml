@@ -610,8 +610,8 @@
                 <Border Background="{DynamicResource TextBrush}"
                         BorderBrush="{StaticResource DarkGrayColorBrush}"
                         BorderThickness="1"
-                        Canvas.Top="25"
-                        Canvas.Right="25">
+                        Canvas.Top="20"
+                        Canvas.Right="20">
                     <Border.Effect>
                         <DropShadowEffect/>
                     </Border.Effect>
