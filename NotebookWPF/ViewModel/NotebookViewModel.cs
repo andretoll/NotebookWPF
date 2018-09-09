@@ -153,7 +153,7 @@ namespace NotebookWPF.ViewModel
 
                 // Add client message
                 if (value)
-                    SetClientMessage("Editing Notebooks.");
+                    SetClientMessage("Editing notebooks.");
             }
         }
 
@@ -167,7 +167,7 @@ namespace NotebookWPF.ViewModel
 
                 // Add client message
                 if (value)
-                    SetClientMessage("Editing Notes.");
+                    SetClientMessage("Editing notes.");
             }
         }        
 
@@ -769,7 +769,10 @@ namespace NotebookWPF.ViewModel
             }
 
             if (favorite)
+            {
                 FavoriteNotes.Add(SelectedNote);
+                SetClientMessage("Favorite added.");
+            }
             else
             {
                 // Find favorite note
@@ -778,7 +781,9 @@ namespace NotebookWPF.ViewModel
                 // Remove note from favorites
                 if (noteToRemove != null)
                     FavoriteNotes.Remove(noteToRemove);
-            }            
+
+                SetClientMessage("Favorite removed.");
+            }
         }
 
         /// <summary>
@@ -813,7 +818,7 @@ namespace NotebookWPF.ViewModel
 
                 noteContentChanged = false;
 
-                SetClientMessage("Changes Saved!");
+                SetClientMessage("Changes saved!");
             }
             else await dialogCoordinator.ShowMessageAsync(this, "Error", "An error occured when saving the Note. Please try again.");
         }
@@ -832,7 +837,7 @@ namespace NotebookWPF.ViewModel
                     GetNoteContent();
                     noteContentChanged = false;
 
-                    SetClientMessage("Changes Discarded");
+                    SetClientMessage("Changes discarded.");
                 }                
             }
             else await dialogCoordinator.ShowMessageAsync(this, "Error", "An error occured when saving the Note. Please try again.");
