@@ -25,6 +25,8 @@ namespace NotebookWPF.Helpers
         // Default Settings
         private static readonly string defaultTheme = "BaseLight";
         private static readonly string defaultAccent = "Blue";
+        private static readonly string defaultFontFamily = "Lato";
+        private static readonly string defaultFontSize = "17";
 
         #endregion
 
@@ -32,6 +34,8 @@ namespace NotebookWPF.Helpers
 
         // Writable public Settings
         public static string noteDirectory;
+        public static string fontFamily;
+        public static string fontSize;
 
         #endregion
 
@@ -87,7 +91,11 @@ namespace NotebookWPF.Helpers
                 SetAppTheme(theme, accent);
 
                 // Get application settings from file
-                noteDirectory = doc.Root.Elements("noteDirectory").FirstOrDefault().Attribute("path").Value;     
+                noteDirectory = doc.Root.Elements("noteDirectory").FirstOrDefault().Attribute("path").Value;
+
+                // Get font settings
+                fontFamily = doc.Root.Elements("fontFamily").FirstOrDefault().Attribute("value").Value;
+                fontSize = doc.Root.Elements("fontSize").FirstOrDefault().Attribute("value").Value;
             }
             catch
             {
@@ -136,7 +144,11 @@ namespace NotebookWPF.Helpers
                 new XElement("accent",
                     new XAttribute("color", defaultAccent)),
                 new XElement("noteDirectory",
-                    new XAttribute("path", noteDefaultDirectory))));
+                    new XAttribute("path", noteDefaultDirectory)),
+                new XElement("fontFamily",
+                    new XAttribute("value", defaultFontFamily)),
+                new XElement("fontSize",
+                    new XAttribute("value", defaultFontSize))));
 
             xdoc.Save(filePath);
         }
@@ -269,7 +281,7 @@ namespace NotebookWPF.Helpers
         {
             color,
             path,
-            enabled
+            value
         }
     }
 }

@@ -132,7 +132,7 @@
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <Controls:Flyout Header="Settings"
-                             x:Name="SettingsFlyout"
+                             x:Name="SettingsFlyout"                            
                              Position="Left">
 
                 <!-- Flyout Content -->
@@ -361,7 +361,7 @@
 
                 <!--- Notes -->
                 <DockPanel DockPanel.Dock="Left"
-                           Width="260"
+                           MinWidth="260"
                            Background="{StaticResource DarkGrayColorBrush}"
                            Name="NotesPanel"
                            Visibility="{Binding 
@@ -704,16 +704,17 @@
 
                     <!--- Font Families -->
                     <StackPanel VerticalAlignment="Bottom">
-                        <Label Content="Font Families" Padding="0 0 0 5"/>
+                        <Label Content="Font Families" 
+                               Padding="0 0 0 5"/>
                         <ComboBox Width="150"
                                   Height="30"
-                              ToolTip="Font Family"
-                              SelectionChanged="FontFamilyComboBox_SelectionChanged"
-                              x:Name="FontFamilyComboBox">
+                                  ToolTip="Font Family"
+                                  SelectionChanged="FontFamilyComboBox_SelectionChanged"
+                                  x:Name="FontFamilyComboBox">
                             <ComboBox.ItemTemplate>
                                 <ItemContainerTemplate>
                                     <TextBlock Text="{Binding}"
-                                           FontFamily="{Binding}"/>
+                                               FontFamily="{Binding}"/>
                                 </ItemContainerTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>

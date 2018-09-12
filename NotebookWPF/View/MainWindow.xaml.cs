@@ -50,7 +50,11 @@ namespace NotebookWPF
 
             HomeRadioButton.IsChecked = true;
 
-            InitiateToolbarValues();
+            NoteTextEditor.FontFamily = new FontFamily(SettingsHelper.fontFamily);
+            NoteTextEditor.FontSize = double.Parse(SettingsHelper.fontSize);
+
+            // Initiate toolbar values
+            InitiateToolbarValues();            
         }
 
         #endregion
@@ -102,6 +106,14 @@ namespace NotebookWPF
         /// <param name="e"></param>
         private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // If empty note
+            TextRange textRange = new TextRange(NoteTextEditor.Document.ContentStart, NoteTextEditor.Document.ContentEnd);
+            if (!textRange.Text.Any())
+            {
+                NoteTextEditor.FontFamily = new FontFamily(SettingsHelper.fontFamily);
+                NoteTextEditor.FontSize = double.Parse(SettingsHelper.fontSize);
+            }
+
             if (NotesListBox.SelectedItem != null)
             {
                 NoteTextEditor.Focus();
@@ -191,7 +203,7 @@ namespace NotebookWPF
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void NoteTextEditor_SelectionChanged(object sender, RoutedEventArgs e)
-        {
+        {      
             UpdateToolbarValues();
         }
 
@@ -201,7 +213,7 @@ namespace NotebookWPF
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void NoteTextEditor_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        { 
             UpdateToolbarValues();
         }
 

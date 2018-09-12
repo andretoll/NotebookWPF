@@ -92,7 +92,40 @@
             <TabItem Header="Text Editor">
                 <StackPanel Orientation="Vertical">
 
+                    <!--- Font Family -->
+                    <Label Content="Font Family" 
+                           Style="{StaticResource LabelStyle}"/>
+                    <ComboBox ItemsSource="{Binding Path=FontFamilies}"
+                              MaxDropDownHeight="200"                              
+                              SelectedItem="{Binding SelectedFontFamily, Mode=TwoWay, UpdateSourceTrigger=LostFocus}">
+                        <ComboBox.ItemTemplate>
+                            <ItemContainerTemplate>
+                                <TextBlock Text="{Binding}"
+                                           FontSize="14"
+                                           FontFamily="{Binding}"/>
+                            </ItemContainerTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!--- Font Size -->
+                    <Label Content="Font Size" 
+                           Style="{StaticResource LabelStyle}"/>
+                    <ComboBox ItemsSource="{Binding Path=FontSizes}"
+                              MaxDropDownHeight="200"                              
+                              SelectedItem="{Binding SelectedFontSize, Mode=TwoWay}">
+                    </ComboBox>
                     
+                    <!--- Preview -->
+                    <Label Content="Preview"
+                           Style="{StaticResource LabelStyle}"/>
+                    <TextBox IsReadOnly="True" 
+                             IsEnabled="False"
+                             Background="Transparent"
+                             FontFamily="{Binding SelectedFontFamily, Mode=OneWay}"
+                             FontSize="{Binding SelectedFontSize, Mode=OneWay}"
+                             Text="This is what your text will look like...">
+                        
+                    </TextBox>
 
                 </StackPanel>
             </TabItem>

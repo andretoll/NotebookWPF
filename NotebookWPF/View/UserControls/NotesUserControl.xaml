@@ -94,12 +94,12 @@
                     
                     <!--- Note Name -->
                     <StackPanel Orientation="Horizontal"
-                                MaxWidth="140">
+                                MaxWidth="120">
                         
                         <!--- Text -->
                         <TextBlock Text="{Binding Title, Mode=OneWay}"
                                    Margin="5 7 0 0"
-                                   MaxWidth="130"
+                                   MaxWidth="120"
                                    TextTrimming="CharacterEllipsis"
                                    Style="{StaticResource LargeText}"
                                    Visibility="{Binding 
