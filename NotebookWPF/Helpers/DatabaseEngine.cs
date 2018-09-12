@@ -15,10 +15,10 @@ namespace NotebookWPF.Helpers
     /// </summary>
     public class DatabaseEngine : IDatabaseEngine
     {
-        #region Public Members
+        #region Private Members
 
         // Path to the database file
-        private static readonly string dbFileLocation = Path.Combine(Environment.CurrentDirectory, "notebookDb.db");
+        private static readonly string dbFileLocation = Path.Combine(SettingsHelper.mainDirectory, "notebookDb.db");
 
         #endregion
 

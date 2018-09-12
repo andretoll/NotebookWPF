@@ -18,7 +18,7 @@ namespace NotebookWPF.Helpers
         #region Private Members
 
         // Directories
-        private static readonly string mainDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Simple Notes");
+        public static readonly string mainDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Simple Notes");
         private static readonly string filePath = Path.Combine(mainDirectory, @"settings.xml");
         private static readonly string noteDefaultDirectory = Path.Combine(mainDirectory, "Notes");
 

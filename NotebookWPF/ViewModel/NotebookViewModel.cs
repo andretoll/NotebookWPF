@@ -748,6 +748,9 @@ namespace NotebookWPF.ViewModel
 
                 // Update database
                 dbEngine.Update((note as Note));
+
+                // Display message
+                SetClientMessage("Note renamed.");
             }
             else
             {
@@ -968,57 +971,87 @@ namespace NotebookWPF.ViewModel
 
             // Open file dialog
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.DefaultExt = ".rtf";
-            openFileDialog.Filter = "Rich Text Format Files (*.rtf)|*.rtf";
+            openFileDialog.Multiselect = true;
+            openFileDialog.Filter = "Rich Text Format Files (*.rtf)|*.rtf|Text Document (*.txt)|*.txt";
 
             var result = openFileDialog.ShowDialog();
 
             // If a file was selected
             if (result == true)
             {
-                // Validate extension
-                if (Path.GetExtension(openFileDialog.FileName) != ".rtf")
-                    return;
+                int numberOfFiles = openFileDialog.FileNames.Count();
 
-                // Create Note object
-                Note newNote = new Note()
+                // Loop through each file
+                foreach (var file in openFileDialog.FileNames)
                 {
-                    NotebookId = SelectedNotebook.Id,
-                    Created = DateTime.Now,
-                    Updated = DateTime.Now
-                };
-                string importedFileName = Path.GetFileNameWithoutExtension(openFileDialog.FileName);
-                string newNoteTitle = importedFileName;
-                int i = 1;
-                while (dbEngine.NoteTitleExists(newNoteTitle, 0))
-                {
-                    newNoteTitle = importedFileName + $"({i})";
-                    i++;
-                }
-                newNote.Title = newNoteTitle;
-                newNote.FileLocation = Path.Combine(SettingsHelper.noteDirectory, newNoteTitle + ".rtf");
+                    // Validate extension
+                    if (Path.GetExtension(file) != ".rtf" && Path.GetExtension(file) != ".txt")
+                    {
+                        numberOfFiles--;
+                        break;
+                    }
 
-                // Copy imported file to Notes directory
-                try
-                {
-                    File.Copy(openFileDialog.FileName, newNote.FileLocation);
-                }
-                catch (Exception ex)
-                {
-                    // If adding fails, show error message and return
-                    await dialogCoordinator.ShowMessageAsync(this, "Error", ex.Message);
-                    return;
-                }
+                    // Create Note object
+                    Note newNote = new Note()
+                    {
+                        NotebookId = SelectedNotebook.Id,
+                        Created = DateTime.Now,
+                        Updated = DateTime.Now
+                    };
 
-                // Add Note to db
-                dbEngine.Insert(newNote);
+                    // Get filename
+                    string importedFileName = Path.GetFileNameWithoutExtension(file);
+                    string newNoteTitle = importedFileName;
+                    int i = 1;
+                    while (dbEngine.NoteTitleExists(newNoteTitle, 0))
+                    {
+                        newNoteTitle = importedFileName + $"({i})";
+                        i++;
+                    }
+                    newNote.Title = newNoteTitle;
+                    newNote.FileLocation = Path.Combine(SettingsHelper.noteDirectory, newNoteTitle + ".rtf");
 
-                // Insert note into list
-                Notes.Insert(0, newNote);
-                SelectedNotebook.NoteCount++;
+                    switch (Path.GetExtension(file))
+                    {
+                        case ".rtf":
+                            // Copy imported file to Notes directory
+                            try
+                            {
+                                File.Copy(file, newNote.FileLocation);
+                            }
+                            catch (Exception ex)
+                            {
+                                // If adding fails, show error message and return
+                                await dialogCoordinator.ShowMessageAsync(this, "Error", ex.Message);
+                                return;
+                            }
+                            break;
+
+                        case ".txt":
+                            // Create new file
+                            try
+                            {
+                                File.WriteAllText(newNote.FileLocation, File.ReadAllText(file));
+                            }
+                            catch (Exception ex)
+                            {
+                                // If adding fails, show error message and return
+                                await dialogCoordinator.ShowMessageAsync(this, "Error", ex.Message);
+                                return;
+                            }
+                            break;
+                    }            
+                    
+                    // Add Note to db
+                    dbEngine.Insert(newNote);
+
+                    // Insert note into list
+                    Notes.Insert(0, newNote);
+                    SelectedNotebook.NoteCount++;
+                }                
 
                 // Add message
-                SetClientMessage("Import successful.");
+                SetClientMessage($"Successfully imported {numberOfFiles} files.");
             }            
         }
 
