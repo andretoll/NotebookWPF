@@ -15,22 +15,18 @@ namespace NotebookWPF.Helpers
     /// </summary>
     public static class SettingsHelper
     {
-        #region Private Members
+        #region Members
 
         // Directories
         public static readonly string mainDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Simple Notes");
-        private static readonly string filePath = Path.Combine(mainDirectory, @"settings.xml");
+        private static readonly string settingsFilePath = Path.Combine(mainDirectory, @"settings.xml");
         private static readonly string noteDefaultDirectory = Path.Combine(mainDirectory, "Notes");
 
         // Default Settings
-        private static readonly string defaultTheme = "BaseLight";
+        private static readonly string defaultTheme = "BaseDark";
         private static readonly string defaultAccent = "Blue";
         private static readonly string defaultFontFamily = "Lato";
-        private static readonly string defaultFontSize = "17";
-
-        #endregion
-
-        #region Public Members
+        private static readonly string defaultFontSize = "16";
 
         // Writable public Settings
         public static string noteDirectory;
@@ -53,7 +49,7 @@ namespace NotebookWPF.Helpers
             SetupDirectory();
 
             // Load settings file
-            XDocument doc = XDocument.Load(filePath);
+            XDocument doc = XDocument.Load(settingsFilePath);
 
             // Get target setting
             var result = doc.Descendants(element).FirstOrDefault();
@@ -63,7 +59,7 @@ namespace NotebookWPF.Helpers
                 // Change setting
                 result.Attribute(property.ToString()).Value = value;
                 // Save changes
-                doc.Save(filePath);
+                doc.Save(settingsFilePath);
             }
 
             // Reload all settings
@@ -81,7 +77,7 @@ namespace NotebookWPF.Helpers
             try
             {
                 // Load settings file
-                XDocument doc = XDocument.Load(filePath);
+                XDocument doc = XDocument.Load(settingsFilePath);
 
                 // Get appearance settings from file
                 var theme = doc.Root.Elements("theme").FirstOrDefault().Attribute("color").Value;
@@ -124,7 +120,7 @@ namespace NotebookWPF.Helpers
             }
 
             // If file does not exist
-            if (!File.Exists(filePath))
+            if (!File.Exists(settingsFilePath))
             {
                 // Create default settings
                 CreateDefaultSettings();                
@@ -150,7 +146,7 @@ namespace NotebookWPF.Helpers
                 new XElement("fontSize",
                     new XAttribute("value", defaultFontSize))));
 
-            xdoc.Save(filePath);
+            xdoc.Save(settingsFilePath);
         }
 
         /// <summary>
@@ -159,7 +155,7 @@ namespace NotebookWPF.Helpers
         public static void RepairSettings()
         {
             // Delete file
-            File.Delete(filePath);
+            File.Delete(settingsFilePath);
 
             // Create default settings
             CreateDefaultSettings();
@@ -273,6 +269,70 @@ namespace NotebookWPF.Helpers
 
             // Return list ordered alphabetically
             return accents.OrderBy(a => a).ToList();
+        }
+
+        /// <summary>
+        /// Return all font sizes
+        /// </summary>
+        /// <returns></returns>
+        public static List<double> GetFontSizes()
+        {
+            // Font Sizes
+            List<double> fontSizes = new List<double>();
+            fontSizes.Add(3);
+            fontSizes.Add(4);
+            fontSizes.Add(5);
+            fontSizes.Add(6);
+            fontSizes.Add(6.5);
+            fontSizes.Add(7);
+            fontSizes.Add(7.5);
+            fontSizes.Add(8);
+            fontSizes.Add(8.5);
+            fontSizes.Add(9);
+            fontSizes.Add(9.5);
+            fontSizes.Add(10);
+            fontSizes.Add(10.5);
+            fontSizes.Add(11.5);
+            fontSizes.Add(12);
+            fontSizes.Add(12.5);
+            fontSizes.Add(13.5);
+            fontSizes.Add(14);
+            fontSizes.Add(15);
+            fontSizes.Add(16);
+            fontSizes.Add(17);
+            fontSizes.Add(18);
+            fontSizes.Add(19);
+            fontSizes.Add(20);
+            fontSizes.Add(22);
+            fontSizes.Add(24);
+            fontSizes.Add(26);
+            fontSizes.Add(28);
+            fontSizes.Add(30);
+            fontSizes.Add(32);
+            fontSizes.Add(34);
+            fontSizes.Add(36);
+            fontSizes.Add(38);
+            fontSizes.Add(40);
+            fontSizes.Add(44);
+            fontSizes.Add(48);
+            fontSizes.Add(52);
+            fontSizes.Add(56);
+            fontSizes.Add(60);
+            fontSizes.Add(64);
+            fontSizes.Add(68);
+            fontSizes.Add(72);
+            fontSizes.Add(76);
+            fontSizes.Add(80);
+            fontSizes.Add(88);
+            fontSizes.Add(96);
+            fontSizes.Add(104);
+            fontSizes.Add(112);
+            fontSizes.Add(120);
+            fontSizes.Add(128);
+            fontSizes.Add(136);
+            fontSizes.Add(144);
+
+            return fontSizes;
         }
 
         #endregion

@@ -142,11 +142,11 @@ namespace NotebookWPF.ViewModel
 
         public SettingsViewModel(IDialogCoordinator instance)
         {
-            // Load all available themes and accents
+            // Load all themes, accents, font families and font sizes
             Themes = new ObservableCollection<string>(SettingsHelper.GetAllThemes());
             Accents = new ObservableCollection<string>(SettingsHelper.GetAllAccents());
-            FontFamilies = System.Windows.Media.Fonts.SystemFontFamilies.OrderBy(f => f.Source).ToList();
-            FontSizes = GetFontSizes();
+            FontFamilies = Fonts.SystemFontFamilies.OrderBy(f => f.Source).ToList();
+            FontSizes = SettingsHelper.GetFontSizes();
 
             // Load Application settings
             noteDirectory = SettingsHelper.noteDirectory;
@@ -159,7 +159,7 @@ namespace NotebookWPF.ViewModel
 
         #endregion
 
-        #region Helper Methods
+        #region Methods
 
         /// <summary>
         /// Apply default settings
@@ -178,67 +178,7 @@ namespace NotebookWPF.ViewModel
             SelectedAccent = SettingsHelper.GetCurrentAccent();
             NoteDirectory = SettingsHelper.noteDirectory;
             SelectedFontSize = double.Parse(SettingsHelper.fontSize);
-        }
-
-        private List<double> GetFontSizes()
-        {
-            // Font Sizes
-            List<double> fontSizesToReturn = new List<double>();
-            fontSizesToReturn.Add(3);
-            fontSizesToReturn.Add(4);
-            fontSizesToReturn.Add(5);
-            fontSizesToReturn.Add(6);
-            fontSizesToReturn.Add(6.5);
-            fontSizesToReturn.Add(7);
-            fontSizesToReturn.Add(7.5);
-            fontSizesToReturn.Add(8);
-            fontSizesToReturn.Add(8.5);
-            fontSizesToReturn.Add(9);
-            fontSizesToReturn.Add(9.5);
-            fontSizesToReturn.Add(10);
-            fontSizesToReturn.Add(10.5);
-            fontSizesToReturn.Add(11.5);
-            fontSizesToReturn.Add(12);
-            fontSizesToReturn.Add(12.5);
-            fontSizesToReturn.Add(13.5);
-            fontSizesToReturn.Add(14);
-            fontSizesToReturn.Add(15);
-            fontSizesToReturn.Add(16);
-            fontSizesToReturn.Add(17);
-            fontSizesToReturn.Add(18);
-            fontSizesToReturn.Add(19);
-            fontSizesToReturn.Add(20);
-            fontSizesToReturn.Add(22);
-            fontSizesToReturn.Add(24);
-            fontSizesToReturn.Add(26);
-            fontSizesToReturn.Add(28);
-            fontSizesToReturn.Add(30);
-            fontSizesToReturn.Add(32);
-            fontSizesToReturn.Add(34);
-            fontSizesToReturn.Add(36);
-            fontSizesToReturn.Add(38);
-            fontSizesToReturn.Add(40);
-            fontSizesToReturn.Add(44);
-            fontSizesToReturn.Add(48);
-            fontSizesToReturn.Add(52);
-            fontSizesToReturn.Add(56);
-            fontSizesToReturn.Add(60);
-            fontSizesToReturn.Add(64);
-            fontSizesToReturn.Add(68);
-            fontSizesToReturn.Add(72);
-            fontSizesToReturn.Add(76);
-            fontSizesToReturn.Add(80);
-            fontSizesToReturn.Add(88);
-            fontSizesToReturn.Add(96);
-            fontSizesToReturn.Add(104);
-            fontSizesToReturn.Add(112);
-            fontSizesToReturn.Add(120);
-            fontSizesToReturn.Add(128);
-            fontSizesToReturn.Add(136);
-            fontSizesToReturn.Add(144);
-
-            return fontSizesToReturn;
-        }
+        }        
 
         #endregion
     }

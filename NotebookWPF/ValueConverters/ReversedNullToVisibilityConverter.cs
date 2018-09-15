@@ -10,7 +10,7 @@ using System.Windows.Data;
 namespace NotebookWPF.ValueConverters
 {
     /// <summary>
-    /// Returns a visibility value indicating if a value is null or not.
+    /// Returns a visibility value indicating if a value is null or not (reversed).
     /// </summary>
     public class ReversedNullToVisibilityConverter : IValueConverter
     {

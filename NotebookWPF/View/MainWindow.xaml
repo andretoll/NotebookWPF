@@ -12,7 +12,6 @@
     mc:Ignorable="d"
     ShowIconOnTitleBar="True"
     Icon="/Resources/notebook.ico"
-    Closing="MetroWindow_Closing"
     TitleCaps="False"
     WindowTitleBrush="{StaticResource DarkGrayColorBrush}"
     MinHeight="450"
@@ -145,17 +144,8 @@
     <!--- Window -->
     <DockPanel LastChildFill="True">
 
-        <!--- Bottom Panel -->
-        <StackPanel DockPanel.Dock="Bottom"
-                    Orientation="Horizontal"
-                    Background="{StaticResource LightGrayColorBrush}"
-                    Height="40">                        
-
-        </StackPanel>
-
         <!--- Far Left Panel -->
-        <Border BorderThickness="0 0 1 0" 
-                Panel.ZIndex="1000">
+        <Border Panel.ZIndex="1000">
             <StackPanel Orientation="Vertical"
                         DockPanel.Dock="Left"
                         Background="{DynamicResource AccentBaseColorBrush}">
@@ -227,8 +217,7 @@
         <!--- Main Panel -->
         <DockPanel DockPanel.Dock="Left" 
                    Name="MainPanel"
-                   Background="{StaticResource DarkGrayColorBrush}"
-                   Panel.ZIndex="2">
+                   Background="{StaticResource DarkGrayColorBrush}">
 
             <!--- Notebooks and Notes -->
             <DockPanel Name="HomePanel">
@@ -237,11 +226,12 @@
                 <DockPanel x:Name="NotebooksPanel"
                            MinWidth="240">
 
-                    <!--- Header -->
+                    <!--- Top -->
                     <StackPanel Orientation="Vertical"
                                 DockPanel.Dock="Top"
                                 Margin="10">
 
+                        <!--- Header -->
                         <DockPanel Height="50"
                                    Margin="0 0 0 10">
                             <TextBlock Style="{StaticResource HugeThinText}"
@@ -295,11 +285,7 @@
                                                    Text="NEW NOTEBOOK"/>
                                     </StackPanel>
                                 </Button>
-                            </StackPanel>
-
-                            
-
-                            
+                            </StackPanel>                         
 
                         </DockPanel>
 
@@ -362,7 +348,6 @@
                 <!--- Notes -->
                 <DockPanel DockPanel.Dock="Left"
                            MinWidth="260"
-                           Background="{StaticResource DarkGrayColorBrush}"
                            Name="NotesPanel"
                            Visibility="{Binding 
                             SelectedNotebook, Converter={StaticResource nullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}">
@@ -375,10 +360,12 @@
                                    Opacity="0.5"/>
                     </StackPanel>
 
-                    <!--- Header -->
+                    <!--- Top -->
                     <StackPanel Orientation="Vertical"
                                 DockPanel.Dock="Top"
                                 Margin="10">
+                        
+                        <!--- Header -->
                         <DockPanel Height="50"
                                    Margin="0 0 0 10">
                             <Button ToolTip="Back to Notebooks"
@@ -404,7 +391,6 @@
                                        Text="Notes"/>
 
                         </DockPanel>
-
 
                         <!--- Buttons -->
                         <DockPanel Height="50"
@@ -520,10 +506,12 @@
                        Background="{StaticResource DarkGrayColorBrush}"
                        Visibility="Collapsed">
 
-                <!--- Header -->
+                <!--- Top -->
                 <StackPanel Orientation="Vertical"
                             DockPanel.Dock="Top"
                             Margin="10">
+
+                    <!--- Header -->
                     <DockPanel Height="50">
 
                         <TextBlock Style="{StaticResource HugeThinText}"
@@ -533,6 +521,7 @@
                                        Text="Favorite notes"/>
 
                     </DockPanel>
+                    
                 </StackPanel>
 
                 <!--- List of Favorite Notes -->
@@ -635,6 +624,7 @@
 
             <!--- Text Editor Content -->
             <DockPanel Visibility="{Binding SelectedNote, Converter={StaticResource nullToVisibilityConverter}}">
+                
                 <!--- Header -->
                 <StackPanel HorizontalAlignment="Stretch"
                         DockPanel.Dock="Top"
@@ -683,6 +673,7 @@
                             <!--- Edited -->
                             <TextBlock Text="{Binding SelectedNote.Updated, StringFormat={}Edited: {0:yyyy/MM/dd HH:mm}}"
                                        Style="{StaticResource TinyText}"/>
+                        
                         </StackPanel>
 
                     </Grid>
@@ -851,7 +842,7 @@
                     <!--- Lists -->
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Bottom"
-                                Margin="10 0 20 0">
+                                Margin="20 0 10 0">
                         <Button x:Name="BulletListButton"
                                       Click="BulletListButton_Click"
                                       Width="30"
@@ -967,6 +958,7 @@
                     </toolkit:RichTextBox.ContextMenu>
 
                 </toolkit:RichTextBox>
+            
             </DockPanel>
 
             <!--- If no note is selected -->

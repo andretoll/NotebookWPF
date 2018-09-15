@@ -48,8 +48,10 @@ namespace NotebookWPF
             // Set DataContext to ViewModel
             this.DataContext = _notebookViewModel;
 
+            // Set home as default view
             HomeRadioButton.IsChecked = true;
 
+            // Initiate text editor fonts
             NoteTextEditor.FontFamily = new FontFamily(SettingsHelper.fontFamily);
             NoteTextEditor.FontSize = double.Parse(SettingsHelper.fontSize);
 
@@ -61,33 +63,19 @@ namespace NotebookWPF
 
         #region Events
 
-        /// <summary>
-        /// On clicking SettingsButton, open FlyOut
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             // Open or close SettingsFlyout
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
         }
-
-        /// <summary>
-        /// On clicking BackToNotebooksButton, hide Notes panel and show Notebooks panel
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)
         {
+            // Reset selected Notebook and Note
             NotebooksListBox.SelectedItem = null;
             NotesListBox.SelectedItem = null;
         }
-
-        /// <summary>
-        /// On clicking ShowHidePanelButton, 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+    
         private void ShowHidePanelButton_Checked(object sender, RoutedEventArgs e)
         {
             // Toggle show/hide panels
@@ -99,73 +87,27 @@ namespace NotebookWPF
 
         }
 
-        /// <summary>
-        /// On selecting Note, focus TextEditor
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // If empty note
-            TextRange textRange = new TextRange(NoteTextEditor.Document.ContentStart, NoteTextEditor.Document.ContentEnd);
-            if (!textRange.Text.Any())
-            {
-                NoteTextEditor.FontFamily = new FontFamily(SettingsHelper.fontFamily);
-                NoteTextEditor.FontSize = double.Parse(SettingsHelper.fontSize);
-            }
-
-            if (NotesListBox.SelectedItem != null)
-            {
-                NoteTextEditor.Focus();
-
-                UpdateToolbarValues();
-            }
-        }
-
-        /// <summary>
-        /// On selecting Favorite Note, focus TextEditor
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FavoriteNotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (FavoriteNotesListBox.SelectedItem != null)
-            {
-                NoteTextEditor.Focus();
-
-                UpdateToolbarValues();
-            }
-        }
-
-        /// <summary>
-        /// On checking HomeRadioButton, show all Notebooks
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void HomeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if ((sender as RadioButton).IsChecked ?? true)
             {
+                // Show home
                 HomePanel.Visibility = Visibility.Visible;
                 ShowHidePanelButton.IsChecked = false;
             }
             else
             {
+                // Hide home
                 HomePanel.Visibility = Visibility.Collapsed;
                 NotebooksListBox.SelectedItem = null;
             }
         }
 
-        /// <summary>
-        /// On checking FavoriteRadioButton, show favorite Notes
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void FavoritesRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if ((sender as RadioButton).IsChecked ?? true)
             {
-
+                // Show favorites
                 FavoritePanel.Visibility = Visibility.Visible;
                 ShowHidePanelButton.IsChecked = false;
 
@@ -192,36 +134,78 @@ namespace NotebookWPF
             }
             else
             {
+                // Hide favorites
                 FavoritePanel.Visibility = Visibility.Collapsed;
                 FavoriteNotesListBox.SelectedItem = null;
             }
         }
 
-        /// <summary>
-        /// On Note text editor selection changed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
+
+
+
+
+
+
+        private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (NotesListBox.SelectedItem != null)
+            {
+                // If empty note, apply font settings
+                TextRange textRange = new TextRange(NoteTextEditor.Document.ContentStart, NoteTextEditor.Document.ContentEnd);
+                if (!textRange.Text.Any())
+                {
+                    NoteTextEditor.FontFamily = new FontFamily(SettingsHelper.fontFamily);
+                    NoteTextEditor.FontSize = double.Parse(SettingsHelper.fontSize);
+                }
+
+                NoteTextEditor.Focus();
+
+                UpdateToolbarValues();
+            }        
+        }
+                
+        private void FavoriteNotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (FavoriteNotesListBox.SelectedItem != null)
+            {
+                NoteTextEditor.Focus();
+
+                UpdateToolbarValues();
+            }
+        }     
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         private void NoteTextEditor_SelectionChanged(object sender, RoutedEventArgs e)
         {      
             UpdateToolbarValues();
         }
-
-        /// <summary>
-        /// On Note text editor text changed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void NoteTextEditor_TextChanged(object sender, TextChangedEventArgs e)
         { 
             UpdateToolbarValues();
         }
-
-        /// <summary>
-        /// On text editor key down
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void NoteTextEditor_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.S && (Keyboard.Modifiers == ModifierKeys.Control) && _notebookViewModel.noteContentChanged)
@@ -230,26 +214,23 @@ namespace NotebookWPF
             }
         }
 
-        /// <summary>
-        /// On window close
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void NoteTextEditor_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (_notebookViewModel.noteContentChanged)
+            // If enter key is pressed
+            if (e.Key == Key.Enter)
             {
-                _notebookViewModel.SaveNoteContentAsync();
+                // Create new line
+                var newPointer = NoteTextEditor.Selection.Start.InsertLineBreak();
+                NoteTextEditor.Selection.Select(newPointer, newPointer);
+                UpdateToolbarValues();
+                e.Handled = true;
             }
         }
 
-        #region Text Editor Events
 
-        /// <summary>
-        /// On chaning Font Family
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
+
+        
         private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (FontFamilyComboBox.SelectedItem != null)
@@ -259,12 +240,7 @@ namespace NotebookWPF
 
             NoteTextEditor.Focus();
         }
-
-        /// <summary>
-        /// On changing font size
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (FontSizeComboBox.SelectedItem != null)
@@ -274,12 +250,7 @@ namespace NotebookWPF
 
             NoteTextEditor.Focus();
         }
-
-        /// <summary>
-        /// On toggling bold text
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void BoldToggleButton_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as ToggleButton).IsChecked ?? true)
@@ -293,12 +264,7 @@ namespace NotebookWPF
 
             NoteTextEditor.Focus();
         }
-
-        /// <summary>
-        /// On toggling italic text
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void ItalicToggleButton_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as ToggleButton).IsChecked ?? true)
@@ -312,12 +278,7 @@ namespace NotebookWPF
 
             NoteTextEditor.Focus();
         }
-
-        /// <summary>
-        /// On toggling underlined text
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void UnderlineToggleButton_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as ToggleButton).IsChecked ?? true)
@@ -333,12 +294,7 @@ namespace NotebookWPF
 
             NoteTextEditor.Focus();
         }
-
-        /// <summary>
-        /// On switching between alignments
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void AlignRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             NoteTextEditor.Focus();
@@ -349,12 +305,7 @@ namespace NotebookWPF
             else if (RightAlignRadioButton.IsChecked ?? true)
                 NoteTextEditor.Selection.ApplyPropertyValue(Paragraph.TextAlignmentProperty, TextAlignment.Right);
         }
-
-        /// <summary>
-        /// On increasing Font Size
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void IncreaseFontSizeButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -364,18 +315,21 @@ namespace NotebookWPF
                 if (double.TryParse(NoteTextEditor.Selection.GetPropertyValue(FontSizeProperty).ToString(), out currentFontSize))
                 {
                     // Get font sizes
-                    var fontSizes = GetFontSizes();
+                    var fontSizes = SettingsHelper.GetFontSizes();
 
                     // Get next size
                     int newFontSizeIndex = fontSizes.IndexOf(currentFontSize) + 1;
                     var newFontSize = fontSizes[newFontSizeIndex];
                     NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, newFontSize);
                 }
-
-                // If font sizes are mixed, get font size in the end of document and apply
-                TextRange textRange = new TextRange(NoteTextEditor.Selection.Start, NoteTextEditor.Selection.End);
-                var value = (textRange.End.Parent as System.Windows.Documents.Run).FontSize;
-                NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, value);
+                else
+                {
+                    // If font sizes are mixed, get font size in the end of document and apply
+                    TextRange textRange = new TextRange(NoteTextEditor.Selection.Start, NoteTextEditor.Selection.End);
+                    var value = (textRange.End.Parent as Run).FontSize;
+                    NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, value);
+                }
+                
                 UpdateToolbarValues();
             }
             catch
@@ -384,12 +338,7 @@ namespace NotebookWPF
 
             NoteTextEditor.Focus();
         }
-
-        /// <summary>
-        /// On Decreasing Font Size
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void DecreaseFontSizeButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -399,18 +348,21 @@ namespace NotebookWPF
                 if (double.TryParse(NoteTextEditor.Selection.GetPropertyValue(FontSizeProperty).ToString(), out currentFontSize))
                 {
                     // Get font sizes
-                    var fontSizes = GetFontSizes();
+                    var fontSizes = SettingsHelper.GetFontSizes();
 
                     // Get next size
                     int newFontSizeIndex = fontSizes.IndexOf(currentFontSize) - 1;
                     var newFontSize = fontSizes[newFontSizeIndex];
                     NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, newFontSize);
                 }
-
-                // If font sizes are mixed, get font size in the end of document and apply
-                TextRange textRange = new TextRange(NoteTextEditor.Selection.Start, NoteTextEditor.Selection.End);
-                var value = (textRange.End.Parent as System.Windows.Documents.Run).FontSize;
-                NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, value);
+                else
+                {
+                    // If font sizes are mixed, get font size in the end of document and apply
+                    TextRange textRange = new TextRange(NoteTextEditor.Selection.Start, NoteTextEditor.Selection.End);
+                    var value = (textRange.End.Parent as System.Windows.Documents.Run).FontSize;
+                    NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, value);
+                }
+                
                 UpdateToolbarValues();
             }
             catch
@@ -419,12 +371,7 @@ namespace NotebookWPF
 
             NoteTextEditor.Focus();
         }
-
-        /// <summary>
-        /// On adding new list
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void BulletListButton_Click(object sender, RoutedEventArgs e)
         {
             List bulletList = new List();
@@ -441,11 +388,25 @@ namespace NotebookWPF
             NoteTextEditor.Focus();
         }
 
-        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
 
         #endregion
 
-        #region Helper Methods
+        #region Methods
 
         /// <summary>
         /// Show or hide side menu
@@ -459,32 +420,7 @@ namespace NotebookWPF
             // If Storyboard was found, play it
             if (sb != null)
                 ((Storyboard)sb).Begin(pnl);
-        }
-
-        /// <summary>
-        /// Initiate Text editor toolbar values
-        /// </summary>
-        private void InitiateToolbarValues()
-        {
-            #region Font Sizes
-
-            FontSizeComboBox.ItemsSource = GetFontSizes();
-
-            #endregion
-
-            #region Font Families
-
-            var fontFamilies = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
-            FontFamilyComboBox.ItemsSource = fontFamilies;
-
-            #endregion
-
-            #region Alignment
-
-            LeftAlignRadioButton.IsChecked = true;
-
-            #endregion
-        }
+        }        
 
         /// <summary>
         /// Check if selected text is underlined
@@ -497,6 +433,7 @@ namespace NotebookWPF
 
             int propCount;
 
+            // Determine if selected text is underlined
             if (int.TryParse((value as TextDecorationCollection).Count.ToString(), out propCount))
             {
                 if (propCount > 0)
@@ -504,109 +441,22 @@ namespace NotebookWPF
             }           
 
             return false;
-        }
+        }     
 
         /// <summary>
-        /// Get available font sizes
+        /// Initiate Text editor toolbar values
         /// </summary>
-        /// <returns></returns>
-        private List<double> GetFontSizes()
+        private void InitiateToolbarValues()
         {
-            // Font Sizes
-            List<double> fontSizes = new List<double>();
-            fontSizes.Add(3);
-            fontSizes.Add(4);
-            fontSizes.Add(5);
-            fontSizes.Add(6);
-            fontSizes.Add(6.5);
-            fontSizes.Add(7);
-            fontSizes.Add(7.5);
-            fontSizes.Add(8);
-            fontSizes.Add(8.5);
-            fontSizes.Add(9);
-            fontSizes.Add(9.5);
-            fontSizes.Add(10);
-            fontSizes.Add(10.5);
-            fontSizes.Add(11.5);
-            fontSizes.Add(12);
-            fontSizes.Add(12.5);
-            fontSizes.Add(13.5);
-            fontSizes.Add(14);
-            fontSizes.Add(15);
-            fontSizes.Add(16);
-            fontSizes.Add(17);
-            fontSizes.Add(18);
-            fontSizes.Add(19);
-            fontSizes.Add(20);
-            fontSizes.Add(22);
-            fontSizes.Add(24);
-            fontSizes.Add(26);
-            fontSizes.Add(28);
-            fontSizes.Add(30);
-            fontSizes.Add(32);
-            fontSizes.Add(34);
-            fontSizes.Add(36);
-            fontSizes.Add(38);
-            fontSizes.Add(40);
-            fontSizes.Add(44);
-            fontSizes.Add(48);
-            fontSizes.Add(52);
-            fontSizes.Add(56);
-            fontSizes.Add(60);
-            fontSizes.Add(64);
-            fontSizes.Add(68);
-            fontSizes.Add(72);
-            fontSizes.Add(76);
-            fontSizes.Add(80);
-            fontSizes.Add(88);
-            fontSizes.Add(96);
-            fontSizes.Add(104);
-            fontSizes.Add(112);
-            fontSizes.Add(120);
-            fontSizes.Add(128);
-            fontSizes.Add(136);
-            fontSizes.Add(144);
+            // Font sizes
+            FontSizeComboBox.ItemsSource = SettingsHelper.GetFontSizes();
 
-            return fontSizes;
-        }
+            // Font families
+            var fontFamilies = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
+            FontFamilyComboBox.ItemsSource = fontFamilies;
 
-        /// <summary>
-        /// Get formatting property value
-        /// </summary>
-        /// <param name="textRange"></param>
-        /// <param name="formattingProperty"></param>
-        /// <returns></returns>
-        private Object GetPropertyValue(TextRange textRange, DependencyProperty formattingProperty)
-        {
-            Object value = null;
-
-            var pointer = textRange.Start;
-
-            if (pointer is TextPointer)
-
-            {
-
-                Boolean needsContinue = true;
-
-                DependencyObject element = ((TextPointer)pointer).Parent as TextElement;
-
-                while (needsContinue && (element is Inline || element is Paragraph || element is TextBlock))
-
-                {
-
-                    value = element.GetValue(formattingProperty);
-
-                    System.Collections.IEnumerable seq = value as System.Collections.IEnumerable;
-
-                    needsContinue = (seq == null) ? value == null : seq.Cast<Object>().Count() == 0;
-
-                    element = element is TextElement ? ((TextElement)element).Parent : null;
-
-                }
-
-            }
-
-            return value;
+            // Text alignment
+            LeftAlignRadioButton.IsChecked = true;
         }
 
         /// <summary>
@@ -656,22 +506,41 @@ namespace NotebookWPF
 
         #endregion
 
+        #region Helper Methods
+
         /// <summary>
-        /// On pressing key in NoteTextEditor
+        /// Get formatting property value
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NoteTextEditor_PreviewKeyDown(object sender, KeyEventArgs e)
+        /// <param name="textRange"></param>
+        /// <param name="formattingProperty"></param>
+        /// <returns></returns>
+        private Object GetPropertyValue(TextRange textRange, DependencyProperty formattingProperty)
         {
-            // If enter key is pressed
-            if (e.Key == Key.Enter)
+            Object value = null;
+
+            var pointer = textRange.Start;
+
+            if (pointer is TextPointer)
             {
-                // Create new line
-                var newPointer = NoteTextEditor.Selection.Start.InsertLineBreak();
-                NoteTextEditor.Selection.Select(newPointer, newPointer);
-                UpdateToolbarValues();
-                e.Handled = true;
+                bool needsContinue = true;
+
+                DependencyObject element = ((TextPointer)pointer).Parent as TextElement;
+
+                while (needsContinue && (element is Inline || element is Paragraph || element is TextBlock))
+                {
+                    value = element.GetValue(formattingProperty);
+
+                    System.Collections.IEnumerable seq = value as System.Collections.IEnumerable;
+
+                    needsContinue = (seq == null) ? value == null : seq.Cast<Object>().Count() == 0;
+
+                    element = element is TextElement ? ((TextElement)element).Parent : null;
+                }
             }
+
+            return value;
         }
+
+        #endregion
     }
 }

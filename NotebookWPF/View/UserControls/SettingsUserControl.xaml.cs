@@ -23,11 +23,17 @@ namespace NotebookWPF.View.UserControls
     /// </summary>
     public partial class SettingsUserControl : UserControl
     {
+        #region Constructor
+
         public SettingsUserControl()
         {
             InitializeComponent();
             this.DataContext = new SettingsViewModel(DialogCoordinator.Instance);
         }
+
+        #endregion
+
+        #region Events
 
         private void BrowseNoteDirectory_Click(object sender, RoutedEventArgs e)
         {
@@ -40,5 +46,7 @@ namespace NotebookWPF.View.UserControls
                 BrowseNoteDirectoryInput.Text = dialog.FileName;
             }
         }
+
+        #endregion
     }
 }

@@ -18,6 +18,9 @@ using System.Windows.Markup;
 
 namespace NotebookWPF.ViewModel
 {
+    /// <summary>
+    /// Main Viewmodel for Notebook application
+    /// </summary>
     public class NotebookViewModel : BaseViewModel
     {
         #region Private Members
@@ -427,7 +430,7 @@ namespace NotebookWPF.ViewModel
 
         #endregion
 
-        #region Helper Methods
+        #region Methods
 
         /// <summary>
         /// Get all notebooks

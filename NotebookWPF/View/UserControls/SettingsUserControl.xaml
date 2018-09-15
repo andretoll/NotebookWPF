@@ -41,6 +41,7 @@
             </Button>
 
         </StackPanel>
+        <!--- Settings Pages -->
         <TabControl Padding="0 20">
 
             <!--- Appearance Settings -->

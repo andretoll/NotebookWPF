@@ -29,7 +29,6 @@ namespace NotebookWPF.View.UserControls
 
         #endregion
 
-
         #region Events
 
         private void DeleteNoteButton_Click(object sender, RoutedEventArgs e)

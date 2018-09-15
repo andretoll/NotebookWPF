@@ -28,12 +28,8 @@
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="10"/>
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
-    </Style>
+    </Style>    
     
-    
-    
-    
-
     <!---!!! TEXTBLOCKS !!!-->
     
     <!--- Huge TextBlock -->
@@ -64,11 +60,7 @@
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Opacity" Value="0.6"/>
         <Setter Property="Margin" Value="0 0 0 5"/>
-    </Style>
-    
-    
-    
-    
+    </Style>    
 
     <!---!!! BUTTONS !!!-->
     
@@ -139,10 +131,7 @@
         </Setter>
     </Style>
     
-    
-    
-    
-    
+
     <!---!!! TOGGLEBUTTONS !!!-->
 
     <!--- Circle ToggleButton -->
@@ -226,11 +215,7 @@
         </Style.Triggers>
     </Style>
 
-
-
-
-
-        <!---!!! Labels !!!-->
+    <!---!!! Labels !!!-->
 
     <!--- Label -->
     <Style TargetType="Label" x:Key="LabelStyle">
@@ -239,10 +224,6 @@
         <Setter Property="Margin" Value="0 10 0 5"/>
     </Style>   
     
-    
-    
-    
-      
     <!---!!! Value Converters !!!-->
     <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter"/>
     <valueconverters:NullToVisibilityConverter x:Key="nullToVisibilityConverter"/>
@@ -251,10 +232,6 @@
     <valueconverters:BooleanToVisibilityMultiConverter x:Key="booleanToVisibilityMultiConverter"/>
     <valueconverters:BooleanToStringConverter x:Key="booleanToStringConverter"/>
     
-    
-    
-    
-
     <!---!!! ANIMATIONS !!!--> 
     
     <!--- Visible Property Animation -->
