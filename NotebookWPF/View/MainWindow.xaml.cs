@@ -654,6 +654,24 @@ namespace NotebookWPF
             catch { }
         }
 
-        #endregion          
+        #endregion
+
+        /// <summary>
+        /// On pressing key in NoteTextEditor
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NoteTextEditor_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // If enter key is pressed
+            if (e.Key == Key.Enter)
+            {
+                // Create new line
+                var newPointer = NoteTextEditor.Selection.Start.InsertLineBreak();
+                NoteTextEditor.Selection.Select(newPointer, newPointer);
+                UpdateToolbarValues();
+                e.Handled = true;
+            }
+        }
     }
 }

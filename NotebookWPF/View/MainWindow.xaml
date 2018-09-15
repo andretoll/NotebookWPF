@@ -868,16 +868,7 @@
                         </Button>
                     </StackPanel>
                     
-                </StackPanel>
-                    
-                    
-
-                    
-
-
-
-
-
+                </StackPanel>     
 
                 <!--- Buttons -->
                 <StackPanel Orientation="Horizontal"
@@ -942,6 +933,7 @@
                                      x:Name="NoteTextEditor"
                                      TextChanged="NoteTextEditor_TextChanged"
                                      KeyDown="NoteTextEditor_KeyDown"
+                                     PreviewKeyDown="NoteTextEditor_PreviewKeyDown"
                                      SelectionChanged="NoteTextEditor_SelectionChanged"
                                      AcceptsTab="True"
                                      Background="White"
