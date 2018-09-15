@@ -18,7 +18,7 @@
     MinHeight="450"
     MinWidth="920"
     BorderThickness="0"
-    GlowBrush="Black"
+    GlowBrush="{DynamicResource AccentColorBrush}"
     Title="Simple Notes" Height="600" Width="1200">
 
     <!--- Window Local Resources -->
@@ -730,89 +730,149 @@
                               SelectionChanged="FontSizeComboBox_SelectionChanged"/>
                     </StackPanel>
 
-                    <!--- Bold/Italic/Underline -->
-                    <StackPanel Orientation="Horizontal" 
-                                Margin="20 0 0 0"
-                                Height="30" 
-                                VerticalAlignment="Bottom">
-                        <ToggleButton x:Name="BoldToggleButton"
-                                  ToolTip="Bold"
-                                  Click="BoldToggleButton_Click"
-                                  Style="{StaticResource SquareToggleButton}">
-                            <TextBlock Text="B"
-                                   FontWeight="Bold"/>
-                        </ToggleButton>
-                        <ToggleButton x:Name="ItalicToggleButton"
-                                  ToolTip="Italic"
-                                  Click="ItalicToggleButton_Click"
-                                  Margin="5 0 0 0"
-                                  Style="{StaticResource SquareToggleButton}">
-                            <TextBlock Text="I"
-                                   FontStyle="Italic"/>
-                        </ToggleButton>
-                        <ToggleButton x:Name="UnderlineToggleButton"
-                                  ToolTip="Underline"
-                                  Click="UnderlineToggleButton_Click"
-                                  Margin="5 0 0 0"
-                                  Style="{StaticResource SquareToggleButton}">
-                            <TextBlock Text="U"
-                                   TextDecorations="Underline"/>
-                        </ToggleButton>
+                    <!--- Font Increase/Decrease -->
+                    <StackPanel Orientation="Vertical"
+                                VerticalAlignment="Bottom"
+                                Margin="10 0 20 0">
+                        <Button x:Name="IncreaseFontSizeButton"
+                                Click="IncreaseFontSizeButton_Click"
+                                Margin="0 0 0 5"
+                                Width="30"
+                                Height="30"
+                                ToolTip="Increase Font Size">
+                            <Rectangle Width="10"
+                                       Height="10"
+                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill"
+                                                 Visual="{DynamicResource appbar_arrow_up}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </Button>
+                        <Button x:Name="DecreaseFontSizeButton"
+                                Click="DecreaseFontSizeButton_Click"
+                                Width="30"
+                                Height="30"
+                                ToolTip="Decrease Font Size">
+                            <Rectangle Width="10"
+                                       Height="10"
+                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill"
+                                                 Visual="{DynamicResource appbar_arrow_down}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </Button>
                     </StackPanel>
 
-                    <!--- Alignment -->
-                    <StackPanel Orientation="Horizontal"
-                                Margin="20 0 0 0"
+                    <!--- Styles and alignment -->
+                    <StackPanel VerticalAlignment="Bottom">
+                        <!--- Alignment -->
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0 0 0 5"
                                 Height="30"
                                 VerticalAlignment="Bottom">
-                        <!--- Left -->
-                        <RadioButton x:Name="LeftAlignRadioButton"
+                            <!--- Left -->
+                            <RadioButton x:Name="LeftAlignRadioButton"
                                      Checked="AlignRadioButtonChecked"
                                      ToolTip="Align Left"
                                      Style="{StaticResource SquareToggleButton}"
                                      Margin="0 0 5 0">
-                            <Rectangle Width="15"
+                                <Rectangle Width="15"
                                        Height="15"
                                        Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill"
                                                  Visual="{DynamicResource appbar_align_left}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </RadioButton>
-                        <!--- Center -->
-                        <RadioButton x:Name="CenterAlignRadioButton"
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </RadioButton>
+                            <!--- Center -->
+                            <RadioButton x:Name="CenterAlignRadioButton"
                                      Checked="AlignRadioButtonChecked"
                                      ToolTip="Align Center"
                                      Style="{StaticResource SquareToggleButton}">
-                            <Rectangle Width="15"
+                                <Rectangle Width="15"
                                        Height="15"
                                        Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill"
                                                  Visual="{DynamicResource appbar_align_center}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </RadioButton>
-                        <!--- Right -->
-                        <RadioButton x:Name="RightAlignRadioButton"
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </RadioButton>
+                            <!--- Right -->
+                            <RadioButton x:Name="RightAlignRadioButton"
                                      Checked="AlignRadioButtonChecked"
                                      ToolTip="Align Right"
                                      Style="{StaticResource SquareToggleButton}"
                                      Margin="5 0 0 0">
-                            <Rectangle Width="15"
+                                <Rectangle Width="15"
                                        Height="15"
                                        Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill"
                                                  Visual="{DynamicResource appbar_align_right}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </RadioButton>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </RadioButton>
 
+                        </StackPanel>
+                        <!-- Styles -->
+                        <StackPanel Orientation="Horizontal"
+                                Height="30" 
+                                VerticalAlignment="Bottom">
+                            <ToggleButton x:Name="BoldToggleButton"
+                                  ToolTip="Bold"
+                                  Click="BoldToggleButton_Click"
+                                  Style="{StaticResource SquareToggleButton}">
+                                <TextBlock Text="B"
+                                   FontWeight="Bold"/>
+                            </ToggleButton>
+                            <ToggleButton x:Name="ItalicToggleButton"
+                                  ToolTip="Italic"
+                                  Click="ItalicToggleButton_Click"
+                                  Margin="5 0 0 0"
+                                  Style="{StaticResource SquareToggleButton}">
+                                <TextBlock Text="I"
+                                   FontStyle="Italic"/>
+                            </ToggleButton>
+                            <ToggleButton x:Name="UnderlineToggleButton"
+                                  ToolTip="Underline"
+                                  Click="UnderlineToggleButton_Click"
+                                  Margin="5 0 0 0"
+                                  Style="{StaticResource SquareToggleButton}">
+                                <TextBlock Text="U"
+                                   TextDecorations="Underline"/>
+                            </ToggleButton>
+                        </StackPanel>
                     </StackPanel>
 
+                    <!--- Lists -->
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Bottom"
+                                Margin="10 0 20 0">
+                        <Button x:Name="BulletListButton"
+                                      Click="BulletListButton_Click"
+                                      Width="30"
+                                      Height="30"
+                                      ToolTip="Insert new list">
+                            <Rectangle Width="10"
+                                       Height="10"
+                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                <Rectangle.OpacityMask>
+                                    <VisualBrush Stretch="Fill"
+                                                 Visual="{DynamicResource appbar_list_two}"/>
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
+                        </Button>
+                    </StackPanel>
+                    
                 </StackPanel>
+                    
+                    
+
+                    
 
 
 
@@ -883,6 +943,7 @@
                                      TextChanged="NoteTextEditor_TextChanged"
                                      KeyDown="NoteTextEditor_KeyDown"
                                      SelectionChanged="NoteTextEditor_SelectionChanged"
+                                     AcceptsTab="True"
                                      Background="White"
                                      Foreground="Black"
                                      Padding="2"

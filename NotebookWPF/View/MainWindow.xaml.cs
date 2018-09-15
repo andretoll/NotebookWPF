@@ -350,6 +350,97 @@ namespace NotebookWPF
                 NoteTextEditor.Selection.ApplyPropertyValue(Paragraph.TextAlignmentProperty, TextAlignment.Right);
         }
 
+        /// <summary>
+        /// On increasing Font Size
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void IncreaseFontSizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Get current font size
+                double currentFontSize;
+                if (double.TryParse(NoteTextEditor.Selection.GetPropertyValue(FontSizeProperty).ToString(), out currentFontSize))
+                {
+                    // Get font sizes
+                    var fontSizes = GetFontSizes();
+
+                    // Get next size
+                    int newFontSizeIndex = fontSizes.IndexOf(currentFontSize) + 1;
+                    var newFontSize = fontSizes[newFontSizeIndex];
+                    NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, newFontSize);
+                }
+
+                // If font sizes are mixed, get font size in the end of document and apply
+                TextRange textRange = new TextRange(NoteTextEditor.Selection.Start, NoteTextEditor.Selection.End);
+                var value = (textRange.End.Parent as System.Windows.Documents.Run).FontSize;
+                NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, value);
+                UpdateToolbarValues();
+            }
+            catch
+            {
+            }
+
+            NoteTextEditor.Focus();
+        }
+
+        /// <summary>
+        /// On Decreasing Font Size
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DecreaseFontSizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Get current font size
+                double currentFontSize;
+                if (double.TryParse(NoteTextEditor.Selection.GetPropertyValue(FontSizeProperty).ToString(), out currentFontSize))
+                {
+                    // Get font sizes
+                    var fontSizes = GetFontSizes();
+
+                    // Get next size
+                    int newFontSizeIndex = fontSizes.IndexOf(currentFontSize) - 1;
+                    var newFontSize = fontSizes[newFontSizeIndex];
+                    NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, newFontSize);
+                }
+
+                // If font sizes are mixed, get font size in the end of document and apply
+                TextRange textRange = new TextRange(NoteTextEditor.Selection.Start, NoteTextEditor.Selection.End);
+                var value = (textRange.End.Parent as System.Windows.Documents.Run).FontSize;
+                NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, value);
+                UpdateToolbarValues();
+            }
+            catch
+            {
+            }
+
+            NoteTextEditor.Focus();
+        }
+
+        /// <summary>
+        /// On adding new list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BulletListButton_Click(object sender, RoutedEventArgs e)
+        {
+            List bulletList = new List();
+            bulletList.MarkerStyle = TextMarkerStyle.Disc;
+
+            ListItem listItem = new ListItem(new Paragraph(new Run("Listitem")));
+            bulletList.ListItems.Add(listItem);
+
+            NoteTextEditor.Document.Blocks.Add(bulletList);
+            NoteTextEditor.CaretPosition = NoteTextEditor.CaretPosition.DocumentEnd;
+            EditingCommands.MoveToLineStart.Execute(null, NoteTextEditor);
+            EditingCommands.SelectToLineEnd.Execute(null, NoteTextEditor);
+
+            NoteTextEditor.Focus();
+        }
+
         #endregion
 
         #endregion
@@ -377,6 +468,50 @@ namespace NotebookWPF
         {
             #region Font Sizes
 
+            FontSizeComboBox.ItemsSource = GetFontSizes();
+
+            #endregion
+
+            #region Font Families
+
+            var fontFamilies = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
+            FontFamilyComboBox.ItemsSource = fontFamilies;
+
+            #endregion
+
+            #region Alignment
+
+            LeftAlignRadioButton.IsChecked = true;
+
+            #endregion
+        }
+
+        /// <summary>
+        /// Check if selected text is underlined
+        /// </summary>
+        /// <param name="textSelection"></param>
+        /// <returns></returns>
+        private bool CheckUnderLinedText(TextSelection textSelection)
+        {
+            var value = GetPropertyValue(textSelection, Paragraph.TextDecorationsProperty);
+
+            int propCount;
+
+            if (int.TryParse((value as TextDecorationCollection).Count.ToString(), out propCount))
+            {
+                if (propCount > 0)
+                    return true;
+            }           
+
+            return false;
+        }
+
+        /// <summary>
+        /// Get available font sizes
+        /// </summary>
+        /// <returns></returns>
+        private List<double> GetFontSizes()
+        {
             // Font Sizes
             List<double> fontSizes = new List<double>();
             fontSizes.Add(3);
@@ -432,42 +567,7 @@ namespace NotebookWPF
             fontSizes.Add(136);
             fontSizes.Add(144);
 
-            FontSizeComboBox.ItemsSource = fontSizes;
-
-            #endregion
-
-            #region Font Families
-
-            var fontFamilies = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
-            FontFamilyComboBox.ItemsSource = fontFamilies;
-
-            #endregion
-
-            #region Alignment
-
-            LeftAlignRadioButton.IsChecked = true;
-
-            #endregion
-        }
-
-        /// <summary>
-        /// Check if selected text is underlined
-        /// </summary>
-        /// <param name="textSelection"></param>
-        /// <returns></returns>
-        private bool CheckUnderLinedText(TextSelection textSelection)
-        {
-            var value = GetPropertyValue(textSelection, Paragraph.TextDecorationsProperty);
-
-            int propCount;
-
-            if (int.TryParse((value as TextDecorationCollection).Count.ToString(), out propCount))
-            {
-                if (propCount > 0)
-                    return true;
-            }           
-
-            return false;
+            return fontSizes;
         }
 
         /// <summary>
@@ -554,6 +654,6 @@ namespace NotebookWPF
             catch { }
         }
 
-        #endregion        
+        #endregion          
     }
 }

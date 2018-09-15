@@ -118,14 +118,16 @@
                     <!--- Preview -->
                     <Label Content="Preview"
                            Style="{StaticResource LabelStyle}"/>
-                    <TextBox IsReadOnly="True" 
-                             IsEnabled="False"
-                             Background="Transparent"
-                             FontFamily="{Binding SelectedFontFamily, Mode=OneWay}"
-                             FontSize="{Binding SelectedFontSize, Mode=OneWay}"
-                             Text="This is what your text will look like...">
+                    <TextBlock HorizontalAlignment="Left"
+                               TextWrapping="WrapWithOverflow"
+                               IsEnabled="False"
+                               Background="Transparent"
+                               FontFamily="{Binding SelectedFontFamily, Mode=OneWay}"
+                               FontSize="{Binding SelectedFontSize, Mode=OneWay}"
+                               Text="This is what your text will look like..."
+                               MaxWidth="400">
                         
-                    </TextBox>
+                    </TextBlock>
 
                 </StackPanel>
             </TabItem>
