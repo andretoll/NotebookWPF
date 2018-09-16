@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.Windows.Controls.Primitives;
+using System.Reflection;
 
 namespace NotebookWPF
 {
@@ -30,6 +31,7 @@ namespace NotebookWPF
         #region Private Members
 
         private NotebookViewModel _notebookViewModel;
+        private PropertyInfo[] _colors;
 
         #endregion
 
@@ -276,6 +278,15 @@ namespace NotebookWPF
             NoteTextEditor.Focus();
         }
 
+        private void FontColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((sender as ComboBox).SelectedItem != null)
+            {
+                var selectedColorName = (sender as ComboBox).SelectedItem;
+                NoteTextEditor.Selection.ApplyPropertyValue(ForegroundProperty, selectedColorName);
+            }            
+        }
+
         #endregion
 
         #region Methods
@@ -306,6 +317,17 @@ namespace NotebookWPF
             var fontFamilies = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
             FontFamilyComboBox.ItemsSource = fontFamilies;
 
+            // Font Colors
+            Type brushesType = typeof(Brushes);
+            _colors = brushesType.GetProperties(BindingFlags.Static | BindingFlags.Public);
+            List<string> colorList = new List<string>();
+            foreach (var item in _colors)
+            {
+                string name = item.Name;
+                colorList.Add(name);
+            }
+            FontColorComboBox.ItemsSource = colorList;
+
             // Text alignment
             LeftAlignRadioButton.IsChecked = true;
         }
@@ -322,7 +344,29 @@ namespace NotebookWPF
                 FontFamilyComboBox.SelectedItem = fontFamily;
 
                 // Set FontSize
-                FontSizeComboBox.Text = (NoteTextEditor.Selection.GetPropertyValue(Inline.FontSizeProperty)).ToString();
+                FontSizeComboBox.Text = Math.Round((double)(NoteTextEditor.Selection.GetPropertyValue(Inline.FontSizeProperty))).ToString();
+
+                // Set FontColor
+                var selectedColor = NoteTextEditor.Selection.GetPropertyValue(ForegroundProperty);
+
+                if (selectedColor.GetType() != typeof(SolidColorBrush))
+                    FontColorComboBox.SelectedItem = null;
+                else
+                {
+                    string selectedColorName = "";
+                    foreach (var item in _colors)
+                    {
+                        string name = item.Name;
+                        SolidColorBrush brush = (SolidColorBrush)item.GetValue(null, null);
+
+                        if (((SolidColorBrush)selectedColor).Color == brush.Color)
+                        {
+                            selectedColorName = name;
+                            break;
+                        }
+                    }
+                    FontColorComboBox.SelectedItem = selectedColorName;
+                }                
 
                 // Set Bold
                 var selectedWeight = NoteTextEditor.Selection.GetPropertyValue(Inline.FontWeightProperty);
@@ -471,7 +515,7 @@ namespace NotebookWPF
             }
 
             return null;
-        }        
+        }
 
         #endregion
     }

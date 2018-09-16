@@ -689,13 +689,14 @@
                 </StackPanel>
 
                 <!--- Editor Toolbar -->
-                <StackPanel Orientation="Horizontal"
-                            DockPanel.Dock="Top"
-                            Margin="0 5 0 20">
-                    <ToolBar>
+                <ToolBarTray DockPanel.Dock="Top"
+                             Margin="0 0 0 10">
+                    <ToolBar ToolBarTray.IsLocked="True">
                         <!--- Font Families -->
-                        <StackPanel VerticalAlignment="Bottom">
-                            <Label Content="Font Families" 
+                        <StackPanel VerticalAlignment="Bottom"
+                                    Margin="0 0 10 0">
+                            <Label Content="Font Family" 
+                                   FontSize="14"
                                    Padding="0 0 0 5"/>
                             <ComboBox Width="150"
                                       Height="30"
@@ -705,7 +706,7 @@
                                 <ComboBox.ItemTemplate>
                                     <ItemContainerTemplate>
                                         <TextBlock Text="{Binding}"
-                                                   FontFamily="{Binding}"/>
+                                                       FontFamily="{Binding}"/>
                                     </ItemContainerTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -713,22 +714,23 @@
 
                         <!--- Font Sizes -->
                         <StackPanel VerticalAlignment="Bottom"
-                                    Margin="5 0 0 0">
+                                    Margin="0 0 10 0">
                             <Label Content="Font Size" 
+                                   FontSize="14"
                                    Padding="0 0 0 5"/>
                             <ComboBox x:Name="FontSizeComboBox"
-                                    Height="30"
-                                    ToolTip="Font Size"
-                                    SelectionChanged="FontSizeComboBox_SelectionChanged"/>
-                        </StackPanel>
-
+                                      Height="30"
+                                      ToolTip="Font Size"
+                                      SelectionChanged="FontSizeComboBox_SelectionChanged"/>
+                        </StackPanel>  
+                        
                         <!--- Font Increase/Decrease -->
-                        <StackPanel Orientation="Vertical"
+                        <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Bottom"
-                                    Margin="10 0 20 0">
+                                    Margin="0 0 10 0">
                             <Button x:Name="IncreaseFontSizeButton"
                                     Click="IncreaseFontSizeButton_Click"
-                                    Margin="0 0 0 5"
+                                    Margin="0 0 5 0"
                                     Width="30"
                                     Height="30"
                                     ToolTip="Increase Font Size">
@@ -755,6 +757,32 @@
                                     </Rectangle.OpacityMask>
                                 </Rectangle>
                             </Button>
+                        </StackPanel>
+
+                        <!--- Colors -->
+                        <StackPanel VerticalAlignment="Bottom"
+                                    Margin="0 0 20 0">
+                            <Label Content="Color" 
+                                   FontSize="14"
+                                   Padding="0 0 0 5"/>
+                            <ComboBox x:Name="FontColorComboBox"
+                                      SelectionChanged="FontColorComboBox_SelectionChanged"
+                                      Height="30"
+                                      MaxWidth="55"
+                                      ToolTip="Font Size">
+                                <ComboBox.ItemTemplate>
+                                    <ItemContainerTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Rectangle Width="15"
+                                                       Height="15"
+                                                       Fill="{Binding}"
+                                                       Margin="0 0 5 0">                                                
+                                            </Rectangle>
+                                            <TextBlock Text="{Binding}"/>
+                                        </StackPanel>
+                                    </ItemContainerTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </StackPanel>
 
                         <!--- Styles and alignment -->
@@ -813,7 +841,8 @@
                             <!-- Styles -->
                             <StackPanel Orientation="Horizontal"
                                         Height="30" 
-                                        VerticalAlignment="Bottom">
+                                        VerticalAlignment="Bottom"
+                                        Margin="0 0 20 0">
                                 <ToggleButton x:Name="BoldToggleButton"
                                               ToolTip="Bold"
                                               Command="EditingCommands.ToggleBold"
@@ -844,39 +873,42 @@
                         </StackPanel>
 
                         <!--- Lists -->
-                        <StackPanel Orientation="Horizontal"
-                                    VerticalAlignment="Bottom"
-                                    Margin="20 0 10 0">
-                            <!--- Bullets -->
-                            <ToggleButton x:Name="BulletListButton"
+                        <StackPanel VerticalAlignment="Bottom">
+                            <Label Content="Lists"
+                                   FontSize="14"
+                                   Padding="0 0 0 5"/>
+                            <StackPanel VerticalAlignment="Bottom"
+                                    Orientation="Horizontal">
+                                <!--- Bullets -->
+                                <ToggleButton x:Name="BulletListButton"
                                           Command="EditingCommands.ToggleBullets"
                                           Style="{StaticResource SquareToggleButton}"
                                           Width="30"
                                           Height="30"
                                           Margin="0 0 5 0"
                                           ToolTip="Bullet List">
-                                <Rectangle Width="10"
+                                    <Rectangle Width="10"
                                            Height="10"
                                            Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                                    <Rectangle.OpacityMask>
-                                        <VisualBrush Stretch="Fill"
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill"
                                                      Visual="{DynamicResource appbar_list_two}"/>
-                                    </Rectangle.OpacityMask>
-                                </Rectangle>
-                            </ToggleButton>
-                            <!--- Numbering -->
-                            <ToggleButton x:Name="NumberedListButton"
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </ToggleButton>
+                                <!--- Numbering -->
+                                <ToggleButton x:Name="NumberedListButton"
                                           Command="EditingCommands.ToggleNumbering"
                                           Style="{StaticResource SquareToggleButton}"
                                           Width="30"
                                           Height="30"
                                           ToolTip="Numbered List">
-                                <TextBlock Text="123"/>
-                            </ToggleButton>
-                        </StackPanel>
-                    </ToolBar>                    
-                    
-                </StackPanel>     
+                                    <TextBlock Text="123"/>
+                                </ToggleButton>
+                            </StackPanel>
+                        </StackPanel>                                       
+                    </ToolBar>
+                </ToolBarTray>
 
                 <!--- Buttons -->
                 <StackPanel Orientation="Horizontal"
@@ -937,6 +969,7 @@
                 </StackPanel>
 
                 <toolkit:RichTextBox x:Name="NoteTextEditor"
+                                     DockPanel.Dock="Bottom"
                                      Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      SelectionChanged="NoteTextEditor_SelectionChanged"
                                      AcceptsTab="True"

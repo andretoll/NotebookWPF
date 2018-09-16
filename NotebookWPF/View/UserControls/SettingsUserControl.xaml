@@ -122,6 +122,7 @@
                     <TextBlock HorizontalAlignment="Left"
                                TextWrapping="WrapWithOverflow"
                                IsEnabled="False"
+                               Margin="5 0 0 0"
                                Background="Transparent"
                                FontFamily="{Binding SelectedFontFamily, Mode=OneWay}"
                                FontSize="{Binding SelectedFontSize, Mode=OneWay}"
