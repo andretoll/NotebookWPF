@@ -692,180 +692,197 @@
                 <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top"
                             Margin="0 5 0 20">
-
-                    <!--- Font Families -->
-                    <StackPanel VerticalAlignment="Bottom">
-                        <Label Content="Font Families" 
-                               Padding="0 0 0 5"/>
-                        <ComboBox Width="150"
-                                  Height="30"
-                                  ToolTip="Font Family"
-                                  SelectionChanged="FontFamilyComboBox_SelectionChanged"
-                                  x:Name="FontFamilyComboBox">
-                            <ComboBox.ItemTemplate>
-                                <ItemContainerTemplate>
-                                    <TextBlock Text="{Binding}"
-                                               FontFamily="{Binding}"/>
-                                </ItemContainerTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                    </StackPanel>
-
-                    <!--- Font Sizes -->
-                    <StackPanel VerticalAlignment="Bottom"
-                                Margin="5 0 0 0">
-                        <Label Content="Font Size" Padding="0 0 0 5"/>
-                        <ComboBox x:Name="FontSizeComboBox"
-                                  Height="30"
-                              ToolTip="Font Size"
-                              SelectionChanged="FontSizeComboBox_SelectionChanged"/>
-                    </StackPanel>
-
-                    <!--- Font Increase/Decrease -->
-                    <StackPanel Orientation="Vertical"
-                                VerticalAlignment="Bottom"
-                                Margin="10 0 20 0">
-                        <Button x:Name="IncreaseFontSizeButton"
-                                Click="IncreaseFontSizeButton_Click"
-                                Margin="0 0 0 5"
-                                Width="30"
-                                Height="30"
-                                ToolTip="Increase Font Size">
-                            <Rectangle Width="10"
-                                       Height="10"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_arrow_up}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </Button>
-                        <Button x:Name="DecreaseFontSizeButton"
-                                Click="DecreaseFontSizeButton_Click"
-                                Width="30"
-                                Height="30"
-                                ToolTip="Decrease Font Size">
-                            <Rectangle Width="10"
-                                       Height="10"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_arrow_down}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </Button>
-                    </StackPanel>
-
-                    <!--- Styles and alignment -->
-                    <StackPanel VerticalAlignment="Bottom">
-                        <!--- Alignment -->
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="0 0 0 5"
-                                Height="30"
-                                VerticalAlignment="Bottom">
-                            <!--- Left -->
-                            <RadioButton x:Name="LeftAlignRadioButton"
-                                     Checked="AlignRadioButtonChecked"
-                                     ToolTip="Align Left"
-                                     Style="{StaticResource SquareToggleButton}"
-                                     Margin="0 0 5 0">
-                                <Rectangle Width="15"
-                                       Height="15"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                                    <Rectangle.OpacityMask>
-                                        <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_align_left}"/>
-                                    </Rectangle.OpacityMask>
-                                </Rectangle>
-                            </RadioButton>
-                            <!--- Center -->
-                            <RadioButton x:Name="CenterAlignRadioButton"
-                                     Checked="AlignRadioButtonChecked"
-                                     ToolTip="Align Center"
-                                     Style="{StaticResource SquareToggleButton}">
-                                <Rectangle Width="15"
-                                       Height="15"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                                    <Rectangle.OpacityMask>
-                                        <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_align_center}"/>
-                                    </Rectangle.OpacityMask>
-                                </Rectangle>
-                            </RadioButton>
-                            <!--- Right -->
-                            <RadioButton x:Name="RightAlignRadioButton"
-                                     Checked="AlignRadioButtonChecked"
-                                     ToolTip="Align Right"
-                                     Style="{StaticResource SquareToggleButton}"
-                                     Margin="5 0 0 0">
-                                <Rectangle Width="15"
-                                       Height="15"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
-                                    <Rectangle.OpacityMask>
-                                        <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_align_right}"/>
-                                    </Rectangle.OpacityMask>
-                                </Rectangle>
-                            </RadioButton>
-
-                        </StackPanel>
-                        <!-- Styles -->
-                        <StackPanel Orientation="Horizontal"
-                                Height="30" 
-                                VerticalAlignment="Bottom">
-                            <ToggleButton x:Name="BoldToggleButton"
-                                  ToolTip="Bold"
-                                  Click="BoldToggleButton_Click"
-                                  Style="{StaticResource SquareToggleButton}">
-                                <TextBlock Text="B"
-                                   FontWeight="Bold"/>
-                            </ToggleButton>
-                            <ToggleButton x:Name="ItalicToggleButton"
-                                  ToolTip="Italic"
-                                  Click="ItalicToggleButton_Click"
-                                  Margin="5 0 0 0"
-                                  Style="{StaticResource SquareToggleButton}">
-                                <TextBlock Text="I"
-                                   FontStyle="Italic"/>
-                            </ToggleButton>
-                            <ToggleButton x:Name="UnderlineToggleButton"
-                                  ToolTip="Underline"
-                                  Click="UnderlineToggleButton_Click"
-                                  Margin="5 0 0 0"
-                                  Style="{StaticResource SquareToggleButton}">
-                                <TextBlock Text="U"
-                                   TextDecorations="Underline"/>
-                            </ToggleButton>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <!--- Lists -->
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Bottom"
-                                Margin="20 0 10 0">
-                        <Button x:Name="BulletListButton"
-                                      Click="BulletListButton_Click"
-                                      Width="30"
+                    <ToolBar>
+                        <!--- Font Families -->
+                        <StackPanel VerticalAlignment="Bottom">
+                            <Label Content="Font Families" 
+                                   Padding="0 0 0 5"/>
+                            <ComboBox Width="150"
                                       Height="30"
-                                      ToolTip="Insert new list">
-                            <Rectangle Width="10"
-                                       Height="10"
-                                       Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
-                                <Rectangle.OpacityMask>
-                                    <VisualBrush Stretch="Fill"
-                                                 Visual="{DynamicResource appbar_list_two}"/>
-                                </Rectangle.OpacityMask>
-                            </Rectangle>
-                        </Button>
-                    </StackPanel>
+                                      ToolTip="Font Family"
+                                      SelectionChanged="FontFamilyComboBox_SelectionChanged"
+                                      x:Name="FontFamilyComboBox">
+                                <ComboBox.ItemTemplate>
+                                    <ItemContainerTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   FontFamily="{Binding}"/>
+                                    </ItemContainerTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!--- Font Sizes -->
+                        <StackPanel VerticalAlignment="Bottom"
+                                    Margin="5 0 0 0">
+                            <Label Content="Font Size" 
+                                   Padding="0 0 0 5"/>
+                            <ComboBox x:Name="FontSizeComboBox"
+                                    Height="30"
+                                    ToolTip="Font Size"
+                                    SelectionChanged="FontSizeComboBox_SelectionChanged"/>
+                        </StackPanel>
+
+                        <!--- Font Increase/Decrease -->
+                        <StackPanel Orientation="Vertical"
+                                    VerticalAlignment="Bottom"
+                                    Margin="10 0 20 0">
+                            <Button x:Name="IncreaseFontSizeButton"
+                                    Click="IncreaseFontSizeButton_Click"
+                                    Margin="0 0 0 5"
+                                    Width="30"
+                                    Height="30"
+                                    ToolTip="Increase Font Size">
+                                <Rectangle Width="10"
+                                           Height="10"
+                                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill"
+                                                     Visual="{DynamicResource appbar_arrow_up}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                            <Button x:Name="DecreaseFontSizeButton"
+                                    Click="DecreaseFontSizeButton_Click"
+                                    Width="30"
+                                    Height="30"
+                                    ToolTip="Decrease Font Size">
+                                <Rectangle Width="10"
+                                           Height="10"
+                                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill"
+                                                     Visual="{DynamicResource appbar_arrow_down}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </StackPanel>
+
+                        <!--- Styles and alignment -->
+                        <StackPanel VerticalAlignment="Bottom">
+                            <!--- Alignment -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0 0 0 5"
+                                        Height="30"
+                                        VerticalAlignment="Bottom">
+                                <!--- Left -->
+                                <RadioButton x:Name="LeftAlignRadioButton"
+                                             Command="EditingCommands.AlignLeft"
+                                             ToolTip="Align Left"
+                                             Style="{StaticResource SquareToggleButton}"
+                                             Margin="0 0 5 0">
+                                    <Rectangle Width="15"
+                                               Height="15"
+                                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill"
+                                                         Visual="{DynamicResource appbar_align_left}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </RadioButton>
+                                <!--- Center -->
+                                <RadioButton x:Name="CenterAlignRadioButton"
+                                             Command="EditingCommands.AlignCenter"
+                                             ToolTip="Align Center"
+                                             Style="{StaticResource SquareToggleButton}">
+                                    <Rectangle Width="15"
+                                               Height="15"
+                                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill"
+                                                 Visual="{DynamicResource appbar_align_center}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </RadioButton>
+                                <!--- Right -->
+                                <RadioButton x:Name="RightAlignRadioButton"
+                                             Command="EditingCommands.AlignRight"
+                                             ToolTip="Align Right"
+                                             Style="{StaticResource SquareToggleButton}"
+                                             Margin="5 0 0 0">
+                                    <Rectangle Width="15"
+                                               Height="15"
+                                               Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill"
+                                                         Visual="{DynamicResource appbar_align_right}"/>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </RadioButton>
+
+                            </StackPanel>
+                            <!-- Styles -->
+                            <StackPanel Orientation="Horizontal"
+                                        Height="30" 
+                                        VerticalAlignment="Bottom">
+                                <ToggleButton x:Name="BoldToggleButton"
+                                              ToolTip="Bold"
+                                              Command="EditingCommands.ToggleBold"
+                                              CommandTarget="{Binding ElementName=NoteTextEditor}"
+                                              Style="{StaticResource SquareToggleButton}">
+                                    <TextBlock Text="B"
+                                               FontWeight="Bold"/>
+                                </ToggleButton>
+                                <ToggleButton x:Name="ItalicToggleButton"
+                                              ToolTip="Italic"
+                                              Command="EditingCommands.ToggleItalic"
+                                              CommandTarget="{Binding ElementName=NoteTextEditor}"
+                                              Margin="5 0 0 0"
+                                              Style="{StaticResource SquareToggleButton}">
+                                    <TextBlock Text="I"
+                                               FontStyle="Italic"/>
+                                </ToggleButton>
+                                <ToggleButton x:Name="UnderlineToggleButton"
+                                              ToolTip="Underline"
+                                              Command="EditingCommands.ToggleUnderline"
+                                              CommandTarget="{Binding ElementName=NoteTextEditor}"
+                                              Margin="5 0 0 0"
+                                              Style="{StaticResource SquareToggleButton}">
+                                    <TextBlock Text="U"
+                                               TextDecorations="Underline"/>
+                                </ToggleButton>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!--- Lists -->
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Bottom"
+                                    Margin="20 0 10 0">
+                            <!--- Bullets -->
+                            <ToggleButton x:Name="BulletListButton"
+                                          Command="EditingCommands.ToggleBullets"
+                                          Style="{StaticResource SquareToggleButton}"
+                                          Width="30"
+                                          Height="30"
+                                          Margin="0 0 5 0"
+                                          ToolTip="Bullet List">
+                                <Rectangle Width="10"
+                                           Height="10"
+                                           Fill="{Binding Path=Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ToggleButton}}}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill"
+                                                     Visual="{DynamicResource appbar_list_two}"/>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </ToggleButton>
+                            <!--- Numbering -->
+                            <ToggleButton x:Name="NumberedListButton"
+                                          Command="EditingCommands.ToggleNumbering"
+                                          Style="{StaticResource SquareToggleButton}"
+                                          Width="30"
+                                          Height="30"
+                                          ToolTip="Numbered List">
+                                <TextBlock Text="123"/>
+                            </ToggleButton>
+                        </StackPanel>
+                    </ToolBar>                    
                     
                 </StackPanel>     
 
                 <!--- Buttons -->
                 <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Right"
-                        Margin="0 10 0 0"
-                        DockPanel.Dock="Bottom">
+                            HorizontalAlignment="Right"
+                            Margin="0 10 0 0"
+                            DockPanel.Dock="Bottom">
 
                     <!--- Save Note Button -->
                     <Button ToolTip="Save Note (CTRL + S)"
@@ -919,12 +936,8 @@
 
                 </StackPanel>
 
-                <!--- Editor -->
-                <toolkit:RichTextBox Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                     x:Name="NoteTextEditor"
-                                     TextChanged="NoteTextEditor_TextChanged"
-                                     KeyDown="NoteTextEditor_KeyDown"
-                                     PreviewKeyDown="NoteTextEditor_PreviewKeyDown"
+                <toolkit:RichTextBox x:Name="NoteTextEditor"
+                                     Text="{Binding NoteContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      SelectionChanged="NoteTextEditor_SelectionChanged"
                                      AcceptsTab="True"
                                      Background="White"
@@ -932,18 +945,14 @@
                                      Padding="2"
                                      FontSize="12"
                                      Style="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type RichTextBox}}}">
+
                     <!--- TextFormatter -->
                     <toolkit:RichTextBox.TextFormatter>
                         <toolkit:RtfFormatter/>
                     </toolkit:RichTextBox.TextFormatter>
 
-                    <!--- Format Bar Window -->
-                    <toolkit:RichTextBoxFormatBarManager.FormatBar>
-                        <toolkit:RichTextBoxFormatBar/>
-                    </toolkit:RichTextBoxFormatBarManager.FormatBar>
-
                     <!--- Custom ContextMenu -->
-                    <toolkit:RichTextBox.ContextMenu>
+                    <RichTextBox.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Cut" 
                                   InputGestureText="Ctrl + X"
@@ -955,8 +964,14 @@
                                   InputGestureText="Ctrl + V"
                                   Command="Paste"/>
                         </ContextMenu>
-                    </toolkit:RichTextBox.ContextMenu>
+                    </RichTextBox.ContextMenu>
 
+                    <RichTextBox.InputBindings>
+                        <KeyBinding Modifiers="Ctrl"
+                                    Key="S"
+                                    Command="{Binding SaveNoteContentCommand}"/>
+                    </RichTextBox.InputBindings>
+                    
                 </toolkit:RichTextBox>
             
             </DockPanel>

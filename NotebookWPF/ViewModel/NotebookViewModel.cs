@@ -136,7 +136,7 @@ namespace NotebookWPF.ViewModel
                 NotifyPropertyChanged();       
 
                 // Empty content
-                noteContent = null;
+                NoteContent = null;
 
                 // If a note is selected, get its content
                 if (value != null)

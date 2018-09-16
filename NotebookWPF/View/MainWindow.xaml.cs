@@ -56,7 +56,7 @@ namespace NotebookWPF
             NoteTextEditor.FontSize = double.Parse(SettingsHelper.fontSize);
 
             // Initiate toolbar values
-            InitiateToolbarValues();            
+            InitiateToolbarValues();
         }
 
         #endregion
@@ -142,11 +142,6 @@ namespace NotebookWPF
 
 
 
-
-
-
-
-
         private void NotesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (NotesListBox.SelectedItem != null)
@@ -169,30 +164,19 @@ namespace NotebookWPF
         {
             if (FavoriteNotesListBox.SelectedItem != null)
             {
+                // If empty note, apply font settings
+                TextRange textRange = new TextRange(NoteTextEditor.Document.ContentStart, NoteTextEditor.Document.ContentEnd);
+                if (!textRange.Text.Any())
+                {
+                    NoteTextEditor.FontFamily = new FontFamily(SettingsHelper.fontFamily);
+                    NoteTextEditor.FontSize = double.Parse(SettingsHelper.fontSize);
+                }
+
                 NoteTextEditor.Focus();
 
                 UpdateToolbarValues();
             }
         }     
-        
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         
@@ -205,31 +189,6 @@ namespace NotebookWPF
         { 
             UpdateToolbarValues();
         }
-        
-        private void NoteTextEditor_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.S && (Keyboard.Modifiers == ModifierKeys.Control) && _notebookViewModel.noteContentChanged)
-            {
-                _notebookViewModel.SaveNoteContentAsync();
-            }
-        }
-
-        private void NoteTextEditor_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            // If enter key is pressed
-            if (e.Key == Key.Enter)
-            {
-                // Create new line
-                var newPointer = NoteTextEditor.Selection.Start.InsertLineBreak();
-                NoteTextEditor.Selection.Select(newPointer, newPointer);
-                UpdateToolbarValues();
-                e.Handled = true;
-            }
-        }
-
-
-
-
         
         private void FontFamilyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -249,61 +208,6 @@ namespace NotebookWPF
             }
 
             NoteTextEditor.Focus();
-        }
-        
-        private void BoldToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            if ((sender as ToggleButton).IsChecked ?? true)
-            {
-                NoteTextEditor.Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Bold);
-            }
-            else
-            {
-                NoteTextEditor.Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Normal);
-            }
-
-            NoteTextEditor.Focus();
-        }
-        
-        private void ItalicToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            if ((sender as ToggleButton).IsChecked ?? true)
-            {
-                NoteTextEditor.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Italic);
-            }
-            else
-            {
-                NoteTextEditor.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Normal);
-            }
-
-            NoteTextEditor.Focus();
-        }
-        
-        private void UnderlineToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            if ((sender as ToggleButton).IsChecked ?? true)
-            {
-                NoteTextEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
-            }
-            else
-            {
-                TextDecorationCollection textDecorations;
-                (NoteTextEditor.Selection.GetPropertyValue(Inline.TextDecorationsProperty) as TextDecorationCollection).TryRemove(TextDecorations.Underline, out textDecorations);
-                NoteTextEditor.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, textDecorations);
-            }
-
-            NoteTextEditor.Focus();
-        }
-        
-        private void AlignRadioButtonChecked(object sender, RoutedEventArgs e)
-        {
-            NoteTextEditor.Focus();
-            if (LeftAlignRadioButton.IsChecked ?? true)
-                NoteTextEditor.Selection.ApplyPropertyValue(Paragraph.TextAlignmentProperty, TextAlignment.Left);
-            else if (CenterAlignRadioButton.IsChecked ?? true)
-                NoteTextEditor.Selection.ApplyPropertyValue(Paragraph.TextAlignmentProperty, TextAlignment.Center);
-            else if (RightAlignRadioButton.IsChecked ?? true)
-                NoteTextEditor.Selection.ApplyPropertyValue(Paragraph.TextAlignmentProperty, TextAlignment.Right);
         }
         
         private void IncreaseFontSizeButton_Click(object sender, RoutedEventArgs e)
@@ -371,38 +275,6 @@ namespace NotebookWPF
 
             NoteTextEditor.Focus();
         }
-        
-        private void BulletListButton_Click(object sender, RoutedEventArgs e)
-        {
-            List bulletList = new List();
-            bulletList.MarkerStyle = TextMarkerStyle.Disc;
-
-            ListItem listItem = new ListItem(new Paragraph(new Run("Listitem")));
-            bulletList.ListItems.Add(listItem);
-
-            NoteTextEditor.Document.Blocks.Add(bulletList);
-            NoteTextEditor.CaretPosition = NoteTextEditor.CaretPosition.DocumentEnd;
-            EditingCommands.MoveToLineStart.Execute(null, NoteTextEditor);
-            EditingCommands.SelectToLineEnd.Execute(null, NoteTextEditor);
-
-            NoteTextEditor.Focus();
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
 
         #endregion
 
@@ -420,28 +292,7 @@ namespace NotebookWPF
             // If Storyboard was found, play it
             if (sb != null)
                 ((Storyboard)sb).Begin(pnl);
-        }        
-
-        /// <summary>
-        /// Check if selected text is underlined
-        /// </summary>
-        /// <param name="textSelection"></param>
-        /// <returns></returns>
-        private bool CheckUnderLinedText(TextSelection textSelection)
-        {
-            var value = GetPropertyValue(textSelection, Paragraph.TextDecorationsProperty);
-
-            int propCount;
-
-            // Determine if selected text is underlined
-            if (int.TryParse((value as TextDecorationCollection).Count.ToString(), out propCount))
-            {
-                if (propCount > 0)
-                    return true;
-            }           
-
-            return false;
-        }     
+        }                
 
         /// <summary>
         /// Initiate Text editor toolbar values
@@ -500,8 +351,68 @@ namespace NotebookWPF
                     default:
                         break;
                 }
+
+                // List Type
+                var listType = GetSelectionListType();
+                switch (listType)
+                {
+                    case "bullets":
+                        BulletListButton.IsChecked = true;
+                        NumberedListButton.IsChecked = false;
+                        break;
+                    case "numbers":
+                        BulletListButton.IsChecked = false;
+                        NumberedListButton.IsChecked = true;
+                        break;
+                    default:
+                        BulletListButton.IsChecked = false;
+                        NumberedListButton.IsChecked = false;
+                        break;
+                }
             }
             catch { }
+        }
+
+        /// <summary>
+        /// Check if selected text is underlined
+        /// </summary>
+        /// <param name="textSelection"></param>
+        /// <returns></returns>
+        private bool CheckUnderLinedText(TextSelection textSelection)
+        {
+            var value = GetPropertyValue(textSelection, Paragraph.TextDecorationsProperty);
+
+            int propCount;
+
+            // Determine if selected text is underlined
+            if (int.TryParse((value as TextDecorationCollection).Count.ToString(), out propCount))
+            {
+                if (propCount > 0)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if selected text is any type of list
+        /// </summary>
+        /// <returns></returns>
+        private string GetSelectionListType()
+        {
+            List list = FindListAncestor(NoteTextEditor.Selection.Start.Parent);
+            if (list != null)
+            {
+                if (list.MarkerStyle == TextMarkerStyle.Disc)
+                {
+                    return "bullets";
+                }
+                else if (list.MarkerStyle == TextMarkerStyle.Decimal)
+                {
+                    return "numbers";
+                }
+            }
+            return "";
         }
 
         #endregion
@@ -540,6 +451,27 @@ namespace NotebookWPF
 
             return value;
         }
+
+        /// <summary>
+        /// Get list style
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        private List FindListAncestor(DependencyObject element)
+        {
+            while (element != null)
+            {
+                List list = element as List;
+                if (list != null)
+                {
+                    return list;
+                }
+
+                element = LogicalTreeHelper.GetParent(element);
+            }
+
+            return null;
+        }        
 
         #endregion
     }
