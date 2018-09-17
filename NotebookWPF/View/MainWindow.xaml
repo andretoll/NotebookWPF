@@ -124,6 +124,27 @@
                 </StackPanel>
             </Button>
 
+            <!-- Go To Notes -->
+            <Button x:Name="GoToNotesButton"
+                    Click="GoToNotesButton_Click"
+                    ToolTip="Notes Folder">
+                <StackPanel Orientation="Horizontal">
+                    <!--- Draw Icon -->
+                    <Rectangle Width="20"
+                               Height="20"
+                               Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" 
+                                         Visual="{StaticResource appbar_folder_open}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                    <!--- Button text -->
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               Text="Go To Notes"/>
+                </StackPanel>
+            </Button>
+
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 

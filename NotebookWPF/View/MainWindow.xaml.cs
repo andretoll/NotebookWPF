@@ -20,6 +20,7 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.Windows.Controls.Primitives;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace NotebookWPF
 {
@@ -74,7 +75,16 @@ namespace NotebookWPF
             // Open or close SettingsFlyout
             SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
         }
-        
+
+        private void GoToNotesButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(SettingsHelper.noteDirectory);
+            }
+            catch { }
+        }
+
         private void BackToNotebooksButton_Click(object sender, RoutedEventArgs e)
         {
             // Reset selected Notebook and Note
@@ -570,6 +580,6 @@ namespace NotebookWPF
                 return _fontSizes[fontSizeIndex - 1];
         }
 
-        #endregion
+        #endregion        
     }
 }
