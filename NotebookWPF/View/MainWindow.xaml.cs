@@ -32,6 +32,7 @@ namespace NotebookWPF
 
         private NotebookViewModel _notebookViewModel;
         private PropertyInfo[] _colors;
+        private List<double> _fontSizes;
 
         #endregion
 
@@ -56,6 +57,9 @@ namespace NotebookWPF
             // Initiate text editor fonts
             NoteTextEditor.FontFamily = new FontFamily(SettingsHelper.fontFamily);
             NoteTextEditor.FontSize = double.Parse(SettingsHelper.fontSize);
+
+            // Get font sizes
+            _fontSizes = SettingsHelper.GetFontSizes();
 
             // Initiate toolbar values
             InitiateToolbarValues();
@@ -215,34 +219,28 @@ namespace NotebookWPF
         private void IncreaseFontSizeButton_Click(object sender, RoutedEventArgs e)
         {
             try
-            {
+            {        
                 // Get current font size
                 double currentFontSize;
-                if (double.TryParse(NoteTextEditor.Selection.GetPropertyValue(FontSizeProperty).ToString(), out currentFontSize))
-                {
-                    // Get font sizes
-                    var fontSizes = SettingsHelper.GetFontSizes();
-
-                    // Get next size
-                    int newFontSizeIndex = fontSizes.IndexOf(currentFontSize) + 1;
-                    var newFontSize = fontSizes[newFontSizeIndex];
-                    NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, newFontSize);
-                }
-                else
+                bool b = double.TryParse(NoteTextEditor.Selection.GetPropertyValue(FontSizeProperty).ToString(), out currentFontSize);
+                if (!b)
                 {
                     // If font sizes are mixed, get font size in the end of document and apply
                     TextRange textRange = new TextRange(NoteTextEditor.Selection.Start, NoteTextEditor.Selection.End);
-                    var value = (textRange.End.Parent as Run).FontSize;
-                    NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, value);
+                    currentFontSize = (textRange.End.Parent as Run).FontSize;
                 }
-                
-                UpdateToolbarValues();
+
+                // Get new font size
+                double newFontSize = GetNextFontSize(currentFontSize);                
+
+                // Apply new font size
+                NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, newFontSize);                
             }
             catch
             {
             }
 
-            NoteTextEditor.Focus();
+            UpdateToolbarValues();
         }
         
         private void DecreaseFontSizeButton_Click(object sender, RoutedEventArgs e)
@@ -251,31 +249,25 @@ namespace NotebookWPF
             {
                 // Get current font size
                 double currentFontSize;
-                if (double.TryParse(NoteTextEditor.Selection.GetPropertyValue(FontSizeProperty).ToString(), out currentFontSize))
-                {
-                    // Get font sizes
-                    var fontSizes = SettingsHelper.GetFontSizes();
-
-                    // Get next size
-                    int newFontSizeIndex = fontSizes.IndexOf(currentFontSize) - 1;
-                    var newFontSize = fontSizes[newFontSizeIndex];
-                    NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, newFontSize);
-                }
-                else
+                bool b = double.TryParse(NoteTextEditor.Selection.GetPropertyValue(FontSizeProperty).ToString(), out currentFontSize);
+                if (!b)
                 {
                     // If font sizes are mixed, get font size in the end of document and apply
                     TextRange textRange = new TextRange(NoteTextEditor.Selection.Start, NoteTextEditor.Selection.End);
-                    var value = (textRange.End.Parent as System.Windows.Documents.Run).FontSize;
-                    NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, value);
+                    currentFontSize = (textRange.End.Parent as Run).FontSize;
                 }
-                
-                UpdateToolbarValues();
+
+                // Get new font size
+                double newFontSize = GetPreviousFontSize(currentFontSize);
+
+                // Apply new font size
+                NoteTextEditor.Selection.ApplyPropertyValue(FontSizeProperty, newFontSize);
             }
             catch
             {
             }
 
-            NoteTextEditor.Focus();
+            UpdateToolbarValues();
         }
 
         private void FontColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -344,7 +336,18 @@ namespace NotebookWPF
                 FontFamilyComboBox.SelectedItem = fontFamily;
 
                 // Set FontSize
-                FontSizeComboBox.Text = Math.Round((double)(NoteTextEditor.Selection.GetPropertyValue(Inline.FontSizeProperty))).ToString();
+                double fontSize = 0;
+                bool b = double.TryParse(NoteTextEditor.Selection.GetPropertyValue(FontSizeProperty).ToString(), out fontSize);
+                if (!b)
+                {
+                    // If font sizes are mixed, get font size in the end of document and apply
+                    TextRange textRange = new TextRange(NoteTextEditor.Selection.Start, NoteTextEditor.Selection.End);
+                    var fs = (textRange.Start.Parent as Run).FontSize;
+                    fontSize = fs;
+                }
+                // Resolve font size
+                fontSize = ResolveFontSize(fontSize);                    
+                FontSizeComboBox.SelectedItem = fontSize;
 
                 // Set FontColor
                 var selectedColor = NoteTextEditor.Selection.GetPropertyValue(ForegroundProperty);
@@ -515,6 +518,56 @@ namespace NotebookWPF
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Get closest font size
+        /// </summary>
+        /// <param name="fontSize"></param>
+        /// <returns></returns>
+        private double ResolveFontSize(double fontSize)
+        {
+            double closest = _fontSizes.Aggregate((x, y) => Math.Abs(x - fontSize) < Math.Abs(y - fontSize) ? x : y);
+
+            return closest;
+        }
+
+        /// <summary>
+        /// Get next font size from list
+        /// </summary>
+        /// <param name="fontSize"></param>
+        /// <returns></returns>
+        private double GetNextFontSize(double fontSize)
+        {
+            double closest = _fontSizes.Aggregate((x, y) => Math.Abs(x - fontSize) < Math.Abs(y - fontSize) ? x : y);
+
+            // Get font size index
+            int fontSizeIndex = _fontSizes.IndexOf(closest);
+
+            // If last font size
+            if (fontSizeIndex == _fontSizes.Count - 1)
+                return _fontSizes[fontSizeIndex];
+            else
+                return _fontSizes[fontSizeIndex + 1];
+        }
+
+        /// <summary>
+        /// Get previous font size from list
+        /// </summary>
+        /// <param name="fontSize"></param>
+        /// <returns></returns>
+        private double GetPreviousFontSize(double fontSize)
+        {
+            double closest = _fontSizes.Aggregate((x, y) => Math.Abs(x - fontSize) < Math.Abs(y - fontSize) ? x : y);
+
+            // Get font size index
+            int fontSizeIndex = _fontSizes.IndexOf(closest);
+
+            // If last font size
+            if (fontSizeIndex == 0)
+                return _fontSizes[fontSizeIndex];
+            else
+                return _fontSizes[fontSizeIndex - 1];
         }
 
         #endregion
