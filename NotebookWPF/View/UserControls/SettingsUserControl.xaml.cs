@@ -25,10 +25,13 @@ namespace NotebookWPF.View.UserControls
     {
         #region Constructor
 
+        SettingsViewModel _settingsViewModel;
+
         public SettingsUserControl()
         {
             InitializeComponent();
-            this.DataContext = new SettingsViewModel(DialogCoordinator.Instance);
+            _settingsViewModel = new SettingsViewModel(DialogCoordinator.Instance);
+            this.DataContext = _settingsViewModel;
         }
 
         #endregion

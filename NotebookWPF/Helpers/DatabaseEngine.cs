@@ -112,7 +112,7 @@ namespace NotebookWPF.Helpers
                 conn.CreateTable<Notebook>();
 
                 // Get notebooks
-                var notebooks = conn.Table<Notebook>().OrderByDescending(n => n.Id).ToList();
+                var notebooks = conn.Table<Notebook>().ToList();
 
                 foreach (var item in notebooks)
                 {

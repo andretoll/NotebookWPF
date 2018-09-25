@@ -286,7 +286,9 @@ namespace NotebookWPF
             {
                 var selectedColorName = (sender as ComboBox).SelectedItem;
                 NoteTextEditor.Selection.ApplyPropertyValue(ForegroundProperty, selectedColorName);
-            }            
+            }
+
+            NoteTextEditor.Focus();
         }
 
         #endregion
