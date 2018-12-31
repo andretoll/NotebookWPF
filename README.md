@@ -28,4 +28,4 @@ Use the compact editor to write and format your notes using:
 * Windows 7 or later
 
 ## License
-This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.
+This work is licensed under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).
